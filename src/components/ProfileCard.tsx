@@ -41,7 +41,7 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
             {nominee.name}
           </h3>
           {nominee.category && (
-            <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.12em] text-[var(--text-muted)]">
+            <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.12em] text-[var(--rose-deep)]">
               {nominee.category}
             </p>
           )}

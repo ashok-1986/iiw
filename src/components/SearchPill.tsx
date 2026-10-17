@@ -48,7 +48,7 @@ export function SearchPill({ categories }: { categories: string[] }) {
     <div className="flex w-full flex-col items-center gap-3">
       <div
         className={
-          'lift flex w-full max-w-md items-center gap-2 rounded-full border bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-18px_rgb(45_27_45/0.5)] transition-colors ' +
+          'lift flex w-full max-w-md items-center gap-2 rounded-full border bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-16px_rgb(160_54_90/0.4)] transition-colors ' +
           (pending ? 'border-[var(--blush)]' : 'border-[var(--border)]')
         }
       >
@@ -103,8 +103,8 @@ export function SearchPill({ categories }: { categories: string[] }) {
                 className={
                   'press rounded-full border px-3 py-1 font-(family-name:--font-ui) text-[11px] ' +
                   (active
-                    ? 'border-[var(--plum)] bg-[var(--plum)] text-[var(--cream)]'
-                    : 'border-[var(--border)] bg-[var(--surface-3)] text-[var(--text-muted)] hover:border-[var(--blush)]')
+                    ? 'border-[var(--rose-deep)] bg-[var(--rose-deep)] text-[var(--cream)]'
+                    : 'border-[var(--border)] bg-[var(--surface-3)] text-[var(--text-muted)] hover:border-[var(--rose)]')
                 }
               >
                 {c}

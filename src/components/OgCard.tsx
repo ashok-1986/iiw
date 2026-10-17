@@ -9,10 +9,10 @@ import { getInitials } from '@/lib/nominee';
  * Layout is flex-only with explicit sizes: no grid, no shorthand borders.
  */
 const PLUM = '#2d1b2d';
-const ROSE = '#b76e79';
-const BLUSH = '#d4a5a5';
-const GOLD = '#d4af7a';
-const CREAM = '#fffdf8';
+const ROSE = '#c65a74';
+const BLUSH = '#f0b7c1';
+const GOLD = '#d9a646';
+const CREAM = '#fffdfb';
 
 export function OgProfileCard({
   name,
@@ -46,7 +46,7 @@ export function OgProfileCard({
           borderRadius: 146,
           border: `10px solid ${CREAM}`,
           outline: `3px solid ${ROSE}`,
-          background: '#f3e6db',
+          background: '#fae9e7',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',

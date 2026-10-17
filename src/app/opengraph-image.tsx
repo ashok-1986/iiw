@@ -5,10 +5,10 @@ import { SITE_DESCRIPTION } from '@/lib/site';
 
 /** Site-level OpenGraph card: plum ground, lotus-gold rule, archive headline. */
 const PLUM = '#2d1b2d';
-const ROSE = '#b76e79';
-const GOLD = '#d4af7a';
-const CREAM = '#fffdf8';
-const BLUSH = '#d4a5a5';
+const ROSE = '#c65a74';
+const GOLD = '#d9a646';
+const CREAM = '#fffdfb';
+const BLUSH = '#f0b7c1';
 
 export const alt = 'Inspiring Indian Women — a digital heirloom flipbook';
 export const size = { width: 1200, height: 630 };

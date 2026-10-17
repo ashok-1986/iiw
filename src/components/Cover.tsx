@@ -12,7 +12,7 @@ import { RangoliDivider } from '@/components/RangoliDivider';
  */
 export function Cover() {
   return (
-    <section className="relative flex min-h-[92vh] flex-col items-center justify-center px-6 text-center">
+    <section className="cover-glow relative flex min-h-[92vh] flex-col items-center justify-center px-6 text-center">
       <LotusMedallion size={168} />
 
       <h1 className="mt-9 max-w-4xl font-(family-name:--font-display) text-[42px] font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--text)] sm:text-[58px] lg:text-[76px]">
@@ -38,7 +38,7 @@ export function Cover() {
       <div className="rise-in" style={{ '--rise-delay': '260ms' } as CSSProperties}>
         <a
           href="#archive"
-          className="press lift group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-18px_rgb(45_27_45/0.8)]"
+          className="press lift group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-16px_rgb(160_54_90/0.55)]"
         >
           Enter the Archive
           <span
