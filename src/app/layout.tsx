@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond, Lora, Inter } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { SiteFooter } from "@/components/SiteFooter";
 import "./globals.css";
 
 // PRD type stack: Display=Playfair 600, Accent=Cormorant italic, Body=Lora, UI=Inter
@@ -35,9 +37,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "IIW — Inspiring Indian Women | Luxury Flipbook",
-  description:
-    "A digital keepsake celebrating 82 extraordinary women leaders across community, enterprise, and social impact.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'IIW — Inspiring Indian Women | Luxury Flipbook',
+    template: '%s — Inspiring Indian Women',
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    title: 'IIW — Inspiring Indian Women',
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'IIW — Inspiring Indian Women',
+    description: SITE_DESCRIPTION,
+  },
+  robots: { index: true, follow: true },
+  alternates: { canonical: '/' },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -46,7 +65,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${playfair.variable} ${cormorant.variable} ${lora.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }

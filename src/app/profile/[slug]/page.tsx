@@ -6,6 +6,8 @@ import { getNominees } from '@/lib/sheets';
 import { toFlipProfile } from '@/lib/flipbook-store';
 import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
+import { ShareBar } from '@/components/ShareBar';
+import { SITE_URL } from '@/lib/site';
 
 /**
  * /profile/[slug] — the full-profile route the PRD's deep-link journey requires.
@@ -28,10 +30,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const p = await findProfile(slug);
-  if (!p) return { title: 'Profile not found — Inspiring Indian Women' };
+  if (!p) return { title: 'Profile not found' };
+  const url = `/profile/${p.slug}`;
   return {
-    title: `${p.name} — Inspiring Indian Women`,
+    // layout title.template appends "— Inspiring Indian Women"
+    title: p.name,
     description: p.summary.slice(0, 155),
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'profile',
+      url,
+      title: `${p.name} — Inspiring Indian Women`,
+      description: p.summary.slice(0, 155),
+    },
+    twitter: { card: 'summary_large_image', title: p.name, description: p.summary.slice(0, 155) },
   };
 }
 
@@ -77,6 +89,24 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
           {p.summary}
         </p>
       </article>
+
+      <ShareBar name={p.name} slug={p.slug} />
+
+      {/* Structured data for search/preview rich results — public fields only. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: p.name,
+            description: p.summary,
+            image: p.imageId ? `${SITE_URL}/api/image/${p.imageId}` : undefined,
+            url: `${SITE_URL}/profile/${p.slug}`,
+            knowsAbout: p.category ? [p.category] : undefined,
+          }),
+        }}
+      />
     </>
   );
 }
