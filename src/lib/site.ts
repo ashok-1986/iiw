@@ -7,5 +7,7 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3
 
 export const SITE_NAME = 'Inspiring Indian Women';
 
+// No head-count here: the roster grows as the form keeps taking submissions, and
+// every surface that shows a number (OG card, /about) reads it live from getNominees().
 export const SITE_DESCRIPTION =
-  'A digital heirloom celebrating 87 extraordinary women leaders across community, enterprise, and social impact — curated editorial profiles, not a directory.';
+  'A digital heirloom celebrating extraordinary women leaders across community, enterprise, and social impact — curated editorial profiles, not a directory.';

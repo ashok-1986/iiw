@@ -3,7 +3,7 @@ import { slugify, type Nominee } from './nominee';
 
 /**
  * Flipbook state (PRD: Zustand owns currentPage + searchQ).
- * `spread` is the desktop two-page view; 88 profiles -> 44 pages -> 22 spreads.
+ * `spread` is the desktop two-page view: 2 profiles per page, 4 per spread.
  */
 export interface FlipProfile {
   id: string;
