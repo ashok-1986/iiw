@@ -43,9 +43,10 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     });
   }, [profiles, query, category]);
 
-  const pages = useMemo(() => chunkIntoPages(filtered, 2), [filtered]);
+  const pages = useMemo(() => chunkIntoPages(filtered, mobile ? 1 : 2), [filtered, mobile]);
   // PRD responsive rule: desktop shows a two-page spread, mobile shows one page per turn.
   const totalSpreads = Math.max(1, mobile ? pages.length : Math.ceil(pages.length / 2));
+  const empty = filtered.length === 0;
 
   useEffect(() => setTotalSpreads(totalSpreads), [totalSpreads, setTotalSpreads]);
 
@@ -87,7 +88,11 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     const exits = side === 'left' ? direction === 1 : direction === -1;
     if (reduced) {
       return {
-        initial: { opacity: 0 },
+        // Same enters/exits test as the curl branch. An unconditional
+        // `initial: { opacity: 0 }` makes popLayout write opacity:1 over the
+        // top of the streamed style during hydration, which React reports as a
+        // mismatch — and the first page of the book has nothing to enter from.
+        initial: enters ? { opacity: 0 } : false,
         animate: { opacity: 1 },
         exit: { opacity: 0 },
         transition: { duration: 0.18, ease: 'easeOut' as const },
@@ -122,50 +127,60 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
       aria-label="IIW flipbook"
     >
       <div
-        className="relative flex h-[76vh] min-h-[600px] gap-3"
+        className="relative flex h-[76vh] min-h-[560px] gap-3"
         style={{ perspective: '1600px', transformStyle: 'preserve-3d' }}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {left && (
-            <motion.div
-              key={`L-${spread}`}
-              className="h-full min-w-0 flex-1"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={elastic('left')}
-              onDragEnd={onDragEnd}
-              {...flip('left')}
-            >
-              <Page profiles={left} pageNumber={leftPageNumber} stagger={!settled} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {!mobile && (
+        {empty ? (
+          <div className="arch-card silk-overlay flex h-full min-w-0 flex-1 items-center justify-center">
+            <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
+              No profiles match your search
+            </p>
+          </div>
+        ) : (
           <>
-            <div className="w-px shrink-0 bg-[var(--gold)]/40" aria-hidden="true" />
-
             <AnimatePresence initial={false} mode="popLayout">
-              {right ? (
+              {left && (
                 <motion.div
-                  key={`R-${spread}`}
+                  key={`L-${spread}`}
                   className="h-full min-w-0 flex-1"
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={elastic('right')}
+                  dragElastic={elastic('left')}
                   onDragEnd={onDragEnd}
-                  {...flip('right')}
+                  {...flip('left')}
                 >
-                  <Page profiles={right} pageNumber={rightPageNumber} stagger={!settled} />
+                  <Page profiles={left} pageNumber={leftPageNumber} stagger={!settled} solo={mobile} />
                 </motion.div>
-              ) : (
-                <div className="arch-card silk-overlay flex h-full min-w-0 flex-1 items-center justify-center">
-                  <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
-                    {filtered.length ? 'End of the archive' : 'No profiles match your search'}
-                  </p>
-                </div>
               )}
             </AnimatePresence>
+
+            {!mobile && (
+              <>
+                <div className="w-px shrink-0 bg-[var(--gold)]/40" aria-hidden="true" />
+
+                <AnimatePresence initial={false} mode="popLayout">
+                  {right ? (
+                    <motion.div
+                      key={`R-${spread}`}
+                      className="h-full min-w-0 flex-1"
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={elastic('right')}
+                      onDragEnd={onDragEnd}
+                      {...flip('right')}
+                    >
+                      <Page profiles={right} pageNumber={rightPageNumber} stagger={!settled} />
+                    </motion.div>
+                  ) : (
+                    <div className="arch-card silk-overlay flex h-full min-w-0 flex-1 items-center justify-center">
+                      <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
+                        End of the archive
+                      </p>
+                    </div>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
           </>
         )}
       </div>

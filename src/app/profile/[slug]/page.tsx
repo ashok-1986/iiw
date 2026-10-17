@@ -72,7 +72,13 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
   return (
     <>
       <div className="mt-8 flex flex-col items-center text-center">
-        <PortraitArch imageId={p.imageId} name={p.name} size={132} />
+        <PortraitArch
+          imageId={p.imageId}
+          name={p.name}
+          sizeClass="size-[168px] sm:size-[212px]"
+          sizes="(max-width: 639px) 168px, 212px"
+          priority
+        />
         <h1 className="mt-6 font-(family-name:--font-display) text-[32px] font-semibold tracking-[-0.02em] text-[var(--text)]">
           {p.name}
         </h1>
@@ -117,7 +123,7 @@ export default function ProfilePage({ params }: { params: Promise<{ slug: string
       <Suspense
         fallback={
           <div className="mt-8 space-y-4" aria-busy="true">
-            <div className="mx-auto size-[132px] animate-pulse rounded-full bg-[var(--surface-3)]" />
+            <div className="mx-auto size-[168px] animate-pulse rounded-full bg-[var(--surface-3)] sm:size-[212px]" />
             <div className="mx-auto h-8 w-1/2 animate-pulse rounded-full bg-[var(--surface-3)]" />
             <div className="h-64 animate-pulse rounded-[24px] bg-[var(--surface-3)]" />
           </div>

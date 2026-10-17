@@ -29,7 +29,10 @@
   /* Motif tokens */
   --hairline-gold: 0.5px solid var(--gold);
   --portrait-ring-inner: 4px solid var(--cream);
-  --portrait-ring-outer: 1.5px solid var(--rose);
+  /* The outer ring is drawn as a spread shadow so it sits outside the inner
+     border without taking part of the image area. */
+  --portrait-ring-outer: 0 0 0 1.5px var(--rose);
+  --portrait-shadow: 0 10px 26px -10px rgb(45 27 45 / 0.42);
   --card-shadow: 0 12px 32px -12px rgb(45 27 45 / 0.2);
 
   /* Motion. Built-in eases are too weak for UI; these are the strong variants.

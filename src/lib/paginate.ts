@@ -1,6 +1,8 @@
 /**
  * Flipbook chunking — PRD: 2 profiles per physical page.
- * Desktop spread = 2 pages = 4 profiles; mobile page = 2 profiles.
+ * Desktop spread = 2 pages = 4 profiles. A phone shows one page per turn and
+ * chunks it down to 1 profile per page, because the portrait is the plate: two
+ * stacked plates on a 642px page leaves no readable biography column.
  * Generic over the row shape so the server (Nominee) and client (FlipProfile)
  * sides can both use it without leaking curator-only fields to the browser.
  */

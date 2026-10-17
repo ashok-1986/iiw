@@ -51,7 +51,12 @@ export function LotusMedallion({ size = 168 }: { size?: number }) {
         className="absolute inset-0 grid place-items-center text-[var(--rose)]"
         style={{
           opacity: mounted ? 0 : 1,
-          transition: reduced ? 'none' : 'opacity 500ms var(--ease-out-quint)',
+          // Constant, not derived from `reduced`: useReducedMotion() is null on
+          // the server and true on the client, so reading it during render
+          // hydrates a different style attribute than the one that was streamed.
+          // Under reduced motion the canvas never mounts, so `mounted` stays
+          // false and this transition has nothing to animate.
+          transition: 'opacity 500ms var(--ease-out-quint)',
         }}
       >
         <LotusMark size={Math.round(size * 0.64)} />
