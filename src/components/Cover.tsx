@@ -1,47 +1,61 @@
-import { LotusMark } from '@/components/LotusMark';
+import type { CSSProperties } from 'react';
+import { LotusMedallion } from '@/components/LotusMedallion';
 import { RangoliDivider } from '@/components/RangoliDivider';
 
 /**
- * Cover spread — full viewport, lotus, champagne-gold foil, "Enter Archive" CTA.
- * Zero client JS (PRD LCP rule): a plain anchor scrolls to the book, which Next
- * has already streamed below the fold.
+ * Cover spread — full viewport, lotus medallion, "Enter Archive" CTA.
+ *
+ * The heading stays server-rendered and un-animated because it is the LCP
+ * element; only the decorative surfaces below it rise in, staggered. The brand
+ * name carries the H1 rather than sitting above it as a label, and the gold
+ * emphasis is a solid ink rather than a gradient wash.
  */
 export function Cover() {
   return (
     <section className="relative flex min-h-[92vh] flex-col items-center justify-center px-6 text-center">
-      <div className="text-[var(--rose)]">
-        <LotusMark size={96} />
-      </div>
+      <LotusMedallion size={168} />
 
-      <p className="mt-8 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.32em] text-[var(--text-faint)]">
+      <h1 className="mt-9 max-w-4xl font-(family-name:--font-display) text-[42px] font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--text)] sm:text-[58px] lg:text-[76px]">
         Inspiring Indian Women
-      </p>
-
-      <h1 className="mt-4 max-w-3xl font-(family-name:--font-display) text-[44px] font-semibold leading-[1.08] tracking-[-0.02em] sm:text-[56px] lg:text-[68px]">
-        <span className="bg-gradient-to-r from-[#8a6a2f] via-[var(--gold)] to-[#8a6a2f] bg-clip-text text-transparent">
-          A Digital Heirloom
-        </span>
       </h1>
 
-      <p className="mt-6 max-w-xl font-(family-name:--font-accent) text-[22px] italic leading-[1.5] text-[var(--text-muted)]">
-        “Not a directory. A digital heirloom — where every page turn feels like
-        unfolding a silk saree.”
+      <p className="mt-5 max-w-xl font-(family-name:--font-accent) text-[21px] italic leading-[1.5] text-[var(--rose-deep)] sm:text-[24px]">
+        A digital heirloom — where every page turn feels like unfolding a silk
+        saree.
       </p>
 
-      <RangoliDivider className="my-9 w-56" />
-
-      <a
-        href="#archive"
-        className="group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-18px_rgb(45_27_45/0.8)] transition-transform hover:-translate-y-0.5"
+      <p className="rise-in mt-6 max-w-[58ch] font-(family-name:--font-body) text-[15px] leading-[1.75] text-[var(--text-muted)]"
+        style={{ '--rise-delay': '60ms' } as CSSProperties}
       >
-        Enter the Archive
-        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-          →
-        </span>
-      </a>
+        Every profile is published in the nominee&rsquo;s own words, with her
+        consent — set in type and bound as a volume worth keeping.
+      </p>
 
-      <p className="mt-10 font-(family-name:--font-ui) text-[11px] tracking-[0.14em] text-[var(--text-faint)]">
-        Use ← → keys, drag, or swipe to turn pages
+      <div className="rise-in" style={{ '--rise-delay': '160ms' } as CSSProperties}>
+        <RangoliDivider className="my-9 w-56" />
+      </div>
+
+      <div className="rise-in" style={{ '--rise-delay': '260ms' } as CSSProperties}>
+        <a
+          href="#archive"
+          className="press lift group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-18px_rgb(45_27_45/0.8)]"
+        >
+          Enter the Archive
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-300 ease-[var(--ease-out-quint)] group-hover:translate-x-1"
+          >
+            →
+          </span>
+        </a>
+      </div>
+
+      <p
+        className="rise-in mt-10 font-(family-name:--font-ui) text-[11px] tracking-[0.14em] text-[var(--text-faint)]"
+        style={{ '--rise-delay': '360ms' } as CSSProperties}
+      >
+        <span className="sm:hidden">Swipe to turn a page</span>
+        <span className="hidden sm:inline">Use ← → keys, drag, or swipe to turn pages</span>
       </p>
     </section>
   );

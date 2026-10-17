@@ -32,6 +32,10 @@ export function SearchPill({ categories }: { categories: string[] }) {
     };
   }, [text, category, setQuery, setCategory, reset, router, pathname]);
 
+  // Derived, not stateful: the debounce window is the only "loading" state here,
+  // and the pill's own hairline says so instead of a spinner.
+  const pending = text.trim() !== query.trim();
+
   const onCategory = (c: string) => {
     const nextCategory = category === c ? null : c;
     setCategory(nextCategory);
@@ -42,8 +46,20 @@ export function SearchPill({ categories }: { categories: string[] }) {
 
   return (
     <div className="flex w-full flex-col items-center gap-3">
-      <div className="flex w-full max-w-md items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-18px_rgb(45_27_45/0.5)]">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0 text-[var(--rose)]">
+      <div
+        className={
+          'lift flex w-full max-w-md items-center gap-2 rounded-full border bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-18px_rgb(45_27_45/0.5)] transition-colors ' +
+          (pending ? 'border-[var(--blush)]' : 'border-[var(--border)]')
+        }
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+          className="shrink-0 text-[var(--rose-deep)]"
+        >
           <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
           <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
@@ -60,9 +76,16 @@ export function SearchPill({ categories }: { categories: string[] }) {
             type="button"
             onClick={() => setText('')}
             aria-label="Clear search"
-            className="font-(family-name:--font-ui) text-[16px] leading-none text-[var(--text-faint)] hover:text-[var(--text)]"
+            className="press -mr-1 grid size-6 shrink-0 place-items-center rounded-full text-[var(--text-faint)] hover:text-[var(--text)]"
           >
-            ×
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M6 6L18 18M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         )}
       </div>
@@ -78,9 +101,9 @@ export function SearchPill({ categories }: { categories: string[] }) {
                 onClick={() => onCategory(c)}
                 aria-pressed={active}
                 className={
-                  'rounded-full border px-3 py-1 font-(family-name:--font-ui) text-[11px] transition-colors ' +
+                  'press rounded-full border px-3 py-1 font-(family-name:--font-ui) text-[11px] ' +
                   (active
-                    ? 'border-[var(--rose)] bg-[var(--rose)] text-white'
+                    ? 'border-[var(--plum)] bg-[var(--plum)] text-[var(--cream)]'
                     : 'border-[var(--border)] bg-[var(--surface-3)] text-[var(--text-muted)] hover:border-[var(--blush)]')
                 }
               >

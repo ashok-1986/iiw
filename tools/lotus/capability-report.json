@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "profile": "qoder-glb-safe",
+  "status": "complete",
+  "capabilities": [
+    {
+      "id": "artifact.glb.create",
+      "status": "implemented",
+      "evidence": [
+        "revision:1"
+      ]
+    },
+    {
+      "id": "transaction.dry-run",
+      "status": "implemented",
+      "evidence": [
+        "lifecycle:createModelBundle"
+      ]
+    },
+    {
+      "id": "transaction.expected-state",
+      "status": "implemented",
+      "evidence": [
+        "state:sha256:a4da581293afae86cdabc7e468d4e0b39d9eb889357fe071309a6a7ca1780814"
+      ]
+    },
+    {
+      "id": "project.sidecar",
+      "status": "implemented",
+      "evidence": [
+        "revision:1"
+      ]
+    },
+    {
+      "id": "validation.khronos",
+      "status": "implemented",
+      "evidence": [
+        "profile:qoder-glb-safe"
+      ]
+    },
+    {
+      "id": "validation.spatial-envelope",
+      "status": "implemented",
+      "evidence": [
+        "preflight:world-bounds"
+      ]
+    },
+    {
+      "id": "geometry.primitive.cylinder",
+      "status": "implemented",
+      "evidence": [
+        "feature:lotus.plate.feature"
+      ]
+    },
+    {
+      "id": "geometry.axis",
+      "status": "implemented",
+      "evidence": [
+        "feature:lotus.plate.feature:y",
+        "feature:lotus.rim.feature:y",
+        "feature:lotus.crown.feature:y"
+      ]
+    },
+    {
+      "id": "node.hierarchy.create",
+      "status": "implemented",
+      "evidence": [
+        "occurrence:lotus.plate",
+        "occurrence:lotus.rim",
+        "occurrence:lotus.petalOuter",
+        "occurrence:lotus.petalMid",
+        "occurrence:lotus.petalInner",
+        "occurrence:lotus.crown",
+        "occurrence:lotus.pod"
+      ]
+    },
+    {
+      "id": "geometry.primitive.hollow-cylinder",
+      "status": "implemented",
+      "evidence": [
+        "feature:lotus.rim.feature",
+        "feature:lotus.crown.feature"
+      ]
+    },
+    {
+      "id": "geometry.primitive.ellipsoid",
+      "status": "implemented",
+      "evidence": [
+        "feature:lotus.petalOuter.feature",
+        "feature:lotus.petalMid.feature",
+        "feature:lotus.petalInner.feature"
+      ]
+    },
+    {
+      "id": "pattern.radial",
+      "status": "implemented",
+      "evidence": [
+        "pattern:lotus.ringOuter",
+        "pattern:lotus.ringMid",
+        "pattern:lotus.ringInner"
+      ]
+    },
+    {
+      "id": "geometry.primitive.sphere",
+      "status": "implemented",
+      "evidence": [
+        "feature:lotus.pod.feature"
+      ]
+    },
+    {
+      "id": "geometry.edit",
+      "status": "unsupported",
+      "evidence": [
+        "profile:qoder-glb-safe"
+      ]
+    },
+    {
+      "id": "animation.edit",
+      "status": "unsupported",
+      "evidence": [
+        "profile:qoder-glb-safe"
+      ]
+    },
+    {
+      "id": "texture.import",
+      "status": "unsupported",
+      "evidence": [
+        "profile:qoder-glb-safe"
+      ]
+    }
+  ]
+}

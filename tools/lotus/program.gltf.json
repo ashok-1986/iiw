@@ -1,0 +1,475 @@
+{
+  "schema": "modeling.program",
+  "schemaVersion": 1,
+  "kind": "model.create",
+  "intent": "lotus medallion accent for the IIW flipbook cover",
+  "units": {
+    "length": "m",
+    "angle": "rad",
+    "time": "s"
+  },
+  "coordinateSystem": {
+    "handedness": "right",
+    "upAxis": "y",
+    "forwardAxis": "z"
+  },
+  "spatialEnvelope": {
+    "min": [
+      -0.46,
+      -0.03,
+      -0.46
+    ],
+    "max": [
+      0.46,
+      0.141,
+      0.46
+    ],
+    "tolerance": 0.02
+  },
+  "requires": [
+    "modeling.feature.axis",
+    "modeling.feature.cylinder",
+    "modeling.feature.ellipsoid",
+    "modeling.feature.hollow-cylinder",
+    "modeling.feature.sphere",
+    "modeling.pattern.radial",
+    "modeling.scene",
+    "modeling.spatial-envelope"
+  ],
+  "parameters": [],
+  "operations": [
+    {
+      "op": "appearance.define",
+      "opKey": "lotus.cream",
+      "key": "lotus.cream",
+      "baseColor": "#F6EDE6",
+      "metallic": 0.02,
+      "roughness": 0.72,
+      "emissive": "#000000"
+    },
+    {
+      "op": "appearance.define",
+      "opKey": "lotus.blush",
+      "key": "lotus.blush",
+      "baseColor": "#D4A5A5",
+      "metallic": 0.05,
+      "roughness": 0.55,
+      "emissive": "#000000"
+    },
+    {
+      "op": "appearance.define",
+      "opKey": "lotus.rose",
+      "key": "lotus.rose",
+      "baseColor": "#B76E79",
+      "metallic": 0.08,
+      "roughness": 0.48,
+      "emissive": "#000000"
+    },
+    {
+      "op": "appearance.define",
+      "opKey": "lotus.gold",
+      "key": "lotus.gold",
+      "baseColor": "#D4AF7A",
+      "metallic": 0.82,
+      "roughness": 0.28,
+      "emissive": "#000000"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.medallion",
+      "key": "lotus.medallion",
+      "name": "LotusMedallion",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationRad": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.plate.feature",
+      "key": "lotus.plate.feature",
+      "feature": {
+        "type": "primitive.cylinder",
+        "radius": 0.42,
+        "height": 0.03,
+        "radialSegments": 48,
+        "axis": "y"
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.plate.component",
+      "key": "lotus.plate.component",
+      "feature": "lotus.plate.feature",
+      "appearance": "lotus.cream"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.plate",
+      "key": "lotus.plate",
+      "name": "LotusPlate",
+      "parent": "lotus.medallion",
+      "component": "lotus.plate.component",
+      "transform": {
+        "translation": [
+          0,
+          -0.015,
+          0
+        ],
+        "rotationRad": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.rim.feature",
+      "key": "lotus.rim.feature",
+      "feature": {
+        "type": "primitive.hollow-cylinder",
+        "outerRadius": 0.46,
+        "innerRadius": 0.415,
+        "height": 0.05,
+        "radialSegments": 48,
+        "axis": "y"
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.rim.component",
+      "key": "lotus.rim.component",
+      "feature": "lotus.rim.feature",
+      "appearance": "lotus.gold"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.rim",
+      "key": "lotus.rim",
+      "name": "LotusRim",
+      "parent": "lotus.medallion",
+      "component": "lotus.rim.component",
+      "transform": {
+        "translation": [
+          0,
+          0.005,
+          0
+        ],
+        "rotationRad": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.petalOuter.feature",
+      "key": "lotus.petalOuter.feature",
+      "feature": {
+        "type": "primitive.ellipsoid",
+        "radii": [
+          0.078,
+          0.022,
+          0.185
+        ],
+        "widthSegments": 20,
+        "heightSegments": 10
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.petalOuter.component",
+      "key": "lotus.petalOuter.component",
+      "feature": "lotus.petalOuter.feature",
+      "appearance": "lotus.blush"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.petalOuter",
+      "key": "lotus.petalOuter",
+      "name": "LotusPetalOuter",
+      "parent": "lotus.medallion",
+      "component": "lotus.petalOuter.component",
+      "transform": {
+        "translation": [
+          0,
+          0.035,
+          0.275
+        ],
+        "rotationRad": [
+          -0.3,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "pattern.define",
+      "opKey": "lotus.ringOuter",
+      "key": "lotus.ringOuter",
+      "source": "lotus.petalOuter",
+      "pattern": {
+        "type": "radial",
+        "count": 12,
+        "axis": "y",
+        "center": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.petalMid.feature",
+      "key": "lotus.petalMid.feature",
+      "feature": {
+        "type": "primitive.ellipsoid",
+        "radii": [
+          0.062,
+          0.02,
+          0.14
+        ],
+        "widthSegments": 20,
+        "heightSegments": 10
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.petalMid.component",
+      "key": "lotus.petalMid.component",
+      "feature": "lotus.petalMid.feature",
+      "appearance": "lotus.rose"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.petalMid",
+      "key": "lotus.petalMid",
+      "name": "LotusPetalMid",
+      "parent": "lotus.medallion",
+      "component": "lotus.petalMid.component",
+      "transform": {
+        "translation": [
+          0,
+          0.055,
+          0.17
+        ],
+        "rotationRad": [
+          -0.58,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "pattern.define",
+      "opKey": "lotus.ringMid",
+      "key": "lotus.ringMid",
+      "source": "lotus.petalMid",
+      "pattern": {
+        "type": "radial",
+        "count": 8,
+        "axis": "y",
+        "center": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.petalInner.feature",
+      "key": "lotus.petalInner.feature",
+      "feature": {
+        "type": "primitive.ellipsoid",
+        "radii": [
+          0.044,
+          0.016,
+          0.092
+        ],
+        "widthSegments": 16,
+        "heightSegments": 8
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.petalInner.component",
+      "key": "lotus.petalInner.component",
+      "feature": "lotus.petalInner.feature",
+      "appearance": "lotus.gold"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.petalInner",
+      "key": "lotus.petalInner",
+      "name": "LotusPetalInner",
+      "parent": "lotus.medallion",
+      "component": "lotus.petalInner.component",
+      "transform": {
+        "translation": [
+          0,
+          0.07,
+          0.095
+        ],
+        "rotationRad": [
+          -0.88,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "pattern.define",
+      "opKey": "lotus.ringInner",
+      "key": "lotus.ringInner",
+      "source": "lotus.petalInner",
+      "pattern": {
+        "type": "radial",
+        "count": 6,
+        "axis": "y",
+        "center": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.crown.feature",
+      "key": "lotus.crown.feature",
+      "feature": {
+        "type": "primitive.hollow-cylinder",
+        "outerRadius": 0.072,
+        "innerRadius": 0.05,
+        "height": 0.032,
+        "radialSegments": 24,
+        "axis": "y"
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.crown.component",
+      "key": "lotus.crown.component",
+      "feature": "lotus.crown.feature",
+      "appearance": "lotus.rose"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.crown",
+      "key": "lotus.crown",
+      "name": "LotusCrown",
+      "parent": "lotus.medallion",
+      "component": "lotus.crown.component",
+      "transform": {
+        "translation": [
+          0,
+          0.055,
+          0
+        ],
+        "rotationRad": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "op": "feature.define",
+      "opKey": "lotus.pod.feature",
+      "key": "lotus.pod.feature",
+      "feature": {
+        "type": "primitive.sphere",
+        "radius": 0.056,
+        "widthSegments": 20,
+        "heightSegments": 12
+      }
+    },
+    {
+      "op": "component.define",
+      "opKey": "lotus.pod.component",
+      "key": "lotus.pod.component",
+      "feature": "lotus.pod.feature",
+      "appearance": "lotus.gold"
+    },
+    {
+      "op": "occurrence.define",
+      "opKey": "lotus.pod",
+      "key": "lotus.pod",
+      "name": "LotusPod",
+      "parent": "lotus.medallion",
+      "component": "lotus.pod.component",
+      "transform": {
+        "translation": [
+          0,
+          0.068,
+          0
+        ],
+        "rotationRad": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  ],
+  "budget": {
+    "maxBytes": 1500000,
+    "maxNodes": 80,
+    "maxVertices": 14000,
+    "maxTriangles": 16000,
+    "maxOperations": 40,
+    "maxGeneratedInstances": 40
+  }
+}

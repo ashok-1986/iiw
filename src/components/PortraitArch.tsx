@@ -26,7 +26,7 @@ export function PortraitArch({
   if (!imageId) {
     return (
       <div
-        className="flex shrink-0 flex-col items-center justify-center rounded-full bg-[var(--surface-3)]"
+        className="portrait flex shrink-0 flex-col items-center justify-center rounded-full bg-[var(--surface-3)]"
         style={ring}
         role="img"
         aria-label={`${name} — lotus fallback`}
@@ -43,7 +43,10 @@ export function PortraitArch({
   }
 
   return (
-    <div className="relative shrink-0 overflow-hidden rounded-full bg-[var(--surface-3)]" style={ring}>
+    <div
+      className="portrait relative shrink-0 overflow-hidden rounded-full bg-[var(--surface-3)]"
+      style={ring}
+    >
       <Image
         src={`/api/image/${imageId}`}
         alt={name}

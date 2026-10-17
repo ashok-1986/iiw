@@ -6,11 +6,19 @@ import { ProfileCard } from './ProfileCard';
  * Bios are long (median ~935 chars) and are shown in full per the curation decision,
  * so the card body scrolls rather than clipping text.
  */
-export function Page({ profiles, pageNumber }: { profiles: FlipProfile[]; pageNumber: number }) {
+export function Page({
+  profiles,
+  pageNumber,
+  stagger = false,
+}: {
+  profiles: FlipProfile[];
+  pageNumber: number;
+  stagger?: boolean;
+}) {
   return (
     <div className="arch-card silk-overlay relative flex h-full flex-1 flex-col gap-4 overflow-hidden p-5">
-      {profiles.map((p) => (
-        <ProfileCard key={p.id} nominee={p} />
+      {profiles.map((p, i) => (
+        <ProfileCard key={p.id} nominee={p} delay={stagger ? 80 + i * 80 : 0} />
       ))}
       {profiles.length === 1 && <div className="flex-1" aria-hidden="true" />}
       <span className="absolute bottom-3 right-5 font-(family-name:--font-ui) text-[10px] tracking-[0.14em] text-[var(--text-faint)]">

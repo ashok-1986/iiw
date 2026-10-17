@@ -1,20 +1,34 @@
 'use client';
 
-import { AnimatePresence, motion, type PanInfo } from 'framer-motion';
-import { useEffect, useMemo } from 'react';
+import { AnimatePresence, motion, useReducedMotion, type PanInfo } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Page } from './Page';
 import { ProgressDots } from './ProgressDots';
 import { chunkIntoPages } from '@/lib/paginate';
 import { useIsMobile } from '@/lib/use-is-mobile';
 import { useFlipbook, type FlipProfile } from '@/lib/flipbook-store';
 
-/** PRD motion spec: curl 420ms ease-out, entrance stagger 80ms, perspective 1600px. */
-const CURL_MS = 420;
+/**
+ * PRD motion spec: curl 420ms. Keyboard and dot jumps reuse the same curve at
+ * 240ms — the motion keeps its meaning, only its length — and an exit is always
+ * shorter than an entrance so the incoming page never waits for the old one.
+ */
+const EASE_CURL: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
+const CURL_S = 0.42;
+const CURL_SNAP_S = 0.24;
+const EXIT_S = 0.26;
 const DRAG_THRESHOLD_PX = 80;
+/** A flick is enough on its own; distance should never be the only signal. */
+const FLICK_VELOCITY = 0.12;
+
+type Side = 'left' | 'right';
 
 export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
   const { spread, direction, next, prev, go, setTotalSpreads, query, category } = useFlipbook();
   const mobile = useIsMobile();
+  const reduced = useReducedMotion();
+  const [snappy, setSnappy] = useState(false);
+  const [settled, setSettled] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -35,36 +49,80 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
 
   useEffect(() => setTotalSpreads(totalSpreads), [totalSpreads, setTotalSpreads]);
 
+  const turn = useCallback(
+    (fn: () => void, quick: boolean) => {
+      setSnappy(quick);
+      setSettled(true);
+      fn();
+    },
+    [],
+  );
+
   // Keyboard flip (WCAG requirement in the PRD)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') next();
-      else if (e.key === 'ArrowLeft') prev();
-      else if (e.key === 'Home') go(0);
-      else if (e.key === 'End') go(totalSpreads - 1);
+      if (e.key === 'ArrowRight') turn(next, true);
+      else if (e.key === 'ArrowLeft') turn(prev, true);
+      else if (e.key === 'Home') turn(() => go(0), true);
+      else if (e.key === 'End') turn(() => go(totalSpreads - 1), true);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [next, prev, go, totalSpreads]);
+  }, [next, prev, go, totalSpreads, turn]);
 
   const onDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (info.offset.x <= -DRAG_THRESHOLD_PX) next();
-    else if (info.offset.x >= DRAG_THRESHOLD_PX) prev();
+    const flicked = Math.abs(info.velocity.x) > FLICK_VELOCITY;
+    const forward = info.offset.x <= -DRAG_THRESHOLD_PX || (flicked && info.velocity.x < -1);
+    const backward = info.offset.x >= DRAG_THRESHOLD_PX || (flicked && info.velocity.x > 1);
+    if (forward) turn(next, false);
+    else if (backward) turn(prev, false);
+  };
+
+  const curl = reduced ? 0 : snappy ? CURL_SNAP_S : CURL_S;
+
+  const flip = (side: Side) => {
+    const origin = side === 'left' ? 'right center' : 'left center';
+    const closed = side === 'left' ? { rotateY: -180 } : { rotateY: 180 };
+    const enters = side === 'left' ? direction === -1 : direction === 1;
+    const exits = side === 'left' ? direction === 1 : direction === -1;
+    if (reduced) {
+      return {
+        initial: { opacity: 0 },
+        animate: { opacity: 1 },
+        exit: { opacity: 0 },
+        transition: { duration: 0.18, ease: 'easeOut' as const },
+      };
+    }
+    return {
+      initial: enters ? { ...closed, opacity: 0 } : false,
+      animate: { rotateY: 0, opacity: 1 },
+      exit: exits
+        ? { ...closed, opacity: 0, transition: { duration: EXIT_S, ease: EASE_CURL } }
+        : { opacity: 0, transition: { duration: 0.16, ease: 'easeOut' as const } },
+      transition: { duration: curl, ease: curl > 0.3 ? EASE_CURL : ([0.23, 1, 0.32, 1] as [number, number, number, number]) },
+      style: { transformOrigin: origin },
+    };
   };
 
   const left = mobile ? pages[spread] : pages[spread * 2];
   const right = mobile ? undefined : pages[spread * 2 + 1];
   const leftPageNumber = mobile ? spread + 1 : spread * 2 + 1;
   const rightPageNumber = spread * 2 + 2;
+  const atStart = spread === 0;
+  const atEnd = spread >= totalSpreads - 1;
+  // Boundary friction: dragging away from an end of the book resists, and
+  // resists harder the further it goes, instead of hitting an invisible wall.
+  const elastic = (side: Side) => (side === 'left' ? (atStart ? 0.02 : 0.09) : atEnd ? 0.02 : 0.09);
 
   return (
     <section
       className="mx-auto w-full max-w-[1180px] px-4"
-      aria-roledescription="carousel"
+      role="region"
+      aria-roledescription="paginated book"
       aria-label="IIW flipbook"
     >
       <div
-        className="relative flex h-[68vh] min-h-[520px] gap-3"
+        className="relative flex h-[76vh] min-h-[600px] gap-3"
         style={{ perspective: '1600px', transformStyle: 'preserve-3d' }}
       >
         <AnimatePresence initial={false} mode="popLayout">
@@ -74,22 +132,11 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
               className="h-full min-w-0 flex-1"
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.08}
+              dragElastic={elastic('left')}
               onDragEnd={onDragEnd}
-              initial={
-                direction === -1
-                  ? { rotateY: -180, transformOrigin: 'right center', opacity: 0 }
-                  : false
-              }
-              animate={{ rotateY: 0, opacity: 1, transformOrigin: 'right center' }}
-              exit={
-                direction === 1
-                  ? { rotateY: -180, transformOrigin: 'right center', opacity: 0 }
-                  : { opacity: 0 }
-              }
-              transition={{ duration: CURL_MS / 1000, ease: [0.22, 0.61, 0.36, 1] }}
+              {...flip('left')}
             >
-              <Page profiles={left} pageNumber={leftPageNumber} />
+              <Page profiles={left} pageNumber={leftPageNumber} stagger={!settled} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -105,26 +152,15 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
                   className="h-full min-w-0 flex-1"
                   drag="x"
                   dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.08}
+                  dragElastic={elastic('right')}
                   onDragEnd={onDragEnd}
-                  initial={
-                    direction === 1
-                      ? { rotateY: -180, transformOrigin: 'left center', opacity: 0 }
-                      : false
-                  }
-                  animate={{ rotateY: 0, opacity: 1, transformOrigin: 'left center' }}
-                  exit={
-                    direction === -1
-                      ? { rotateY: -180, transformOrigin: 'left center', opacity: 0 }
-                      : { opacity: 0 }
-                  }
-                  transition={{ duration: CURL_MS / 1000, ease: [0.22, 0.61, 0.36, 1] }}
+                  {...flip('right')}
                 >
-                  <Page profiles={right} pageNumber={rightPageNumber} />
+                  <Page profiles={right} pageNumber={rightPageNumber} stagger={!settled} />
                 </motion.div>
               ) : (
                 <div className="arch-card silk-overlay flex h-full min-w-0 flex-1 items-center justify-center">
-                  <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-faint)]">
+                  <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
                     {filtered.length ? 'End of the archive' : 'No profiles match your search'}
                   </p>
                 </div>
@@ -138,25 +174,28 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={prev}
-            disabled={spread === 0}
-            className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] text-[var(--text)] transition-colors hover:bg-[var(--surface-3)] disabled:opacity-40"
+            onClick={() => turn(prev, true)}
+            disabled={atStart}
+            className="press rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] text-[var(--text)] hover:bg-[var(--surface-3)] disabled:opacity-40"
           >
             ← Previous
           </button>
-          <span className="font-(family-name:--font-ui) text-[12px] tabular-nums text-[var(--text-faint)]">
+          <span
+            aria-live="polite"
+            className="font-(family-name:--font-ui) text-[12px] tabular-nums text-[var(--text-faint)]"
+          >
             Spread {spread + 1} of {totalSpreads} · {filtered.length} profiles
           </span>
           <button
             type="button"
-            onClick={next}
-            disabled={spread >= totalSpreads - 1}
-            className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] text-[var(--text)] transition-colors hover:bg-[var(--surface-3)] disabled:opacity-40"
+            onClick={() => turn(next, true)}
+            disabled={atEnd}
+            className="press rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] text-[var(--text)] hover:bg-[var(--surface-3)] disabled:opacity-40"
           >
             Next →
           </button>
         </div>
-        <ProgressDots total={totalSpreads} current={spread} onJump={go} />
+        <ProgressDots total={totalSpreads} current={spread} onJump={(i) => turn(() => go(i), true)} />
       </div>
     </section>
   );

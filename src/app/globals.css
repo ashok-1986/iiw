@@ -19,7 +19,10 @@
   --border-strong: #d9beb0;
   --text: #2d1b2d;
   --text-muted: #6b4a5a;
-  --text-faint: #a08391;
+  /* --text-faint carries placeholder + 11px small caps, so it is held at ≥5:1
+     on paper rather than the 3.4:1 a decorative gray would allow. */
+  --text-faint: #7d5f6b;
+  --rose-deep: #8e4a56; /* rose for *text* on light ground; --rose stays decor */
   --code-bg: #2d1b2d;
   --code-text: #fffaf5;
 
@@ -29,9 +32,15 @@
   --portrait-ring-outer: 1.5px solid var(--rose);
   --card-shadow: 0 12px 32px -12px rgb(45 27 45 / 0.2);
 
-  /* Motion (PRD: curl 420ms, stagger 80ms, no parallax) */
-  --dur-curl: 420ms;
+  /* Motion. Built-in eases are too weak for UI; these are the strong variants.
+     Curl is the one authored long-form moment — everything else stays ≤260ms. */
   --ease-curl: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-curl: 420ms;
+  --dur-curl-out: 260ms;
+  --dur-ui: 200ms;
+  --dur-press: 140ms;
 }
 
 @theme inline {
@@ -102,10 +111,13 @@ body {
 }
 
 /* Scrollable biography column: hairline gold thumb instead of the native
-   system scrollbar, which reads as chrome against the paper texture. */
+   system scrollbar, which reads as chrome against the paper texture.
+   scrollbar-width/color must stay `auto` here — any other value makes Chrome
+   render its own native scrollbar (arrow buttons and all) and ignore the
+   ::-webkit-scrollbar rules below. */
 .bio-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: var(--blush) transparent;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
 }
 .bio-scroll::-webkit-scrollbar {
   width: 4px;
@@ -116,4 +128,143 @@ body {
 .bio-scroll::-webkit-scrollbar-thumb {
   background: var(--blush);
   border-radius: 9999px;
+}
+/* Chrome keeps rendering the 4px track's arrow buttons; they read as stray
+   glyphs against the paper. */
+.bio-scroll::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Bottom hairline fade on a scrolling biography: the text is complete and the
+   column is capped, so the fade is the scroll affordance. */
+.bio-fade {
+  position: relative;
+  min-height: 0;
+}
+.bio-fade::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 30px;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--surface-2), rgb(249 239 231 / 0));
+}
+
+/* ============================================================
+   Browser surfaces — selection, caret, scrollbar, focus, underlines
+   ship with defaults that belong to no design system. Themed here so
+   the parts nobody drew still carry the archival world.
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  caret-color: var(--rose-deep);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden; /* flipbook + entrance transforms must never cause sideways scroll */
+}
+::selection {
+  background: var(--blush);
+  color: var(--plum);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blush) transparent;
+}
+a[href] {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* ============================================================
+   Motion primitives. Every pressable gets .press; hover-only effects
+   are gated behind a fine pointer so touch does not stick.
+   ============================================================ */
+.press {
+  transition:
+    transform var(--dur-press) var(--ease-out-quint),
+    background-color var(--dur-ui) ease,
+    border-color var(--dur-ui) ease,
+    color var(--dur-ui) ease;
+}
+.press:active {
+  transform: scale(0.97);
+}
+.lift {
+  transition:
+    transform var(--dur-ui) var(--ease-out-quint),
+    box-shadow var(--dur-ui) var(--ease-out-quint);
+}
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px -18px rgb(45 27 45 / 0.38);
+  }
+}
+
+/* Portrait physics lives inside the card's overflow-hidden ring. The card has
+   no surface of its own, so its hover drives the portrait rather than lifting a
+   background-less box. */
+.portrait img {
+  transition: transform 700ms var(--ease-out-quint);
+}
+@media (hover: hover) and (pointer: fine) {
+  .hoverable:hover .portrait img {
+    transform: scale(1.06);
+  }
+}
+
+/* One-shot entrances. Kept on decorative surfaces only — the hero H1 is the
+   LCP element and never animates opacity. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in 620ms var(--ease-out-quint) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* The authored moment: the 3D medallion blooms up from the paper on mount. */
+@keyframes bloom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9) rotateX(24deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.bloom-in {
+  transform-origin: center;
+  animation: bloom-in 1000ms var(--ease-out-quint) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise-in,
+  .bloom-in {
+    animation: none;
+  }
+  .press,
+  .lift,
+  .portrait img {
+    transition: none;
+  }
+  .press:active,
+  .lift:hover,
+  .hoverable:hover .portrait img {
+    transform: none;
+  }
 }

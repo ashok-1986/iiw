@@ -14,9 +14,10 @@ export function ProgressDots({
   current: number;
   onJump: (i: number) => void;
 }) {
-  if (total > 60) {
+  // Past a couple of spreads the dots stop being a map and become noise.
+  if (total > 24) {
     return (
-      <p className="font-(family-name:--font-ui) text-[11px] tracking-[0.12em] text-[var(--text-faint)]">
+      <p className="font-(family-name:--font-ui) text-[11px] tabular-nums tracking-[0.12em] text-[var(--text-faint)]">
         {current + 1} / {total}
       </p>
     );

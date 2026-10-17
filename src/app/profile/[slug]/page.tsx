@@ -53,7 +53,7 @@ function Shell({ children }: { children: React.ReactNode }) {
       <div className="mx-auto max-w-[720px] px-4 py-16">
         <Link
           href="/#archive"
-          className="font-(family-name:--font-ui) text-[12px] uppercase tracking-[0.12em] text-[var(--text-faint)] hover:text-[var(--rose)]"
+          className="font-(family-name:--font-ui) text-[12px] uppercase tracking-[0.12em] text-[var(--text-faint)] hover:text-[var(--rose-deep)]"
         >
           ← Back to the archive
         </Link>
@@ -77,7 +77,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
           {p.name}
         </h1>
         {p.category && (
-          <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.14em] text-[var(--rose)]">
+          <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.14em] text-[var(--rose-deep)]">
             {p.category}
           </p>
         )}

@@ -15,13 +15,13 @@ export function SiteFooter() {
         <nav className="flex items-center gap-6">
           <Link
             href="/"
-            className="font-(family-name:--font-ui) text-[12px] text-[var(--text-muted)] hover:text-[var(--rose)]"
+            className="font-(family-name:--font-ui) text-[12px] text-[var(--text-muted)] hover:text-[var(--rose-deep)]"
           >
             The archive
           </Link>
           <Link
             href="/about"
-            className="font-(family-name:--font-ui) text-[12px] text-[var(--text-muted)] hover:text-[var(--rose)]"
+            className="font-(family-name:--font-ui) text-[12px] text-[var(--text-muted)] hover:text-[var(--rose-deep)]"
           >
             About &amp; methodology
           </Link>

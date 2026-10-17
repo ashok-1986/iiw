@@ -44,3 +44,6 @@ next-env.d.ts
 
 # local data cache (last-good nominees JSON)
 .cache/
+
+# lotus medallion build output — the shipped bytes live in public/models/
+tools/lotus/artifact.glb

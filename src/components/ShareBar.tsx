@@ -34,10 +34,13 @@ export function ShareBar({ name, slug }: { name: string; slug: string }) {
 
   return (
     <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? 'Link copied to clipboard' : ''}
+      </span>
       <button
         type="button"
         onClick={copy}
-        className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] tracking-[0.08em] uppercase text-[var(--text)] transition-colors hover:bg-[var(--surface-3)]"
+        className="press rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-4 py-2 font-(family-name:--font-ui) text-[12px] tracking-[0.08em] uppercase text-[var(--text)] hover:bg-[var(--surface-3)]"
       >
         {copied ? 'Link copied' : 'Copy link'}
       </button>
@@ -48,7 +51,7 @@ export function ShareBar({ name, slug }: { name: string; slug: string }) {
           href={t.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full border border-[var(--rose)]/30 px-4 py-2 font-(family-name:--font-ui) text-[12px] tracking-[0.08em] uppercase text-[var(--rose)] transition-colors hover:bg-[var(--rose)]/10"
+          className="press rounded-full border border-[var(--rose)]/30 px-4 py-2 font-(family-name:--font-ui) text-[12px] tracking-[0.08em] uppercase text-[var(--rose-deep)] hover:bg-[var(--rose)]/10"
         >
           {t.label}
         </a>
