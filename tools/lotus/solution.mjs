@@ -14,17 +14,19 @@ const { createModelBundle, modelCreate } = await import(runtimeSpecifier);
 const source = defineModel();
 
 // Lotus medallion for the IIW flipbook cover — three interleaved petal rings
-// (blush / rose / gold) over a cream base plate with a gold rim and centre pod.
+// (Menthe / Nectarine / Pêche) over a cream base plate with a Lagune rim and
+// Pêche centre pod. Appearance keys keep their legacy names (blush / rose / gold).
 // Units are meters in the create frame (+Y up); the medallion lies flat in XZ
 // so the viewer can tip it toward the camera. Petals are flat ellipsoids set
 // along +Z and rotated about X to lift their tips, then repeated with radial
 // patterns so the ring symmetry is design intent, not scattered transforms.
 function defineModel() {
   return modelCreate('lotus medallion accent for the IIW flipbook cover')
-    .appearance('lotus.cream', { baseColor: '#F6EDE6', metallic: 0.02, roughness: 0.72 })
-    .appearance('lotus.blush', { baseColor: '#D4A5A5', metallic: 0.05, roughness: 0.55 })
-    .appearance('lotus.rose', { baseColor: '#B76E79', metallic: 0.08, roughness: 0.48 })
-    .appearance('lotus.gold', { baseColor: '#D4AF7A', metallic: 0.82, roughness: 0.28 })
+    .appearance('lotus.cream', { baseColor: '#FBF0E6', metallic: 0.02, roughness: 0.72 })
+    .appearance('lotus.blush', { baseColor: '#96C7B3', metallic: 0.05, roughness: 0.55 }) // Menthe
+    .appearance('lotus.rose', { baseColor: '#D7897F', metallic: 0.08, roughness: 0.48 }) // Nectarine
+    .appearance('lotus.gold', { baseColor: '#F9B95C', metallic: 0.82, roughness: 0.28 }) // Pêche
+    .appearance('lotus.lagune', { baseColor: '#6398A9', metallic: 0.45, roughness: 0.35 }) // Lagune
 
     // Semantic root
     .occurrence('lotus.medallion', { name: 'LotusMedallion' })
@@ -40,7 +42,7 @@ function defineModel() {
     .part('lotus.rim', {
       name: 'LotusRim',
       parent: 'lotus.medallion',
-      appearance: 'lotus.gold',
+      appearance: 'lotus.lagune',
       geometry: { type: 'primitive.hollow-cylinder', outerRadius: 0.46, innerRadius: 0.415, height: 0.05, radialSegments: 48, axis: 'y' },
       translation: [0, 0.005, 0],
     })

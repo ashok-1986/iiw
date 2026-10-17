@@ -42,7 +42,7 @@
       "op": "appearance.define",
       "opKey": "lotus.cream",
       "key": "lotus.cream",
-      "baseColor": "#F6EDE6",
+      "baseColor": "#FBF0E6",
       "metallic": 0.02,
       "roughness": 0.72,
       "emissive": "#000000"
@@ -51,7 +51,7 @@
       "op": "appearance.define",
       "opKey": "lotus.blush",
       "key": "lotus.blush",
-      "baseColor": "#D4A5A5",
+      "baseColor": "#96C7B3",
       "metallic": 0.05,
       "roughness": 0.55,
       "emissive": "#000000"
@@ -60,7 +60,7 @@
       "op": "appearance.define",
       "opKey": "lotus.rose",
       "key": "lotus.rose",
-      "baseColor": "#B76E79",
+      "baseColor": "#D7897F",
       "metallic": 0.08,
       "roughness": 0.48,
       "emissive": "#000000"
@@ -69,9 +69,18 @@
       "op": "appearance.define",
       "opKey": "lotus.gold",
       "key": "lotus.gold",
-      "baseColor": "#D4AF7A",
+      "baseColor": "#F9B95C",
       "metallic": 0.82,
       "roughness": 0.28,
+      "emissive": "#000000"
+    },
+    {
+      "op": "appearance.define",
+      "opKey": "lotus.lagune",
+      "key": "lotus.lagune",
+      "baseColor": "#6398A9",
+      "metallic": 0.45,
+      "roughness": 0.35,
       "emissive": "#000000"
     },
     {
@@ -159,7 +168,7 @@
       "opKey": "lotus.rim.component",
       "key": "lotus.rim.component",
       "feature": "lotus.rim.feature",
-      "appearance": "lotus.gold"
+      "appearance": "lotus.lagune"
     },
     {
       "op": "occurrence.define",

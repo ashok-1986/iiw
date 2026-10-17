@@ -38,7 +38,7 @@ export function Cover() {
       <div className="rise-in" style={{ '--rise-delay': '260ms' } as CSSProperties}>
         <a
           href="#archive"
-          className="press lift group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-16px_rgb(160_54_90/0.55)]"
+          className="press lift group inline-flex items-center gap-3 rounded-full bg-[var(--plum)] px-8 py-3.5 font-(family-name:--font-ui) text-[13px] uppercase tracking-[0.16em] text-[var(--cream)] shadow-[0_18px_40px_-16px_rgb(31_54_64/0.45)]"
         >
           Enter the Archive
           <span

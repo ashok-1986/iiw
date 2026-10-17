@@ -6,27 +6,36 @@
    ============================================================ */
 
 :root {
-  /* Core palette — "sunlit silk". Same plum / rose / gold world as the PRD,
-     lifted out of the beige: paper is luminous ivory, the ground is a clean
-     blush-white, and rose and gold are jewel tones rather than dusty ones.
+  /* Core palette — "Nectarine / Pêche / Menthe / Lagune".
+     The four brand colours are mid-tones, so they carry decor and accents; text
+     and the dark button ground use a deep-lagoon ink derived from Lagune.
+     Token names (--plum, --rose, --blush, --gold) are kept as stable hooks for
+     the components — read them as roles, not hues:
+       --plum  → deep ink          (derived from Lagune)
+       --rose  → Nectarine accent  --rose-deep → Nectarine for text
+       --gold  → Pêche foil        --blush     → Menthe secondary
      Cards sit *brighter* than the page so the book glows instead of sinking. */
-  --plum: #2d1b2d; /* deep archival plum; primary text ground */
-  --rose: #c65a74; /* jewel rose accent (decor + ≥3:1 UI marks) */
-  --blush: #f0b7c1; /* blush secondary */
-  --gold: #d9a646; /* burnished champagne gold hairlines/foil */
+  --nectarine: #d7897f; /* brand — Nectarine */
+  --peche: #f9b95c; /* brand — Pêche */
+  --menthe: #96c7b3; /* brand — Menthe */
+  --lagune: #6398a9; /* brand — Lagune (3.1:1 on paper: UI marks only, never text) */
+  --plum: #1f3640; /* deep lagoon ink; primary text ground (12.5:1 on paper) */
+  --rose: var(--nectarine); /* accent (decor only: 2.7:1 on paper) */
+  --blush: var(--menthe); /* secondary: selection, scrollbar, glow */
+  --gold: var(--peche); /* hairlines/foil (decor only) */
   --cream: #fffdfb; /* paper */
-  --surface: #fef7f4; /* page background — blush-white */
-  --surface-2: #fffcfa; /* raised cards — luminous ivory */
-  --surface-3: #fae9e7; /* wells, chips, skeletons — rose-tinted */
-  --border: #f1dbd6; /* PRD arch-card border */
-  --border-strong: #e6c2c5;
-  --text: #2d1b2d;
-  --text-muted: #5a3a4f; /* richer plum, not a grey — 9.5:1 on paper */
+  --surface: #fff8f2; /* page background — peach-white */
+  --surface-2: #fffcf9; /* raised cards — luminous ivory */
+  --surface-3: #fbebe4; /* wells, chips, skeletons — nectarine-tinted */
+  --border: #f3dfd6; /* arch-card border */
+  --border-strong: #e8c9bd;
+  --text: #1f3640;
+  --text-muted: #3f5f6b; /* lagoon, not a grey — 6.7:1 on paper */
   /* --text-faint carries placeholder + 11px small caps, so it is held at ≥5:1
      on every surface rather than the 3.4:1 a decorative gray would allow. */
-  --text-faint: #7a4d66;
-  --rose-deep: #a0365a; /* rose for *text* on light ground (6.5:1); --rose stays decor */
-  --code-bg: #2d1b2d;
+  --text-faint: #4e6c77;
+  --rose-deep: #a04a40; /* Nectarine for *text* on light ground (5.1:1+); --rose stays decor */
+  --code-bg: #1f3640;
   --code-text: #fffaf5;
 
   /* Motif tokens */
@@ -35,9 +44,9 @@
   /* The outer ring is drawn as a spread shadow so it sits outside the inner
      border without taking part of the image area. */
   --portrait-ring-outer: 0 0 0 1.5px var(--rose);
-  /* Shadows are rose-tinted: a grey-plum shadow is what made the page read dull. */
-  --portrait-shadow: 0 12px 28px -12px rgb(160 54 90 / 0.38);
-  --card-shadow: 0 16px 38px -16px rgb(160 54 90 / 0.22);
+  /* Shadows are nectarine-tinted: a grey shadow is what made the page read dull. */
+  --portrait-shadow: 0 12px 28px -12px rgb(160 74 64 / 0.38);
+  --card-shadow: 0 16px 38px -16px rgb(160 74 64 / 0.22);
 
   /* Motion. Built-in eases are too weak for UI; these are the strong variants.
      Curl is the one authored long-form moment — everything else stays ≤260ms. */
@@ -55,6 +64,7 @@
   --color-rose: var(--rose);
   --color-blush: var(--blush);
   --color-gold: var(--gold);
+  --color-lagune: var(--lagune);
   --color-cream: var(--cream);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -100,13 +110,13 @@ body {
       115deg,
       transparent 0px,
       transparent 3px,
-      rgb(217 166 70 / 0.07) 3px,
-      rgb(217 166 70 / 0.07) 4px
+      rgb(249 185 92 / 0.09) 3px,
+      rgb(249 185 92 / 0.09) 4px
     );
   border-radius: inherit;
 }
 
-/* Cover light: blush and champagne glow behind the medallion, so the first
+/* Cover light: menthe and pêche glow behind the medallion, so the first
    viewport opens bright instead of on flat paper. */
 .cover-glow {
   isolation: isolate;
@@ -119,8 +129,8 @@ body {
   pointer-events: none;
   background:
     radial-gradient(42% 34% at 50% 24%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
-    radial-gradient(60% 46% at 50% 26%, rgb(240 183 193 / 0.42), rgb(240 183 193 / 0) 100%),
-    radial-gradient(70% 34% at 50% 62%, rgb(217 166 70 / 0.14), rgb(217 166 70 / 0) 100%);
+    radial-gradient(60% 46% at 50% 26%, rgb(150 199 179 / 0.36), rgb(150 199 179 / 0) 100%),
+    radial-gradient(70% 34% at 50% 62%, rgb(249 185 92 / 0.18), rgb(249 185 92 / 0) 100%);
   /* Every ellipse ends inside the section (26%+46%, 62%+34%), so the light
      fades out before the edge and never stops on a seam. */
 }
@@ -139,9 +149,10 @@ body {
   border-top: var(--hairline-gold);
 }
 
-/* Rose-gold focus ring (WCAG keyboard requirement) */
+/* Lagune focus ring (WCAG keyboard requirement; 3.1:1 on paper clears the 3:1
+   non-text bar that Nectarine at 2.7:1 does not) */
 :where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid var(--rose);
+  outline: 2px solid var(--lagune);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -185,7 +196,7 @@ body {
   inset: auto 0 0 0;
   height: 30px;
   pointer-events: none;
-  background: linear-gradient(to top, var(--surface-2), rgb(255 252 250 / 0));
+  background: linear-gradient(to top, var(--surface-2), rgb(255 252 249 / 0));
 }
 
 /* ============================================================
@@ -236,7 +247,7 @@ a[href] {
 @media (hover: hover) and (pointer: fine) {
   .lift:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 40px -18px rgb(160 54 90 / 0.4);
+    box-shadow: 0 18px 40px -18px rgb(160 74 64 / 0.4);
   }
 }
 

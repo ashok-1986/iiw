@@ -32,7 +32,7 @@ export default async function AboutPage() {
         </Link>
 
         <header className="mt-8 text-center">
-          <p className="font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.18em] text-[var(--gold)]">
+          <p className="font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.18em] text-[var(--rose-deep)]">
             About this archive
           </p>
           <h1 className="mt-3 font-(family-name:--font-display) text-[36px] font-semibold tracking-[-0.02em] text-[var(--text)]">

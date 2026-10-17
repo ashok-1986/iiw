@@ -8,10 +8,10 @@ import { getInitials } from '@/lib/nominee';
  * duplicated. Keep in sync with :root when a token changes.
  * Layout is flex-only with explicit sizes: no grid, no shorthand borders.
  */
-const PLUM = '#2d1b2d';
-const ROSE = '#c65a74';
-const BLUSH = '#f0b7c1';
-const GOLD = '#d9a646';
+const PLUM = '#1f3640';
+const ROSE = '#d7897f';
+const BLUSH = '#96c7b3';
+const GOLD = '#f9b95c';
 const CREAM = '#fffdfb';
 
 export function OgProfileCard({
@@ -32,7 +32,7 @@ export function OgProfileCard({
         width: '100%',
         height: '100%',
         background: PLUM,
-        backgroundImage: `linear-gradient(115deg, ${PLUM} 0%, #3a2439 55%, ${PLUM} 100%)`,
+        backgroundImage: `linear-gradient(115deg, ${PLUM} 0%, #2b4a57 55%, ${PLUM} 100%)`,
         padding: 70,
         alignItems: 'center',
         gap: 64,
@@ -46,7 +46,7 @@ export function OgProfileCard({
           borderRadius: 146,
           border: `10px solid ${CREAM}`,
           outline: `3px solid ${ROSE}`,
-          background: '#fae9e7',
+          background: '#fbebe4',
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',

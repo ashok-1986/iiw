@@ -12,7 +12,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * anyone-with-link files.
  */
 
-const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><circle cx="44" cy="44" r="44" fill="#F6EDE6"/><g fill="#B76E79"><ellipse cx="44" cy="30" rx="6" ry="14"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(45 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(90 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(135 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(180 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(225 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(270 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(315 44 44)"/></g><circle cx="44" cy="44" r="7" fill="#D4AF7A"/></svg>`;
+const FALLBACK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88"><circle cx="44" cy="44" r="44" fill="#FBF0E6"/><g fill="#D7897F"><ellipse cx="44" cy="30" rx="6" ry="14"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(45 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(90 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(135 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(180 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(225 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(270 44 44)"/><ellipse cx="44" cy="30" rx="6" ry="14" transform="rotate(315 44 44)"/></g><circle cx="44" cy="44" r="7" fill="#F9B95C"/></svg>`;
 
 function fallback(): NextResponse {
   return new NextResponse(FALLBACK_SVG, {

@@ -57,7 +57,7 @@ export async function mountLotusMedallion(
   const key = new THREE.DirectionalLight(0xfff2dd, 1.15);
   key.position.set(1.4, 3.2, 1.8);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0xd4af7a, 0.5);
+  const rim = new THREE.DirectionalLight(0xf9b95c, 0.5);
   rim.position.set(-1.8, 0.9, -1.4);
   scene.add(rim);
 
