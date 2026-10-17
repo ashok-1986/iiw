@@ -1,19 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { getNominees } from '@/lib/sheets';
+import type { Nominee } from '@/lib/nominee';
 
 /**
- * GET /api/nominees — 82 curated profiles, cols A-F only (PII guardrail enforced
- * upstream in lib/sheets.ts range). ETag per PRD; SWR-friendly headers.
- * ISR 3600s semantics: Cache-Control max-age + revalidate; webhook path calls
- * revalidateTag('nominees') via /api/revalidate (M5).
+ * GET /api/nominees — public profile payload.
+ *
+ * PII GUARDRAIL: the wire shape is an explicit allowlist. The internal Nominee model
+ * carries curator-only fields (`dueDiligence` = vetting notes, "please fill in the bio")
+ * and raw sheet provenance; those MUST NOT reach the client. Never spread a Nominee
+ * directly into this response — add fields here deliberately.
+ * See DATA-RECONCILIATION.md §1 (email column exists in adjacent tabs and is never parsed).
  */
-// NOTE: cacheComponents mode (next.config.ts) forbids `dynamic`/`revalidate`
-// segment configs; request-driven behavior comes from reading req.headers below.
+interface PublicNominee {
+  id: string;
+  name: string;
+  summary: string;
+  imageId: string | null;
+  category: string;
+  slug: string;
+}
+
+function toPublic(n: Nominee): PublicNominee {
+  return {
+    id: n.id,
+    name: n.name,
+    summary: n.summary,
+    imageId: n.imageId,
+    category: n.category,
+    slug: `${n.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-${n.id}`,
+  };
+}
 
 export async function GET(req: NextRequest) {
   const result = await getNominees();
-  const body = JSON.stringify(result);
+  const payload = {
+    nominees: result.nominees.map(toPublic),
+    counts: { total: result.nominees.length, withPortrait: result.nominees.filter((n) => n.imageId).length },
+    updatedAt: result.fetchedAt,
+  };
+  const body = JSON.stringify(payload);
   const etag = `"${createHash('sha1').update(body).digest('hex')}"`;
 
   if (req.headers.get('if-none-match') === etag) {
@@ -28,3 +54,4 @@ export async function GET(req: NextRequest) {
     },
   });
 }
+

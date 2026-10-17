@@ -5,8 +5,9 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   images: {
-    // PRD image allowlist. /api/image is same-origin, but direct Drive URLs
-    // remain permitted per spec so next/image can use them if ever needed.
+    // Portrait proxy is path-based (/api/image/[id], same-origin) so no
+    // images.localPatterns query-string opt-in is required (Next 16 rule).
+    // PRD image allowlist — direct Drive URLs stay permitted as an escape hatch.
     remotePatterns: [
       { protocol: 'https', hostname: 'drive.google.com' },
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
