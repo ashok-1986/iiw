@@ -93,7 +93,45 @@ export async function listDriveImages(folderId: string, key = process.env.GOOGLE
   return out;
 }
 
-const normName = (s: string) => s.toLowerCase().replace(/\(([^)]*)\)/g, ' $1 ').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+/**
+ * The sheet's category column is empty for all 88 rows, so the PRD's fallback applies:
+ * "Category derived from col F OR org keywords". We derive from the published bio text.
+ * Ordered by specificity — first match wins, so narrower causes precede generic ones.
+ */
+const CATEGORY_RULES: Array<[string, string[]]> = [
+  ['health', ['mental health', 'wellbeing', 'nurs', 'health', 'therapy', 'cancer', 'care ', 'psycholog', 'hospital']],
+  ['education', ['school', 'teach', 'education', 'literacy', 'student', 'learning', 'university', 'training']],
+  ['enterprise', ['founder', 'entrepreneur', 'ceo', 'business', 'company', 'director of', 'enterprise', 'startup']],
+  ['arts-culture', ['artist', 'music', 'dance', 'writer', 'author', 'theatre', 'artistic', 'design', 'film', 'poet']],
+  ['community', ['charity', 'community', 'volunteer', 'foundation', 'ngo', 'association', 'network', 'mentor']],
+  ['women-empowerment', ['women', 'girls', 'gender', 'empower']],
+];
+
+export function deriveCategory(summary: string): string {
+  const t = ` ${summary.toLowerCase()} `;
+  for (const [cat, words] of CATEGORY_RULES) {
+    if (words.some((w) => t.includes(w))) return cat;
+  }
+  return 'community';
+}
+
+/**
+ * Name key used for cross-tab merge + dedupe.
+ * Must collapse the variants the sheet actually contains, otherwise one woman
+ * is published twice:
+ *   "Anupama Sharma" vs "Anupama(Annu) Sharma"  -> parenthetical nickname
+ *   "Mrs Sabitha Nalli" / "Dr (Prof) Arpita Ray" -> honorifics
+ */
+const HONORIFICS = /\b(dr|prof|mrs|mr|ms|mx|smt|shri|sri|capt|col|maj|bem|frsa|obe|mba|phd)\b/g;
+
+const normName = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/\(([^)]*)\)/g, ' $1 ') // keep nickname content, drop the brackets
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(HONORIFICS, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 /** Curator-name -> Drive portrait id, exact then token-subset fuzzy. */
 function matchPortrait(name: string, drive: Map<string, string>): string | null {
@@ -167,11 +205,49 @@ export async function getNominees(): Promise<NomineesResult> {
   const formResponsesCount = ingest(fb, 'form-responses');
 
   // Curated rows have no image column at all — resolve portraits from the Drive listing.
+  // Category column is empty sheet-wide, so derive it from the bio (PRD fallback rule).
   for (const nm of merged.values()) {
     if (!nm.imageId) nm.imageId = matchPortrait(nm.name, drive);
+    if (!nm.category) nm.category = deriveCategory(nm.summary);
   }
 
-  const nominees = [...merged.values()].sort((a, b) => a.name.localeCompare(b.name));
+  // Second pass: collapse spelling variants of the SAME submission
+  // ("Anupama Sharma" vs "Anupama(Annu) Sharma").
+  // Scoped to source+id on purpose: Final Directory "Sr no" 1..18 and the Flipbook
+  // tab's row-index fallback ids overlap numerically, so a bare id match would
+  // silently delete two different women who happen to share an ordinal.
+  const byRowKey = new Map<string, string[]>();
+  for (const [key, nm] of merged) {
+    const rowKey = `${nm.source}:${nm.id}`;
+    const bucket = byRowKey.get(rowKey) ?? [];
+    bucket.push(key);
+    byRowKey.set(rowKey, bucket);
+  }
+  for (const [, keys] of byRowKey) {
+    if (keys.length < 2) continue;
+    const keep = keys.reduce(
+      (best, k) => (merged.get(k)!.summary.length > merged.get(best)!.summary.length ? k : best),
+      keys[0],
+    );
+    for (const k of keys) {
+      if (k === keep) continue;
+      const loser = merged.get(k)!;
+      const winner = merged.get(keep)!;
+      winner.imageId = winner.imageId ?? loser.imageId;
+      winner.imageUrl = winner.imageUrl ?? loser.imageUrl;
+      winner.dueDiligence = winner.dueDiligence || loser.dueDiligence;
+      winner.consentGiven = winner.consentGiven || loser.consentGiven;
+      merged.delete(k);
+    }
+  }
+
+  // Cross-source ordinal collision: Final Directory "Sr no" 1..18 and Flipbook row-index
+  // fallbacks overlap numerically, so prefix the source once at output. Downstream
+  // consumers (React keys, /profile/[slug]) then get globally-unique ids.
+  const idPrefix: Record<Nominee['source'], string> = { 'final-directory': 'fd', 'form-responses': 'fb' };
+  const nominees = [...merged.values()]
+    .map((nm) => ({ ...nm, id: `${idPrefix[nm.source]}-${nm.id}` }))
+    .sort((a, b) => a.name.localeCompare(b.name));
   return {
     nominees,
     source: drive.size ? 'sheets+drive' : 'sheets',

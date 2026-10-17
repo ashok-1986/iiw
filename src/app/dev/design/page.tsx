@@ -3,6 +3,12 @@ import { PortraitArch } from '@/components/PortraitArch';
 import { ProfileCard } from '@/components/ProfileCard';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { getNominees } from '@/lib/sheets';
+import { toFlipProfile } from '@/lib/flipbook-store';
+import type { Nominee } from '@/lib/nominee';
+
+function toFlip(n: Nominee) {
+  return toFlipProfile(n);
+}
 
 export const metadata = { robots: 'noindex' };
 
@@ -21,7 +27,7 @@ const SWATCHES = [
 
 /** Temporary design QA page — DELETE before ship (PRD M1 exit). */
 export default async function DesignShowcase() {
-  const { nominees, counts } = await getNominees();
+  const { nominees } = await getNominees();
   const withPortrait = nominees.filter((n) => n.imageId);
   const withoutPortrait = nominees.filter((n) => !n.imageId);
   return (
@@ -98,8 +104,8 @@ export default async function DesignShowcase() {
       <section>
         <h2 className="mb-3 font-(family-name:--font-display) text-xl">ProfileCard ×2 (a real physical page)</h2>
         <div className="grid grid-cols-2 gap-4">
-          <ProfileCard nominee={nominees[0]} />
-          <ProfileCard nominee={nominees[1]} />
+          <ProfileCard nominee={toFlip(nominees[0])} />
+          <ProfileCard nominee={toFlip(nominees[1])} />
         </div>
         <p className="mt-3 font-(family-name:--font-ui) text-[11px] text-[var(--text-faint)]">
           Real sheet data via /api/nominees merge · curator notes and emails stripped at the wire boundary

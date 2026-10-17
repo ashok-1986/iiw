@@ -1,0 +1,100 @@
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { getNominees } from '@/lib/sheets';
+import { toFlipProfile } from '@/lib/flipbook-store';
+import { PortraitArch } from '@/components/PortraitArch';
+import { RangoliDivider } from '@/components/RangoliDivider';
+
+/**
+ * /profile/[slug] — the full-profile route the PRD's deep-link journey requires.
+ * Slug is computed with the SAME toFlipProfile projection the flipbook cards use,
+ * so "Full profile" links can never drift from the routes this page serves.
+ *
+ * Next 16 cacheComponents + partialPrefetching: reading `params` and the cached
+ * lookup happens inside <Suspense> so the route shell stays prefetchable and the
+ * page streams instead of blocking (dev insight: instant-shell-url-data).
+ */
+async function findProfile(slug: string) {
+  const { nominees } = await getNominees();
+  return nominees.map(toFlipProfile).find((p) => p.slug === slug) ?? null;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const p = await findProfile(slug);
+  if (!p) return { title: 'Profile not found — Inspiring Indian Women' };
+  return {
+    title: `${p.name} — Inspiring Indian Women`,
+    description: p.summary.slice(0, 155),
+  };
+}
+
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="min-h-screen bg-[var(--surface)]">
+      <div className="mx-auto max-w-[720px] px-4 py-16">
+        <Link
+          href="/#archive"
+          className="font-(family-name:--font-ui) text-[12px] uppercase tracking-[0.12em] text-[var(--text-faint)] hover:text-[var(--rose)]"
+        >
+          ← Back to the archive
+        </Link>
+        {children}
+      </div>
+    </main>
+  );
+}
+
+async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
+  // `params` is awaited *inside* the boundary so the shell never reads URL data.
+  const { slug } = await params;
+  const p = await findProfile(slug);
+  if (!p) notFound();
+
+  return (
+    <>
+      <div className="mt-8 flex flex-col items-center text-center">
+        <PortraitArch imageId={p.imageId} name={p.name} size={132} />
+        <h1 className="mt-6 font-(family-name:--font-display) text-[32px] font-semibold tracking-[-0.02em] text-[var(--text)]">
+          {p.name}
+        </h1>
+        {p.category && (
+          <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.14em] text-[var(--rose)]">
+            {p.category}
+          </p>
+        )}
+        <RangoliDivider />
+      </div>
+
+      <article className="arch-card silk-overlay mt-8 p-8">
+        <p className="font-(family-name:--font-body) text-[15px] leading-[1.8] whitespace-pre-line text-[var(--text-muted)]">
+          {p.summary}
+        </p>
+      </article>
+    </>
+  );
+}
+
+export default function ProfilePage({ params }: { params: Promise<{ slug: string }> }) {
+  return (
+    <Shell>
+      <Suspense
+        fallback={
+          <div className="mt-8 space-y-4" aria-busy="true">
+            <div className="mx-auto size-[132px] animate-pulse rounded-full bg-[var(--surface-3)]" />
+            <div className="mx-auto h-8 w-1/2 animate-pulse rounded-full bg-[var(--surface-3)]" />
+            <div className="h-64 animate-pulse rounded-[24px] bg-[var(--surface-3)]" />
+          </div>
+        }
+      >
+        <ProfileBody params={params} />
+      </Suspense>
+    </Shell>
+  );
+}

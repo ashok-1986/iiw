@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import { getNominees } from '@/lib/sheets';
-import type { Nominee } from '@/lib/nominee';
+import { slugify, type Nominee } from '@/lib/nominee';
 
 /**
  * GET /api/nominees — public profile payload.
@@ -28,7 +28,7 @@ function toPublic(n: Nominee): PublicNominee {
     summary: n.summary,
     imageId: n.imageId,
     category: n.category,
-    slug: `${n.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-${n.id}`,
+    slug: slugify(n.name, n.id),
   };
 }
 

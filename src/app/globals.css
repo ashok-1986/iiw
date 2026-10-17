@@ -100,3 +100,20 @@ body {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Scrollable biography column: hairline gold thumb instead of the native
+   system scrollbar, which reads as chrome against the paper texture. */
+.bio-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--blush) transparent;
+}
+.bio-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.bio-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.bio-scroll::-webkit-scrollbar-thumb {
+  background: var(--blush);
+  border-radius: 9999px;
+}
