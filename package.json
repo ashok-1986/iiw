@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "refresh": "node tools/refresh-data.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.3.0",
