@@ -12,6 +12,8 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Page } from './Page';
 import { ProgressDots } from './ProgressDots';
+import { SoundToggle } from './SoundToggle';
+import { playFlip } from '@/lib/sound';
 import { chunkIntoPages } from '@/lib/paginate';
 import { useIsMobile } from '@/lib/use-is-mobile';
 import { useFlipbook, type FlipProfile } from '@/lib/flipbook-store';
@@ -211,6 +213,7 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
       return (
         pr.name.toLowerCase().includes(q) ||
         pr.summary.toLowerCase().includes(q) ||
+        pr.org.toLowerCase().includes(q) ||
         pr.category.toLowerCase().includes(q)
       );
     });
@@ -254,6 +257,7 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     (to: number) => {
       const target = Math.max(0, Math.min(to, totalSpreads - 1));
       if (target === spread || busy.current || empty) return;
+      playFlip();
       setSettled(true);
       if (reduced) {
         go(target);
@@ -315,6 +319,7 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     const speed = st.dir === 1 ? -info.velocity.x : info.velocity.x;
     if (current > COMMIT_PROGRESS || speed > FLICK_VELOCITY) {
       go(st.to);
+      playFlip();
       animate(p, 1, { duration: 0.55 * (1 - current) + 0.2, ease: SETTLE_EASE, onComplete: finish });
     } else {
       animate(p, 0, { duration: 0.4, ease: SETTLE_EASE, onComplete: finish });
@@ -437,6 +442,7 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
           >
             Next →
           </button>
+          <SoundToggle />
         </div>
         <ProgressDots total={totalSpreads} current={spread} onJump={(i) => turnTo(i)} />
       </div>

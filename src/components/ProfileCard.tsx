@@ -32,6 +32,9 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
       <PortraitArch
         name={nominee.name}
         imageId={nominee.imageId}
+        image={nominee.image}
+        org={nominee.org}
+        zoomable
         sizeClass="size-[176px] xl:size-[192px]"
         sizes="(max-width: 1279px) 176px, 192px"
       />
@@ -40,9 +43,9 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
           <h3 className="font-(family-name:--font-display) text-[22px] font-semibold leading-tight tracking-tight text-[var(--text)]">
             {nominee.name}
           </h3>
-          {nominee.category && (
-            <p className="mt-1.5 inline-block rounded-full bg-[var(--menthe)] px-2.5 py-0.5 font-(family-name:--font-ui) text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[var(--plum)]">
-              {nominee.category}
+          {nominee.org && (
+            <p className="mt-1.5 font-(family-name:--font-ui) text-[12px] font-medium leading-snug text-[var(--rose-deep)]">
+              {nominee.org}
             </p>
           )}
         </div>
@@ -61,7 +64,7 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
         </div>
         <Link
           href={`/profile/${nominee.slug}`}
-          className="press cursor-pointer self-start rounded-full bg-[var(--peche)] px-4 py-1.5 font-(family-name:--font-ui) text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--plum)] transition-colors duration-200 hover:bg-[var(--nectarine)]"
+          className="press cursor-pointer self-start rounded-full bg-[var(--peche)] px-4 py-1.5 pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center font-(family-name:--font-ui) text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--plum)] transition-colors duration-200 hover:bg-[var(--nectarine)]"
         >
           Full profile
         </Link>

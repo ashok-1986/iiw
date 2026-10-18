@@ -9,7 +9,10 @@ export interface FlipProfile {
   id: string;
   name: string;
   summary: string;
+  fullText: string;
+  org: string;
   imageId: string | null;
+  image: string | null;
   category: string;
   slug: string;
 }
@@ -24,7 +27,10 @@ export function toFlipProfile(n: Nominee): FlipProfile {
     id: n.id,
     name: n.name,
     summary: n.summary,
+    fullText: n.fullText,
+    org: n.organization,
     imageId: n.imageId,
+    image: n.image,
     category: n.category,
     slug: slugify(n.name, n.id),
   };

@@ -377,3 +377,25 @@ a[href] {
     transform: none;
   }
 }
+
+/* ============================================================
+   Portrait lightbox (click-to-zoom trigger) + ambient lotus drift
+   ============================================================ */
+.lightbox-backdrop {
+  background: rgb(31 54 64 / 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: lb-fade 180ms var(--ease-out-quint) both;
+}
+.lightbox-panel {
+  animation: lb-pop 220ms var(--ease-out-quint) both;
+}
+@keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lb-pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+
+@keyframes lotus-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.lotus-float { animation: lotus-float 7s ease-in-out infinite; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-backdrop, .lightbox-panel, .lotus-float { animation: none; }
+}

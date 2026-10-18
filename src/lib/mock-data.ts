@@ -24,6 +24,8 @@ export const MOCK_NOMINEES: Nominee[] = Array.from({ length: 82 }, (_, i) => {
     summary: `${name} leads ${category} work across ${city}. (MOCK — replace with sheet description)`,
     imageId: i % 9 === 0 ? null : `MOCKID_${i + 1}`,
     imageUrl: null,
+    image: null,
+    fullText: `${name} leads ${category} work across ${city}.`,
     category,
     consentGiven: false,
     source: 'form-responses' as const,

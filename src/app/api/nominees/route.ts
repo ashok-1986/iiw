@@ -16,7 +16,9 @@ interface PublicNominee {
   id: string;
   name: string;
   summary: string;
+  org: string;
   imageId: string | null;
+  image: string | null;
   category: string;
   slug: string;
 }
@@ -26,7 +28,9 @@ function toPublic(n: Nominee): PublicNominee {
     id: n.id,
     name: n.name,
     summary: n.summary,
+    org: n.organization,
     imageId: n.imageId,
+    image: n.image,
     category: n.category,
     slug: slugify(n.name, n.id),
   };
@@ -36,7 +40,7 @@ export async function GET(req: NextRequest) {
   const result = await getNominees();
   const payload = {
     nominees: result.nominees.map(toPublic),
-    counts: { total: result.nominees.length, withPortrait: result.nominees.filter((n) => n.imageId).length },
+    counts: { total: result.nominees.length, withPortrait: result.nominees.filter((n) => n.image || n.imageId).length },
     updatedAt: result.fetchedAt,
   };
   const body = JSON.stringify(payload);

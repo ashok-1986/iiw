@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const { nominees, counts } = await getNominees();
-  const withPortrait = nominees.filter((n) => n.imageId).length;
+  const { nominees } = await getNominees();
+  const withPortrait = nominees.filter((n) => n.image || n.imageId).length;
+  const curated = nominees.filter((n) => n.source === 'final-directory').length;
   const categories = Object.entries(
     nominees.reduce<Record<string, number>>((acc, n) => {
       acc[n.category] = (acc[n.category] ?? 0) + 1;
@@ -87,7 +88,7 @@ export default async function AboutPage() {
             {[
               { n: nominees.length, label: 'profiles' },
               { n: withPortrait, label: 'portraits' },
-              { n: counts.finalDirectory, label: 'curated entries' },
+              { n: curated, label: 'curated entries' },
               { n: categories.length, label: 'causes' },
             ].map((s) => (
               <div

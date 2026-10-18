@@ -18,6 +18,8 @@ export interface Nominee {
   summary: string; // col "Description" / "Tell us about yourself"
   imageId: string | null; // Drive file id, extracted from "Image Upload" link
   imageUrl: string | null; // original https://drive.google.com/open?id= link
+  image: string | null; // local hosted portrait, e.g. /portraits/<id>.jpg (preferred)
+  fullText: string; // longer biography for the profile page; `summary` is the short card text
   category: string;
   consentGiven: boolean;
   source: NomineeSource;
@@ -114,7 +116,9 @@ export function mapSheetRow(table: SheetTable, row: SheetRow, source: NomineeSou
     organization: cell(row, orgIdx),
     city: cell(row, cityIdx),
     summary: cell(row, descIdx),
+    fullText: cell(row, descIdx),
     imageUrl: imageUrl || null,
+    image: null,
     imageId: imageUrl ? extractDriveId(imageUrl) : null,
     category: cell(row, catIdx).toLowerCase(),
     consentGiven: parseConsent(cell(row, consentIdx)),

@@ -13,7 +13,9 @@ import { RangoliDivider } from '@/components/RangoliDivider';
 export function Cover() {
   return (
     <section className="cover-glow relative flex min-h-[92vh] flex-col items-center justify-center px-6 text-center">
-      <LotusMedallion size={168} />
+      <div className="lotus-float">
+        <LotusMedallion size={168} />
+      </div>
 
       <h1 className="mt-9 max-w-4xl font-(family-name:--font-display) text-[42px] font-semibold leading-[1.05] tracking-[-0.025em] text-[var(--text)] sm:text-[58px] lg:text-[76px]">
         Inspiring Indian Women

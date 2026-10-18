@@ -74,7 +74,10 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
       <div className="mt-8 flex flex-col items-center text-center">
         <PortraitArch
           imageId={p.imageId}
+          image={p.image}
           name={p.name}
+          org={p.org}
+          zoomable
           sizeClass="size-[168px] sm:size-[212px]"
           sizes="(max-width: 639px) 168px, 212px"
           priority
@@ -82,9 +85,9 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
         <h1 className="mt-6 font-(family-name:--font-display) text-[32px] font-semibold tracking-[-0.02em] text-[var(--text)]">
           {p.name}
         </h1>
-        {p.category && (
-          <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.14em] text-[var(--rose-deep)]">
-            {p.category}
+        {(p.org || p.category) && (
+          <p className="mt-1 max-w-[46ch] font-(family-name:--font-ui) text-[12px] tracking-[0.04em] text-[var(--rose-deep)]">
+            {p.org || p.category}
           </p>
         )}
         <RangoliDivider />
@@ -92,7 +95,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
 
       <article className="arch-card silk-overlay mt-8 p-8">
         <p className="font-(family-name:--font-body) text-[15px] leading-[1.8] whitespace-pre-line text-[var(--text-muted)]">
-          {p.summary}
+          {p.fullText}
         </p>
       </article>
 
@@ -107,7 +110,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
             '@type': 'Person',
             name: p.name,
             description: p.summary,
-            image: p.imageId ? `${SITE_URL}/api/image/${p.imageId}` : undefined,
+            image: p.image ? `${SITE_URL}${p.image}` : p.imageId ? `${SITE_URL}/api/image/${p.imageId}` : undefined,
             url: `${SITE_URL}/profile/${p.slug}`,
             knowsAbout: p.category ? [p.category] : undefined,
           }),

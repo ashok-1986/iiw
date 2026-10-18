@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond, Lora, Inter } from "next/font/google";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Lightbox } from "@/components/Lightbox";
 import "./globals.css";
 
 // PRD type stack: Display=Playfair 600, Accent=Cormorant italic, Body=Lora, UI=Inter
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         {children}
         <SiteFooter />
+        <Lightbox />
       </body>
     </html>
   );
