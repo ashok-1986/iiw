@@ -249,8 +249,11 @@ body::before {
   position: relative;
   min-height: 0;
 }
+/* Summaries are now short (under 300 words) and shown whole, so the fade must not
+   dim the last line. */
 .bio-fade::after {
   content: "";
+  display: none;
   position: absolute;
   inset: auto 0 0 0;
   height: 30px;

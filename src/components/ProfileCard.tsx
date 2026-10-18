@@ -24,7 +24,7 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
   return (
     <article
       className={
-        'hoverable group flex min-h-0 flex-1 flex-col items-center gap-4 text-center md:flex-row md:items-stretch md:gap-7 md:text-left' +
+        'hoverable group flex min-h-0 flex-1 flex-col items-center gap-4 text-center md:flex-row md:items-center md:gap-7 md:text-left' +
         (delay ? ' rise-in' : '')
       }
       style={delay ? ({ '--rise-delay': `${delay}ms` } as CSSProperties) : undefined}
@@ -35,9 +35,9 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
         sizeClass="size-[176px] xl:size-[192px]"
         sizes="(max-width: 1279px) 176px, 192px"
       />
-      <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col gap-3">
+      <div className="flex min-h-0 w-full min-w-0 flex-col gap-3">
         <div>
-          <h3 className="font-(family-name:--font-display) text-[20px] font-semibold leading-tight tracking-tight text-[var(--text)]">
+          <h3 className="font-(family-name:--font-display) text-[22px] font-semibold leading-tight tracking-tight text-[var(--text)]">
             {nominee.name}
           </h3>
           {nominee.category && (
@@ -47,14 +47,14 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
           )}
         </div>
         <RangoliDivider className="w-full" />
-        <div className="bio-fade w-full min-h-0 flex-1">
+        <div className="bio-fade w-full min-h-0">
           <div
-            className="bio-scroll h-full w-full overflow-y-auto px-1 text-left"
+            className="bio-scroll max-h-[34vh] w-full overflow-y-auto px-1 text-left"
             tabIndex={0}
             role="region"
             aria-label={`${nominee.name} — biography, scrollable`}
           >
-            <p className="font-(family-name:--font-body) text-[14px] leading-[1.65] text-[var(--text-muted)]">
+            <p className="font-(family-name:--font-body) text-[15px] leading-[1.7] text-[var(--text-muted)]">
               {nominee.summary}
             </p>
           </div>

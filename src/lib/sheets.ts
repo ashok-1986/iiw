@@ -19,6 +19,7 @@ import { MOCK_NOMINEES } from './mock-data';
  * Sensitive columns (email) are never parsed — see nominee.ts header binding.
  */
 export const SHEET_ID = '1loMFRoc6H5nDFZk5-tjXDjH0DCq0KUFHF-ggOIC1Geg';
+export const TAB_FINAL_DIRECTORY = 'Final Directory';
 export const GID_FINAL_DIRECTORY = '0';
 export const GID_FLIPBOOK = '293174';
 export const FOLDER_2_ID = '18R9269jJWgs2yAWha9hdUjRZKb2e-TO8OqbqgJYojS6y54k-oodFg-iapCx7AV-v5W5rsgHx';
@@ -51,16 +52,17 @@ function parseCsv(text: string): string[][] {
   return rows;
 }
 
-async function readTab(gid: string): Promise<SheetTable | null> {
+/** `selector` is the gviz tab pick: `gid=<n>` or `sheet=<tab name>`. */
+async function readTab(selector: string): Promise<SheetTable | null> {
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${gid}`;
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&${selector}`;
     const res = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(TIMEOUT_MS) });
     if (!res.ok) throw new Error(`gviz ${res.status}`);
     const rows = parseCsv(await res.text());
     if (rows.length < 2) return null;
     return { headers: rows[0], rows: rows.slice(1) };
   } catch (err) {
-    console.error(`[sheets] tab ${gid} failed:`, (err as Error).message);
+    console.error(`[sheets] tab ${selector} failed:`, (err as Error).message);
     return null;
   }
 }
@@ -158,11 +160,16 @@ export async function getNominees(): Promise<NomineesResult> {
   cacheLife('hours');
   cacheTag('nominees');
 
-  const [fd, fb, drive] = await Promise.all([
-    readTab(GID_FINAL_DIRECTORY),
-    readTab(GID_FLIPBOOK),
+  // The "Final Directory" tab (by name) is the published roster: Nominee Name, Key Focus /
+  // Organization, Executive Summary (Under 300 Words) in col C, Image Link. Only if that tab
+  // is unreachable do we fall back to the legacy gid tabs.
+  const [named, drive] = await Promise.all([
+    readTab(`sheet=${encodeURIComponent(TAB_FINAL_DIRECTORY)}`),
     listDriveImages(FOLDER_2_ID),
   ]);
+  const [fd, fb] = named
+    ? [named, null]
+    : await Promise.all([readTab(`gid=${GID_FINAL_DIRECTORY}`), readTab(`gid=${GID_FLIPBOOK}`)]);
 
   if (!fd && !fb) {
     console.warn('[nominees] no sheet access — serving labeled MOCK data');

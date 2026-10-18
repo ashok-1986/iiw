@@ -93,12 +93,12 @@ export function getInitials(name: string): string {
 
 /** Map one sheet row to a Nominee using header names, dropping sensitive columns. */
 export function mapSheetRow(table: SheetTable, row: SheetRow, source: NomineeSource, rowIndex: number): Nominee | null {
-  const nameIdx = colIndex(table, 'name', 'your name');
-  const descIdx = colIndex(table, 'description', 'tell us about yourself');
+  const nameIdx = colIndex(table, 'nominee name', 'name', 'your name');
+  const descIdx = colIndex(table, 'executive summary', 'description', 'tell us about yourself');
   const consentIdx = colIndex(table, 'consent');
-  const imgIdx = colIndex(table, 'image upload');
+  const imgIdx = colIndex(table, 'image link', 'image upload');
   const ddIdx = colIndex(table, 'due diligence', 'reason or due diligence');
-  const orgIdx = colIndex(table, 'organization', 'organisation', 'org');
+  const orgIdx = colIndex(table, 'key focus', 'organization', 'organisation', 'org');
   const cityIdx = colIndex(table, 'city');
   const catIdx = colIndex(table, 'category');
   const srIdx = colIndex(table, 'sr no', 'sr.', 'id');
