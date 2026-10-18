@@ -41,7 +41,7 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
             {nominee.name}
           </h3>
           {nominee.category && (
-            <p className="mt-1 font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.12em] text-[var(--rose-deep)]">
+            <p className="mt-1.5 inline-block rounded-full bg-[var(--menthe)] px-2.5 py-0.5 font-(family-name:--font-ui) text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[var(--plum)]">
               {nominee.category}
             </p>
           )}
@@ -61,7 +61,7 @@ export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; dela
         </div>
         <Link
           href={`/profile/${nominee.slug}`}
-          className="press self-start font-(family-name:--font-ui) text-[11px] uppercase tracking-[0.14em] text-[var(--rose-deep)] hover:underline"
+          className="press cursor-pointer self-start rounded-full bg-[var(--peche)] px-4 py-1.5 font-(family-name:--font-ui) text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--plum)] transition-colors duration-200 hover:bg-[var(--nectarine)]"
         >
           Full profile
         </Link>

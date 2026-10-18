@@ -37,8 +37,8 @@ export function ProgressDots({
             style={{
               width: active ? 10 : 5,
               height: active ? 10 : 5,
-              background: active ? 'var(--rose)' : 'var(--border-strong)',
-              boxShadow: active ? '0 0 0 3px rgb(215 137 127 / 0.22)' : 'none',
+              background: active ? 'var(--nectarine)' : 'rgb(99 152 169 / 0.45)',
+              boxShadow: active ? '0 0 0 3px rgb(249 185 92 / 0.85)' : 'none',
             }}
           />
         );

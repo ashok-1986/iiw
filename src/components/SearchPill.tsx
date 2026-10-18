@@ -101,10 +101,10 @@ export function SearchPill({ categories }: { categories: string[] }) {
                 onClick={() => onCategory(c)}
                 aria-pressed={active}
                 className={
-                  'press rounded-full border px-3 py-1 font-(family-name:--font-ui) text-[11px] ' +
+                  'press cursor-pointer rounded-full border-2 px-3.5 py-1 font-(family-name:--font-ui) text-[11px] font-medium transition-colors duration-200 ' +
                   (active
-                    ? 'border-[var(--rose-deep)] bg-[var(--rose-deep)] text-[var(--cream)]'
-                    : 'border-[var(--border)] bg-[var(--surface-3)] text-[var(--text-muted)] hover:border-[var(--rose)]')
+                    ? 'border-[var(--peche)] bg-[var(--peche)] font-semibold text-[var(--plum)]'
+                    : 'border-[var(--menthe)] bg-[var(--surface-2)] text-[var(--text)] hover:bg-[var(--menthe)]/45')
                 }
               >
                 {c}

@@ -15,14 +15,28 @@ export function Page({
   pageNumber,
   stagger = false,
   solo = false,
+  side = 'solo',
 }: {
   profiles: FlipProfile[];
   pageNumber: number;
   stagger?: boolean;
   solo?: boolean;
+  /** Which half of the open book this is; drives the spine-aware corners and gutter shade. */
+  side?: 'left' | 'right' | 'solo';
 }) {
   return (
-    <div className="arch-card silk-overlay relative flex h-full flex-1 flex-col gap-4 overflow-hidden p-5">
+    <div
+      className={
+        'arch-card silk-overlay page-card relative flex h-full flex-1 flex-col gap-4 overflow-hidden p-5 ' +
+        (side === 'left' ? 'page-left' : side === 'right' ? 'page-right' : '')
+      }
+    >
+      {side !== 'solo' && (
+        <span
+          aria-hidden="true"
+          className={'page-gutter ' + (side === 'left' ? 'page-gutter-left' : 'page-gutter-right')}
+        />
+      )}
       {profiles.map((p, i) => (
         <ProfileCard key={p.id} nominee={p} delay={stagger ? 80 + i * 80 : 0} />
       ))}

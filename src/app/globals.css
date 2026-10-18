@@ -24,11 +24,11 @@
   --blush: var(--menthe); /* secondary: selection, scrollbar, glow */
   --gold: var(--peche); /* hairlines/foil (decor only) */
   --cream: #fffdfb; /* paper */
-  --surface: #fff8f2; /* page background — peach-white */
-  --surface-2: #fffcf9; /* raised cards — luminous ivory */
-  --surface-3: #fbebe4; /* wells, chips, skeletons — nectarine-tinted */
-  --border: #f3dfd6; /* arch-card border */
-  --border-strong: #e8c9bd;
+  --surface: #fff1de; /* page base under the colour mesh — warm peach-cream */
+  --surface-2: #fffefb; /* raised cards — the brightest thing on the page */
+  --surface-3: #ffe8d8; /* wells, chips, skeletons — nectarine-tinted */
+  --border: #f6d2bf; /* arch-card border */
+  --border-strong: #eeb59f;
   --text: #1f3640;
   --text-muted: #3f5f6b; /* lagoon, not a grey — 6.7:1 on paper */
   /* --text-faint carries placeholder + 11px small caps, so it is held at ≥5:1
@@ -43,10 +43,10 @@
   --portrait-ring-inner: 4px solid var(--cream);
   /* The outer ring is drawn as a spread shadow so it sits outside the inner
      border without taking part of the image area. */
-  --portrait-ring-outer: 0 0 0 1.5px var(--rose);
+  --portrait-ring-outer: 0 0 0 2px var(--nectarine), 0 0 0 6px rgb(249 185 92 / 0.6);
   /* Shadows are nectarine-tinted: a grey shadow is what made the page read dull. */
-  --portrait-shadow: 0 12px 28px -12px rgb(160 74 64 / 0.38);
-  --card-shadow: 0 16px 38px -16px rgb(160 74 64 / 0.22);
+  --portrait-shadow: 0 14px 30px -12px rgb(160 74 64 / 0.45);
+  --card-shadow: 0 24px 54px -20px rgb(160 74 64 / 0.4);
 
   /* Motion. Built-in eases are too weak for UI; these are the strong variants.
      Curl is the one authored long-form moment — everything else stays ≤260ms. */
@@ -83,6 +83,22 @@ body {
   background: var(--surface);
   color: var(--text);
   font-family: var(--font-body), "Lora", Georgia, serif;
+}
+
+/* Colour mesh: the four brand colours as large soft blooms on a fixed layer, so
+   the page is vivid at every scroll position instead of a flat pale wash. It sits
+   behind everything; cards stay near-white so text contrast is untouched. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 48% at 8% 6%, rgb(249 185 92 / 0.55), transparent 72%),
+    radial-gradient(52% 44% at 94% 10%, rgb(150 199 179 / 0.62), transparent 72%),
+    radial-gradient(64% 50% at 88% 98%, rgb(215 137 127 / 0.45), transparent 72%),
+    radial-gradient(48% 42% at 4% 96%, rgb(99 152 169 / 0.36), transparent 72%);
 }
 
 /* Silk texture overlay (PRD motif spec). The weave is gold, not plum: plum
@@ -129,8 +145,8 @@ body {
   pointer-events: none;
   background:
     radial-gradient(42% 34% at 50% 24%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
-    radial-gradient(60% 46% at 50% 26%, rgb(150 199 179 / 0.36), rgb(150 199 179 / 0) 100%),
-    radial-gradient(70% 34% at 50% 62%, rgb(249 185 92 / 0.18), rgb(249 185 92 / 0) 100%);
+    radial-gradient(60% 46% at 50% 26%, rgb(150 199 179 / 0.6), rgb(150 199 179 / 0) 100%),
+    radial-gradient(70% 34% at 50% 62%, rgb(249 185 92 / 0.38), rgb(249 185 92 / 0) 100%);
   /* Every ellipse ends inside the section (26%+46%, 62%+34%), so the light
      fades out before the edge and never stops on a seam. */
 }
@@ -141,6 +157,49 @@ body {
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow);
   background: var(--surface-2);
+}
+
+/* Flipbook page: four-colour accent band on top, spine-side radii so two pages
+   read as one open book, and a gutter shadow where the paper curves into the spine. */
+.page-card {
+  border-color: rgb(215 137 127 / 0.32);
+}
+.page-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--peche),
+    var(--nectarine) 36%,
+    var(--menthe) 68%,
+    var(--lagune)
+  );
+}
+.arch-card.page-left {
+  border-radius: 24px 4px 4px 14px;
+}
+.arch-card.page-right {
+  border-radius: 4px 24px 14px 4px;
+}
+.page-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 44px;
+  z-index: 1;
+  pointer-events: none;
+}
+.page-gutter-left {
+  right: 0;
+  background: linear-gradient(to left, rgb(31 54 64 / 0.16), rgb(31 54 64 / 0));
+}
+.page-gutter-right {
+  left: 0;
+  background: linear-gradient(to right, rgb(31 54 64 / 0.16), rgb(31 54 64 / 0));
 }
 
 /* Gold hairline divider */
@@ -173,7 +232,7 @@ body {
   background: transparent;
 }
 .bio-scroll::-webkit-scrollbar-thumb {
-  background: var(--blush);
+  background: rgb(99 152 169 / 0.7);
   border-radius: 9999px;
 }
 /* Chrome keeps rendering the 4px track's arrow buttons; they read as stray
@@ -218,7 +277,7 @@ body {
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--blush) transparent;
+  scrollbar-color: var(--lagune) transparent;
 }
 a[href] {
   text-decoration-thickness: 1px;
