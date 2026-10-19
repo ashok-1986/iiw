@@ -1,42 +1,43 @@
 import { forwardRef } from 'react';
-import { LotusMark } from './LotusMark';
 
 /**
  * Hard front and back covers of the book (react-pageflip: data-density="hard").
- * Page 1 of the volume is the front cover, so the book always opens on it. Sized in
- * `em` like the content pages (see .fp-in), so it scales with the book.
+ * Each cover is one designed image with all of its text baked in (public/covers,
+ * 2:3, masters in design-src/covers). The image is contain-fitted, never stretched
+ * or cropped, and takes no pointer events so page-flip drag and corner-pull keep working.
  */
+const BAKED_COUNT = 88; // the front image says "88 stories"; re-render it if the data changes
+
 export const BookCover = forwardRef<
   HTMLDivElement,
   { variant: 'front' | 'back'; count: number; phone: boolean }
 >(function BookCover({ variant, count, phone }, ref) {
   const front = variant === 'front';
+  if (process.env.NODE_ENV !== 'production' && front && count !== BAKED_COUNT) {
+    console.warn(`Front cover image says ${BAKED_COUNT} stories but data has ${count}. Re-render the cover.`);
+  }
+  const name = front ? 'cover-front' : 'cover-back';
   return (
-    <div ref={ref} data-density="hard" className={`fp fp-cover${phone ? ' fp-phone' : ''}`}>
-      <div className="fp-cover-frame" aria-hidden="true" />
-      <div className="fp-in">
-        <div className="fp-medallion" aria-hidden="true">
-          <LotusMark size={64} style={{ width: '62%', height: '62%' }} aria-hidden="true" role="presentation" />
-        </div>
-        {front ? (
-          <>
-            <p className="fp-masthead">A Digital Heirloom</p>
-            <h2 className="fp-title foil">
-              Inspiring
-              <br />
-              Indian Women
-            </h2>
-            <p className="fp-tag">{count} stories of courage, craft and community</p>
-            <p className="fp-issue">Volume I · 2026</p>
-          </>
-        ) : (
-          <>
-            <p className="fp-masthead">Inspiring Indian Women</p>
-            <p className="fp-tag">Every profile is published in the nominee&rsquo;s own words, with her consent.</p>
-            <p className="fp-issue">Volume I · 2026</p>
-          </>
-        )}
-      </div>
+    <div ref={ref} data-density="hard" className={`fp fp-cover fp-cover-art${phone ? ' fp-phone' : ''}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- fixed art, already sized; the flip library needs a plain element */}
+      <img
+        src={`/covers/${name}.jpg`}
+        srcSet={`/covers/${name}-sm.jpg 900w, /covers/${name}.jpg 1600w`}
+        sizes="(max-width: 767px) 92vw, 45vw"
+        alt={
+          front
+            ? `Inspiring Indian Women, Volume I 2026. A digital heirloom. ${count} stories of courage, craft and community.`
+            : "Back cover of Inspiring Indian Women. Lift. Support. Rise. Every profile is published in the nominee's own words, with her consent."
+        }
+        width={1600}
+        height={2400}
+        draggable={false}
+        decoding="async"
+        // the back cover is display:none until the end of the book, so lazy would pop in late
+        loading="eager"
+        fetchPriority={front ? 'high' : 'low'}
+        className="fp-cover-img"
+      />
     </div>
   );
 });

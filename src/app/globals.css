@@ -453,41 +453,26 @@ a[href] {
   text-transform: uppercase;
   color: var(--gold);
 }
-.fp-title {
-  font-family: var(--font-playfair), serif;
-  font-weight: 700;
-  font-size: 5.6em;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  margin-top: 0.4em;
-}
-.fp-phone .fp-title {
-  font-size: 3.2em;
-}
 .fp-tag {
   font: italic 400 1.9em/1.4 var(--font-cormorant), serif;
   color: #f4e7c8;
   margin-top: 1.2em;
   max-width: 20ch;
 }
-.fp-issue {
-  margin-top: 2.6em;
-  font: 500 1.05em var(--font-inter), sans-serif;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--gold);
+/* designed cover art: the image carries its own frame and text; letterbox matches its edge */
+.fp-cover-art {
+  background: #e8e1d2;
 }
-.fp-medallion {
-  width: 9em;
-  height: 9em;
-  border-radius: 9999px;
-  display: grid;
-  place-items: center;
-  color: var(--magenta);
-  border: 1.5px solid var(--gold);
-  background: radial-gradient(circle, #f4e7c8 0 62%, transparent 63%);
-  box-shadow: 0 0 0 0.5em color-mix(in srgb, var(--gold) 22%, transparent);
-  margin-bottom: 2.4em;
+.fp-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 /* the animated "By the numbers" leaf: a soft (non-hard) dark page */

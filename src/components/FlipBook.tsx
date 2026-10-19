@@ -51,7 +51,7 @@ export function FlipBook({ profiles, chrome }: { profiles: FlipProfile[]; chrome
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const bookRef = useRef<BookRef>(null);
   const flipping = useRef(false);
-  const [page, setPage] = useState(0);
+  const [pageState, setPageState] = useState({ key: '', page: 0 });
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -79,9 +79,8 @@ export function FlipBook({ profiles, chrome }: { profiles: FlipProfile[]; chrome
 
   // A new filter / breakpoint builds a new book, which opens on its cover.
   const bookKey = `${phone ? 'p' : 'd'}|${category}|${query}|${filtered.length}`;
-  useEffect(() => {
-    setPage(0);
-  }, [bookKey]);
+  const page = pageState.key === bookKey ? pageState.page : 0;
+  const setPage = (p: number) => setPageState({ key: bookKey, page: p });
 
   const children = useMemo(() => {
     const out: ReactElement[] = [
