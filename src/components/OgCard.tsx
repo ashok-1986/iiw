@@ -8,11 +8,13 @@ import { getInitials } from '@/lib/nominee';
  * duplicated. Keep in sync with :root when a token changes.
  * Layout is flex-only with explicit sizes: no grid, no shorthand borders.
  */
-const PLUM = '#1f3640';
-const ROSE = '#d7897f';
-const BLUSH = '#96c7b3';
-const GOLD = '#f9b95c';
-const CREAM = '#fffdfb';
+const PLUM = '#0e2b25'; // --ground
+const ROSE = '#c2185b'; // --magenta
+const BLUSH = '#5fc4a8'; // --menthe (emerald on ground)
+const GOLD = '#d4af37'; // --gold
+const CREAM = '#fff8ec'; // --surface-2
+const LIFT = '#15382f'; // ground, one step lighter
+const PAPER = '#fbf1dc'; // --surface
 
 export function OgProfileCard({
   name,
@@ -32,7 +34,7 @@ export function OgProfileCard({
         width: '100%',
         height: '100%',
         background: PLUM,
-        backgroundImage: `linear-gradient(115deg, ${PLUM} 0%, #2b4a57 55%, ${PLUM} 100%)`,
+        backgroundImage: `linear-gradient(115deg, ${PLUM} 0%, ${LIFT} 55%, ${PLUM} 100%)`,
         padding: 70,
         alignItems: 'center',
         gap: 64,
@@ -46,7 +48,7 @@ export function OgProfileCard({
           borderRadius: 146,
           border: `10px solid ${CREAM}`,
           outline: `3px solid ${ROSE}`,
-          background: '#fbebe4',
+          background: PAPER,
           alignItems: 'center',
           justifyContent: 'center',
           overflow: 'hidden',

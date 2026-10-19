@@ -48,7 +48,7 @@ export function SearchPill({ categories }: { categories: string[] }) {
     <div className="flex w-full flex-col items-center gap-3">
       <div
         className={
-          'lift flex w-full max-w-md items-center gap-2 rounded-full border bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-16px_rgb(160_74_64/0.4)] transition-colors ' +
+          'lift flex w-full max-w-md items-center gap-2 rounded-full border bg-[var(--surface-2)] px-4 py-2.5 shadow-[0_10px_30px_-16px_rgb(var(--shadow-ink)/0.4)] transition-colors ' +
           (pending ? 'border-[var(--blush)]' : 'border-[var(--border)]')
         }
       >

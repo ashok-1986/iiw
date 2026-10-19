@@ -4,11 +4,13 @@ import { loadOgFonts } from '@/lib/og-fonts';
 import { SITE_DESCRIPTION } from '@/lib/site';
 
 /** Site-level OpenGraph card: deep-lagoon ground, pêche rule, archive headline. */
-const PLUM = '#1f3640';
-const ROSE = '#d7897f';
-const GOLD = '#f9b95c';
-const CREAM = '#fffdfb';
-const BLUSH = '#96c7b3';
+// Literals copied from the tokens in globals.css (satori cannot read CSS variables).
+const PLUM = '#0e2b25'; // --ground
+const ROSE = '#c2185b'; // --magenta
+const GOLD = '#d4af37'; // --gold
+const CREAM = '#fff8ec'; // --surface-2
+const BLUSH = '#5fc4a8'; // --menthe
+const LIFT = '#15382f'; // ground, one step lighter
 
 export const alt = 'Inspiring Indian Women — a digital heirloom flipbook';
 export const size = { width: 1200, height: 630 };
@@ -26,7 +28,7 @@ export default async function Image() {
           width: '100%',
           height: '100%',
           background: PLUM,
-          backgroundImage: `linear-gradient(135deg, ${PLUM} 0%, #2b4a57 50%, ${PLUM} 100%)`,
+          backgroundImage: `linear-gradient(135deg, ${PLUM} 0%, ${LIFT} 50%, ${PLUM} 100%)`,
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',

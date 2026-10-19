@@ -1,62 +1,85 @@
 @import "tailwindcss";
 
 /* ============================================================
-   IIW Design System — Women-Centric Luxury (PRD §Design System)
-   Sabyasachi × Vogue India: archival, tactile, feminine but not fragile.
+   IIW Design System — "Emerald Court"
+   Jewel-toned Indian luxury: ivory pages glow against deep emerald; magenta and
+   marigold carry action and accent; gold is the foil.
+
+   Two contexts, both defined here and nowhere else (components never hold a hex):
+     paper  — dark ink on ivory.   :root, and .paper (the book pages, cards).
+     ground — light ink on emerald. body:has(.ground), i.e. the home page chrome.
+   Legacy token names (--nectarine, --peche, --menthe, --lagune, --plum, --rose…)
+   are stable hooks for the components — read them as roles, not hues:
+     --nectarine → magenta (primary)      --peche → marigold (secondary action)
+     --menthe    → emerald (cool accent)  --lagune → gold foil (rings, focus)
+     --plum      → deepest emerald ink (text on marigold)
    ============================================================ */
 
-:root {
-  /* Core palette — "Nectarine / Pêche / Menthe / Lagune".
-     The four brand colours are mid-tones, so they carry decor and accents; text
-     and the dark button ground use a deep-lagoon ink derived from Lagune.
-     Token names (--plum, --rose, --blush, --gold) are kept as stable hooks for
-     the components — read them as roles, not hues:
-       --plum  → deep ink          (derived from Lagune)
-       --rose  → Nectarine accent  --rose-deep → Nectarine for text
-       --gold  → Pêche foil        --blush     → Menthe secondary
-     Cards sit *brighter* than the page so the book glows instead of sinking. */
-  --nectarine: #d7897f; /* brand — Nectarine */
-  --peche: #f9b95c; /* brand — Pêche */
-  --menthe: #96c7b3; /* brand — Menthe */
-  --lagune: #6398a9; /* brand — Lagune (3.1:1 on paper: UI marks only, never text) */
-  --plum: #1f3640; /* deep lagoon ink; primary text ground (12.5:1 on paper) */
-  --rose: var(--nectarine); /* accent (decor only: 2.7:1 on paper) */
-  --blush: var(--menthe); /* secondary: selection, scrollbar, glow */
-  --gold: var(--peche); /* hairlines/foil (decor only) */
-  --cream: #fffdfb; /* paper */
-  --surface: #fff1de; /* page base under the colour mesh — warm peach-cream */
-  --surface-2: #fffefb; /* raised cards — the brightest thing on the page */
-  --surface-3: #ffe8d8; /* wells, chips, skeletons — nectarine-tinted */
-  --border: #f6d2bf; /* arch-card border */
-  --border-strong: #eeb59f;
-  --text: #1f3640;
-  --text-muted: #3f5f6b; /* lagoon, not a grey — 6.7:1 on paper */
-  /* --text-faint carries placeholder + 11px small caps, so it is held at ≥5:1
-     on every surface rather than the 3.4:1 a decorative gray would allow. */
-  --text-faint: #4e6c77;
-  --rose-deep: #a04a40; /* Nectarine for *text* on light ground (5.1:1+); --rose stays decor */
-  --code-bg: #1f3640;
-  --code-text: #fffaf5;
+:root,
+.paper {
+  --magenta: #c2185b; /* 5.9:1 under white button text; 5.6:1 on ivory */
+  --marigold: #f2a900;
+  --emerald: #2a8f78;
+  --emerald-deep: #0e2b25;
+  --gold: #d4af37;
+  --gold-hi: #f3dc8a;
+  --gold-lo: #9c7a1c;
+
+  --nectarine: var(--magenta);
+  --peche: var(--marigold);
+  --menthe: var(--emerald);
+  --lagune: var(--gold);
+  --plum: var(--emerald-deep);
+  --rose: var(--magenta);
+  --blush: #f6dcc0;
+
+  --ground: #0e2b25;
+  --cream: #fffdf8;
+  --surface: #fbf1dc; /* standalone pages (about, profile) */
+  --surface-2: #fff8ec; /* the page itself — ivory */
+  --surface-3: #f3e3c3; /* wells, chips, skeletons */
+  --border: #e6d3a8;
+  --border-strong: #d4af37;
+  --text: #1e1a16; /* 16.4:1 on ivory */
+  --text-muted: #4b433a; /* 9.2:1 */
+  --text-faint: #5a5045; /* 7.1:1 */
+  --rose-deep: #8a5a00; /* accent *text* on ivory — bronze, 5.6:1 */
+  --focus: #8a5a00;
+  --on-accent: #1e1a16; /* ink on marigold / gold fills */
+  --code-bg: #0e2b25;
+  --code-text: #fff8ec;
+
+  --shadow-ink: 14 43 37; /* r g b of --ground, for tinted shadows */
 
   /* Motif tokens */
   --hairline-gold: 0.5px solid var(--gold);
   --portrait-ring-inner: 4px solid var(--cream);
-  /* The outer ring is drawn as a spread shadow so it sits outside the inner
-     border without taking part of the image area. */
-  --portrait-ring-outer: 0 0 0 2px var(--nectarine), 0 0 0 6px rgb(249 185 92 / 0.6);
-  /* Shadows are nectarine-tinted: a grey shadow is what made the page read dull. */
-  --portrait-shadow: 0 14px 30px -12px rgb(160 74 64 / 0.45);
-  --card-shadow: 0 24px 54px -20px rgb(160 74 64 / 0.4);
+  /* Drawn as spread shadows so the rings sit outside the inner border. */
+  --portrait-ring-outer: 0 0 0 2px var(--magenta), 0 0 0 6px color-mix(in srgb, var(--gold) 80%, transparent);
+  --portrait-shadow: 0 14px 30px -12px rgb(var(--shadow-ink) / 0.5);
+  --card-shadow: 0 24px 54px -20px rgb(var(--shadow-ink) / 0.5);
 
-  /* Motion. Built-in eases are too weak for UI; these are the strong variants.
-     Curl is the one authored long-form moment — everything else stays ≤260ms. */
-  --ease-curl: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Motion. */
   --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
-  --dur-curl: 420ms;
-  --dur-curl-out: 260ms;
   --dur-ui: 200ms;
   --dur-press: 140ms;
+}
+
+/* Ground context: the home page. Everything that sits on the emerald, outside a
+   .paper surface, reads light-on-dark. */
+body:has(.ground),
+.ground {
+  --surface: var(--ground);
+  --surface-2: #15382f; /* raised dark: search pill, controls */
+  --surface-3: #1c4a3e;
+  --border: #2b5c4c;
+  --border-strong: var(--gold);
+  --text: #fff8ec; /* 14.3:1 on the ground */
+  --text-muted: #e9dcc0; /* 11.7:1 */
+  --text-faint: #cdbf9f; /* 8.6:1 */
+  --rose-deep: var(--gold); /* accent text on the ground: 7.2:1 */
+  --focus: var(--marigold);
+  --menthe: #5fc4a8; /* emerald, lifted for borders on dark */
 }
 
 @theme inline {
@@ -85,9 +108,8 @@ body {
   font-family: var(--font-body), "Lora", Georgia, serif;
 }
 
-/* Colour mesh: the four brand colours as large soft blooms on a fixed layer, so
-   the page is vivid at every scroll position instead of a flat pale wash. It sits
-   behind everything; cards stay near-white so text contrast is untouched. */
+/* Jewel blooms: magenta, marigold, emerald and gold as large soft lights on a
+   fixed layer, so the ground is rich at every scroll position, not a flat fill. */
 body::before {
   content: "";
   position: fixed;
@@ -95,19 +117,19 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(58% 48% at 8% 6%, rgb(249 185 92 / 0.55), transparent 72%),
-    radial-gradient(52% 44% at 94% 10%, rgb(150 199 179 / 0.62), transparent 72%),
-    radial-gradient(64% 50% at 88% 98%, rgb(215 137 127 / 0.45), transparent 72%),
-    radial-gradient(48% 42% at 4% 96%, rgb(99 152 169 / 0.36), transparent 72%);
+    radial-gradient(58% 48% at 8% 4%, color-mix(in srgb, var(--magenta) 30%, transparent), transparent 72%),
+    radial-gradient(52% 44% at 96% 8%, color-mix(in srgb, var(--marigold) 20%, transparent), transparent 72%),
+    radial-gradient(64% 50% at 90% 98%, color-mix(in srgb, var(--emerald) 38%, transparent), transparent 72%),
+    radial-gradient(48% 42% at 4% 96%, color-mix(in srgb, var(--gold) 16%, transparent), transparent 72%);
+}
+/* On the standalone ivory pages the blooms are barely-there warmth, not drama. */
+body:not(:has(.ground))::before {
+  opacity: 0.35;
 }
 
-/* Silk texture overlay (PRD motif spec). The weave is gold, not plum: plum
-   threads at 4% greyed every card; gold threads read as the sheen of silk.
-   A soft diagonal light catches the top corner the way a draped saree does. */
+/* Silk texture overlay (about / profile cards). Gold threads read as sheen. */
 .silk-overlay {
   position: relative;
-  /* The weave sits *under* the content: painted over it, it tinted portraits
-     and text too. Isolation keeps the negative z-index above the card fill. */
   isolation: isolate;
 }
 .silk-overlay::after {
@@ -117,41 +139,18 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(
-      135deg,
-      rgb(255 255 255 / 0.7) 0%,
-      rgb(255 255 255 / 0) 38%
-    ),
+    linear-gradient(135deg, rgb(255 255 255 / 0.7) 0%, rgb(255 255 255 / 0) 38%),
     repeating-linear-gradient(
       115deg,
       transparent 0px,
       transparent 3px,
-      rgb(249 185 92 / 0.09) 3px,
-      rgb(249 185 92 / 0.09) 4px
+      color-mix(in srgb, var(--gold) 12%, transparent) 3px,
+      color-mix(in srgb, var(--gold) 12%, transparent) 4px
     );
   border-radius: inherit;
 }
 
-/* Cover light: menthe and pêche glow behind the medallion, so the first
-   viewport opens bright instead of on flat paper. */
-.cover-glow {
-  isolation: isolate;
-}
-.cover-glow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(42% 34% at 50% 24%, rgb(255 255 255 / 0.95), rgb(255 255 255 / 0) 100%),
-    radial-gradient(60% 46% at 50% 26%, rgb(150 199 179 / 0.6), rgb(150 199 179 / 0) 100%),
-    radial-gradient(70% 34% at 50% 62%, rgb(249 185 92 / 0.38), rgb(249 185 92 / 0) 100%);
-  /* Every ellipse ends inside the section (26%+46%, 62%+34%), so the light
-     fades out before the edge and never stops on a seam. */
-}
-
-/* Arch-top card: 24px top radius, 12px bottom, 1px #E8D5CB, PRD shadow */
+/* Arch-top card: used by /about and /profile. */
 .arch-card {
   border-radius: 24px 24px 12px 12px;
   border: 1px solid var(--border);
@@ -159,128 +158,38 @@ body::before {
   background: var(--surface-2);
 }
 
-/* Flipbook page: four-colour accent band on top, spine-side radii so two pages
-   read as one open book, and a gutter shadow where the paper curves into the spine. */
-.page-card {
-  border-color: rgb(215 137 127 / 0.32);
-}
-.page-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 5px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    var(--peche),
-    var(--nectarine) 36%,
-    var(--menthe) 68%,
-    var(--lagune)
-  );
-}
-.arch-card.page-left {
-  border-radius: 24px 4px 4px 14px;
-}
-.arch-card.page-right {
-  border-radius: 4px 24px 14px 4px;
-}
-.page-gutter {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 44px;
-  z-index: 1;
-  pointer-events: none;
-}
-.page-gutter-left {
-  right: 0;
-  background: linear-gradient(to left, rgb(31 54 64 / 0.16), rgb(31 54 64 / 0));
-}
-.page-gutter-right {
-  left: 0;
-  background: linear-gradient(to right, rgb(31 54 64 / 0.16), rgb(31 54 64 / 0));
-}
-
-/* Gold hairline divider */
 .hairline-gold {
   height: 0;
   border-top: var(--hairline-gold);
 }
 
-/* Lagune focus ring (WCAG keyboard requirement; 3.1:1 on paper clears the 3:1
-   non-text bar that Nectarine at 2.7:1 does not) */
+/* Focus ring: a coloured outline plus a ground-coloured halo, so it clears 3:1
+   on both ivory and emerald. */
 :where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid var(--lagune);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--ground);
   border-radius: 4px;
 }
-
-/* Scrollable biography column: hairline gold thumb instead of the native
-   system scrollbar, which reads as chrome against the paper texture.
-   scrollbar-width/color must stay `auto` here — any other value makes Chrome
-   render its own native scrollbar (arrow buttons and all) and ignore the
-   ::-webkit-scrollbar rules below. */
-.bio-scroll {
-  scrollbar-width: auto;
-  scrollbar-color: auto;
-}
-.bio-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.bio-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.bio-scroll::-webkit-scrollbar-thumb {
-  background: rgb(99 152 169 / 0.7);
-  border-radius: 9999px;
-}
-/* Chrome keeps rendering the 4px track's arrow buttons; they read as stray
-   glyphs against the paper. */
-.bio-scroll::-webkit-scrollbar-button {
-  display: none;
-  height: 0;
-  width: 0;
+.paper :where(a, button, input, [tabindex]):focus-visible {
+  box-shadow: 0 0 0 5px var(--cream);
 }
 
-/* Bottom hairline fade on a scrolling biography: the text is complete and the
-   column is capped, so the fade is the scroll affordance. */
-.bio-fade {
-  position: relative;
-  min-height: 0;
-}
-/* Summaries are now short (under 300 words) and shown whole, so the fade must not
-   dim the last line. */
-.bio-fade::after {
-  content: "";
-  display: none;
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 30px;
-  pointer-events: none;
-  background: linear-gradient(to top, var(--surface-2), rgb(255 252 249 / 0));
-}
-
-/* ============================================================
-   Browser surfaces — selection, caret, scrollbar, focus, underlines
-   ship with defaults that belong to no design system. Themed here so
-   the parts nobody drew still carry the archival world.
-   ============================================================ */
 html {
   scroll-behavior: smooth;
 }
 body {
   caret-color: var(--rose-deep);
   -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden; /* flipbook + entrance transforms must never cause sideways scroll */
+  overflow-x: hidden;
 }
 ::selection {
-  background: var(--blush);
-  color: var(--plum);
+  background: var(--gold);
+  color: var(--emerald-deep);
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--lagune) transparent;
+  scrollbar-color: var(--gold) transparent;
 }
 a[href] {
   text-decoration-thickness: 1px;
@@ -309,24 +218,19 @@ a[href] {
 @media (hover: hover) and (pointer: fine) {
   .lift:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 40px -18px rgb(160 74 64 / 0.4);
+    box-shadow: 0 18px 40px -18px rgb(var(--shadow-ink) / 0.6);
   }
 }
 
-/* Portrait physics lives inside the card's overflow-hidden ring. The card has
-   no surface of its own, so its hover drives the portrait rather than lifting a
-   background-less box. */
 .portrait img {
   transition: transform 700ms var(--ease-out-quint);
 }
 @media (hover: hover) and (pointer: fine) {
   .hoverable:hover .portrait img {
-    transform: scale(1.06);
+    transform: scale(1.05);
   }
 }
 
-/* One-shot entrances. Kept on decorative surfaces only — the hero H1 is the
-   LCP element and never animates opacity. */
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -342,20 +246,271 @@ a[href] {
   animation-delay: var(--rise-delay, 0ms);
 }
 
-/* The authored moment: the 3D medallion blooms up from the paper on mount. */
-@keyframes bloom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9) rotateX(24deg);
+@keyframes lotus-float {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  to {
-    opacity: 1;
-    transform: none;
+  50% {
+    transform: translateY(-5px);
   }
 }
-.bloom-in {
-  transform-origin: center;
-  animation: bloom-in 1000ms var(--ease-out-quint) both;
+.lotus-float {
+  animation: lotus-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ============================================================
+   The book (react-pageflip). Pages are a fixed design size scaled by their own
+   width: .fp is a size container, .fp-in sets 1em = (page width / 46) on desktop
+   or / 30 on a phone, and everything inside is em-based — so nothing can
+   overflow at any viewport; it just scales with the page.
+   ============================================================ */
+.fp {
+  container-type: size;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.fp-in {
+  --u: calc(100cqw / 46);
+  font-size: var(--u);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 4.6em 4.4em 4.2em;
+  gap: 2.4em;
+}
+.fp-phone .fp-in {
+  --u: calc(100cqw / 30);
+  padding: 2.2em 2em 3.6em;
+  gap: 1.6em;
+}
+/* paper: faint warm grain + the gutter shade where the leaf curves into the spine */
+.fp-paper {
+  background:
+    radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--cream) 90%, transparent), transparent 70%),
+    var(--surface-2);
+}
+.fp-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    115deg,
+    transparent 0 3px,
+    color-mix(in srgb, var(--gold) 7%, transparent) 3px 4px
+  );
+}
+.fp-paper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14%;
+  pointer-events: none;
+}
+.fp-left::after {
+  right: 0;
+  background: linear-gradient(to left, rgb(var(--shadow-ink) / 0.22), transparent);
+}
+.fp-right::after {
+  left: 0;
+  background: linear-gradient(to right, rgb(var(--shadow-ink) / 0.22), transparent);
+}
+.fp-folio {
+  position: absolute;
+  bottom: 1.8em;
+  font: 500 1.05em var(--font-inter), sans-serif;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+}
+.fp-left .fp-folio {
+  left: 4.4em;
+}
+.fp-right .fp-folio {
+  right: 4.4em;
+}
+.fp-phone .fp-folio {
+  left: auto;
+  right: 2em;
+  bottom: 1.4em;
+}
+
+.fp-card {
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+  min-height: 0;
+}
+.fp-card h3 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 600;
+  font-size: 2em;
+  line-height: 1.15;
+  color: var(--text);
+}
+.fp-org {
+  display: block;
+  margin-top: 0.5em;
+  font: 500 1.15em/1.35 var(--font-inter), sans-serif;
+  color: var(--rose-deep);
+}
+.fp-summary {
+  margin-top: 0.9em;
+  font: 400 1.42em/1.58 var(--font-lora), serif;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.fp-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.3em;
+  padding: 0.75em 1.5em;
+  border-radius: 9999px;
+  background: var(--magenta);
+  color: #fff;
+  font: 600 1.05em var(--font-inter), sans-serif;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.fp-rule {
+  height: 2px;
+  flex: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--magenta), var(--gold), var(--emerald));
+  opacity: 0.75;
+}
+
+/* phone: one profile per page, portrait on top */
+.fp-phone .fp-card {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.8em;
+}
+.fp-phone .fp-card h3 {
+  font-size: 2.1em;
+}
+.fp-phone .fp-summary {
+  font-size: 1.35em;
+  text-align: left;
+  -webkit-line-clamp: 10;
+}
+.fp-phone .fp-btn {
+  font-size: 1em;
+  padding: 0.95em 1.9em;
+}
+@media (pointer: coarse) {
+  .fp-btn {
+    min-height: 44px;
+  }
+}
+
+/* hard covers */
+.fp-cover {
+  background:
+    radial-gradient(70% 50% at 50% 30%, color-mix(in srgb, var(--emerald) 35%, transparent), transparent 70%),
+    radial-gradient(60% 40% at 20% 100%, color-mix(in srgb, var(--magenta) 30%, transparent), transparent 70%),
+    #0a1f1b;
+  color: #f4e7c8;
+}
+.fp-cover .fp-in {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3.6em;
+  gap: 0;
+}
+.fp-cover-frame {
+  position: absolute;
+  inset: 2.2em;
+  border: 1px solid var(--gold);
+  pointer-events: none;
+}
+.fp-cover-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0.5em;
+  border: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+}
+.foil {
+  background: linear-gradient(120deg, var(--gold-lo) 0%, var(--gold-hi) 28%, var(--gold) 46%, var(--gold-hi) 62%, var(--gold-lo) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.fp-masthead {
+  font: 600 1em var(--font-inter), sans-serif;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.fp-title {
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  font-size: 5.6em;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin-top: 0.4em;
+}
+.fp-phone .fp-title {
+  font-size: 3.2em;
+}
+.fp-tag {
+  font: italic 400 1.9em/1.4 var(--font-cormorant), serif;
+  color: #f4e7c8;
+  margin-top: 1.2em;
+  max-width: 20ch;
+}
+.fp-issue {
+  margin-top: 2.6em;
+  font: 500 1.05em var(--font-inter), sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.fp-medallion {
+  width: 9em;
+  height: 9em;
+  border-radius: 9999px;
+  display: grid;
+  place-items: center;
+  color: var(--magenta);
+  border: 1.5px solid var(--gold);
+  background: radial-gradient(circle, #f4e7c8 0 62%, transparent 63%);
+  box-shadow: 0 0 0 0.5em color-mix(in srgb, var(--gold) 22%, transparent);
+  margin-bottom: 2.4em;
+}
+
+/* the stage the book sits on */
+.book-stage {
+  --stage-h: clamp(520px, calc(100svh - 270px), 860px);
+  height: var(--stage-h);
+}
+/* a closed book sits on one side of the spread; slide it to centre */
+.book-slide {
+  transition: transform 450ms var(--ease-out-quint);
+}
+.book-progress {
+  height: 4px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--gold) 28%, transparent);
+  overflow: hidden;
+}
+.book-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--magenta), var(--marigold), var(--gold));
+  transition: width 300ms var(--ease-out-quint);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -363,12 +518,16 @@ a[href] {
     scroll-behavior: auto;
   }
   .rise-in,
-  .bloom-in {
+  .lotus-float,
+  .lightbox-backdrop,
+  .lightbox-panel {
     animation: none;
   }
   .press,
   .lift,
-  .portrait img {
+  .portrait img,
+  .book-slide,
+  .book-progress > span {
     transition: none;
   }
   .press:active,
@@ -379,10 +538,10 @@ a[href] {
 }
 
 /* ============================================================
-   Portrait lightbox (click-to-zoom trigger) + ambient lotus drift
+   Portrait lightbox
    ============================================================ */
 .lightbox-backdrop {
-  background: rgb(31 54 64 / 0.62);
+  background: rgb(var(--shadow-ink) / 0.78);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   animation: lb-fade 180ms var(--ease-out-quint) both;
@@ -390,12 +549,21 @@ a[href] {
 .lightbox-panel {
   animation: lb-pop 220ms var(--ease-out-quint) both;
 }
-@keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes lb-pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
-
-@keyframes lotus-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-.lotus-float { animation: lotus-float 7s ease-in-out infinite; will-change: transform; }
-
-@media (prefers-reduced-motion: reduce) {
-  .lightbox-backdrop, .lightbox-panel, .lotus-float { animation: none; }
+@keyframes lb-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes lb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }

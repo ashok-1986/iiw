@@ -40,7 +40,7 @@ export function Lightbox() {
         onClick={(e) => e.stopPropagation()}
         className="lightbox-panel flex w-full max-w-[440px] flex-col items-center"
       >
-        <div className="relative w-full overflow-hidden rounded-[22px] border border-[var(--cream)]/50 bg-[var(--surface-2)] shadow-[0_44px_90px_-30px_rgb(31_54_64/0.75)]">
+        <div className="relative w-full overflow-hidden rounded-[22px] border border-[var(--cream)]/50 bg-[var(--surface-2)] shadow-[0_44px_90px_-30px_rgb(var(--shadow-ink)/0.75)]">
           {/* eslint-disable-next-line @next/next/no-img-element -- full-res zoom, not a layout image */}
           <img src={item.src} alt={item.name} className="h-auto w-full object-cover" />
         </div>
@@ -59,7 +59,7 @@ export function Lightbox() {
         type="button"
         onClick={close}
         aria-label="Close"
-        className="press absolute right-5 top-5 grid size-10 cursor-pointer place-items-center rounded-full bg-[var(--surface-2)] text-[var(--plum)] shadow-[0_8px_24px_-8px_rgb(31_54_64/0.6)]"
+        className="press absolute right-5 top-5 grid size-10 cursor-pointer place-items-center rounded-full bg-[var(--surface-2)] text-[var(--plum)] shadow-[0_8px_24px_-8px_rgb(var(--shadow-ink)/0.6)]"
       >
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
