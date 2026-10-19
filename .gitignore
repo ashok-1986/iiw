@@ -47,3 +47,7 @@ next-env.d.ts
 
 # lotus medallion build output — the shipped bytes live in public/models/
 tools/lotus/artifact.glb
+
+# raw portrait downloads (pre-crop)
+/.cache/
+/tools/node_modules/

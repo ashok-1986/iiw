@@ -1,0 +1,16 @@
+{
+  "name": "iiw-tools",
+  "version": "1.0.0",
+  "description": "Optional deps for tools/refresh-data.mjs (face-centred crops). Run: cd tools && npm i",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "onnxruntime-node": "^1.30.0"
+  }
+}
