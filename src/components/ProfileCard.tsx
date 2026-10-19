@@ -1,71 +1,31 @@
-import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import type { FlipProfile } from '@/lib/flipbook-store';
 import { PortraitArch } from './PortraitArch';
-import { RangoliDivider } from './RangoliDivider';
 
 /**
- * Arch profile card — PRD component spec: arch container, PortraitArch,
- * name (Playfair 20px), category line (Inter 11px uppercase, only when populated),
- * summary in Lora 14px, rangoli/gold divider.
- *
- * The portrait is the plate, not a thumbnail: 176–192px. From md up it sits
- * beside the text column instead of above it, which keeps the plate large *and*
- * gives the biography a two–three times taller reading area than the stacked
- * version. Phones get a full-page plate because the page now holds one profile.
- * Breakpoint sizing lives in CSS so nothing re-lays-out on hydration.
- *
- * Bios run to 6,400 chars, so the summary scrolls inside a capped, faded box
- * rather than being clipped or truncated — the full text is the published content.
- * `delay` is only nonzero on the book's first view; from the second spread on,
- * the page turn is the animation and cards do not compete with it.
+ * One profile on a book page. Everything is sized in `em` against the page's own
+ * width (see .fp-in in globals.css), so the card scales with the page and can never
+ * overflow it: the portrait plate sits beside the text on a desktop page and on top
+ * of it on a phone page. The summary is the SHORT executive summary only, clamped
+ * to a fixed number of lines — the long bio lives on /profile/[slug].
  */
-export function ProfileCard({ nominee, delay = 0 }: { nominee: FlipProfile; delay?: number }) {
+export function ProfileCard({ nominee }: { nominee: FlipProfile }) {
   return (
-    <article
-      className={
-        'hoverable group flex min-h-0 flex-1 flex-col items-center gap-4 text-center md:flex-row md:items-center md:gap-7 md:text-left' +
-        (delay ? ' rise-in' : '')
-      }
-      style={delay ? ({ '--rise-delay': `${delay}ms` } as CSSProperties) : undefined}
-    >
+    <article className="fp-card hoverable">
       <PortraitArch
         name={nominee.name}
         imageId={nominee.imageId}
         image={nominee.image}
         org={nominee.org}
         zoomable
-        sizeClass="size-[176px] xl:size-[192px]"
-        sizes="(max-width: 1279px) 176px, 192px"
+        sizeClass="size-[10em] [.fp-phone_&]:size-[9.2em]"
+        sizes="160px"
       />
-      <div className="flex min-h-0 w-full min-w-0 flex-col gap-3">
-        <div>
-          <h3 className="font-(family-name:--font-display) text-[22px] font-semibold leading-tight tracking-tight text-[var(--text)]">
-            {nominee.name}
-          </h3>
-          {nominee.org && (
-            <p className="mt-1.5 font-(family-name:--font-ui) text-[12px] font-medium leading-snug text-[var(--rose-deep)]">
-              {nominee.org}
-            </p>
-          )}
-        </div>
-        <RangoliDivider className="w-full" />
-        <div className="bio-fade w-full min-h-0">
-          <div
-            className="bio-scroll max-h-[34vh] w-full overflow-y-auto px-1 text-left"
-            tabIndex={0}
-            role="region"
-            aria-label={`${nominee.name} — biography, scrollable`}
-          >
-            <p className="font-(family-name:--font-body) text-[15px] leading-[1.7] text-[var(--text-muted)]">
-              {nominee.summary}
-            </p>
-          </div>
-        </div>
-        <Link
-          href={`/profile/${nominee.slug}`}
-          className="press cursor-pointer self-start rounded-full bg-[var(--peche)] px-4 py-1.5 pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center font-(family-name:--font-ui) text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--plum)] transition-colors duration-200 hover:bg-[var(--nectarine)]"
-        >
+      <div className="min-w-0">
+        <h3 className="line-clamp-2">{nominee.name}</h3>
+        {nominee.org && <span className="fp-org line-clamp-2">{nominee.org}</span>}
+        <p className="fp-summary">{nominee.summary}</p>
+        <Link href={`/profile/${nominee.slug}`} className="fp-btn press">
           Full profile
         </Link>
       </div>

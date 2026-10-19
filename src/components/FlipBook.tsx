@@ -1,17 +1,18 @@
 'use client';
 
+import { useReducedMotion } from 'framer-motion';
+import HTMLFlipBook from 'react-pageflip';
 import {
-  animate,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-  type MotionValue,
-  type PanInfo,
-} from 'framer-motion';
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactElement,
+} from 'react';
+import { BookCover } from './BookCover';
 import { Page } from './Page';
-import { ProgressDots } from './ProgressDots';
 import { SoundToggle } from './SoundToggle';
 import { playFlip } from '@/lib/sound';
 import { chunkIntoPages } from '@/lib/paginate';
@@ -19,191 +20,36 @@ import { useIsMobile } from '@/lib/use-is-mobile';
 import { useFlipbook, type FlipProfile } from '@/lib/flipbook-store';
 
 /**
- * A page turn is a physical leaf, not a fade:
- *  - the leaf hinges on the spine (desktop) or its left edge (phone) and has two
- *    faces — the page being left behind on the front, the page arriving on the back —
- *    so the incoming page is carried over rather than popped in;
- *  - the pages underneath are already the destination pages, revealed as the leaf lifts;
- *  - light follows the angle: the leaf darkens as it stands up, and casts a soft shadow
- *    first on the page it uncovers, then on the page it lands on;
- *  - a drag drives the leaf directly (progress = finger travel), so the page follows
- *    the hand and settles with a flick or springs back if released early.
- * Progress `p` (0..1) is the single source of truth; every visual derives from it.
+ * The book is react-pageflip (StPageFlip): fixed-ratio pages, a real curl with
+ * shadow, drag / swipe / corner-pull, and hard covers. Page 1 is the front cover,
+ * content pages follow (2 profiles each on desktop, 1 on a phone), and the back
+ * cover is last. The folio printed on a page is its 1-based index in the book, so
+ * numbers are consecutive and even = left page. Desktop keeps the page count even
+ * (blank filler leaf) so the back cover lands alone on its own leaf.
  */
-const PAPER_EASE: [number, number, number, number] = [0.645, 0.045, 0.355, 1];
-const SETTLE_EASE: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
-const TURN_S = 0.9;
-const JUMP_S = 0.7;
-/** Fraction of the stage width a finger must travel for a complete turn. */
-const DRAG_SPAN = 0.85;
-const COMMIT_PROGRESS = 0.32;
-const FLICK_VELOCITY = 520;
-const PHONE_ANGLE = 104;
-const INK = '31 54 64';
+const DESKTOP = { width: 550, height: 715, minWidth: 330, maxWidth: 720, minHeight: 430, maxHeight: 940 };
+const PHONE = { width: 360, height: 630, minWidth: 260, maxWidth: 520, minHeight: 440, maxHeight: 940 };
 
-type Dir = 1 | -1;
-type Side = 'left' | 'right';
-interface Leaf {
-  dir: Dir;
-  from: number;
-  to: number;
+interface FlipApi {
+  flipNext: () => void;
+  flipPrev: () => void;
+  flip: (page: number) => void;
+  turnToPage: (page: number) => void;
+}
+interface BookRef {
+  pageFlip: () => FlipApi | undefined;
 }
 
-const radiusOf = (side: Side | 'solo') =>
-  side === 'left' ? '24px 4px 4px 14px' : side === 'right' ? '4px 24px 14px 4px' : '24px 24px 14px 14px';
-
-/** Soft shadow laid on a page by the leaf passing over it. */
-function Cast({
-  p,
-  spine,
-  input,
-  output,
-  radius,
-}: {
-  p: MotionValue<number>;
-  spine: Side;
-  input: number[];
-  output: number[];
-  radius: string;
-}) {
-  const opacity = useTransform(p, input, output);
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{
-        opacity,
-        borderRadius: radius,
-        background: `linear-gradient(to ${spine === 'left' ? 'right' : 'left'}, rgb(${INK} / 0.7), rgb(${INK} / 0) 58%)`,
-      }}
-    />
-  );
-}
-
-/** Darkening on a leaf face as it stands up toward the light. */
-function Shade({
-  p,
-  spine,
-  input,
-  output,
-}: {
-  p: MotionValue<number>;
-  spine: Side;
-  input: number[];
-  output: number[];
-}) {
-  const opacity = useTransform(p, input, output);
-  return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{
-        opacity,
-        background: `linear-gradient(to ${spine === 'left' ? 'right' : 'left'}, rgb(${INK} / 0.85), rgb(${INK} / 0) 75%)`,
-      }}
-    />
-  );
-}
-
-function TurningLeaf({
-  p,
-  dir,
-  phone,
-  front,
-  back,
-}: {
-  p: MotionValue<number>;
-  dir: Dir;
-  phone: boolean;
-  front: ReactNode;
-  back: ReactNode;
-}) {
-  const angle = useTransform(p, (v) => {
-    if (phone) return dir === 1 ? -PHONE_ANGLE * v : -PHONE_ANGLE * (1 - v);
-    return dir === 1 ? -180 * v : 180 * v;
-  });
-  const opacity = useTransform(
-    p,
-    phone ? (dir === 1 ? [0, 0.7, 1] : [0, 0.3, 1]) : [0, 1],
-    phone ? (dir === 1 ? [1, 1, 0] : [0, 1, 1]) : [1, 1],
-  );
-  const lift = useTransform(p, (v) => {
-    const s = Math.sin(Math.PI * v);
-    return `0 ${8 + 26 * s}px ${26 + 44 * s}px -10px rgb(${INK} / ${(0.1 + 0.36 * s).toFixed(3)})`;
-  });
-
-  const frontSpine: Side = phone || dir === 1 ? 'left' : 'right';
-  const backSpine: Side = frontSpine === 'left' ? 'right' : 'left';
-  const position = phone
-    ? { left: 0, width: '100%', transformOrigin: 'left center' }
-    : dir === 1
-      ? { left: '50%', width: '50%', transformOrigin: 'left center' }
-      : { left: 0, width: '50%', transformOrigin: 'right center' };
-  const frontRadius = phone ? radiusOf('solo') : radiusOf(dir === 1 ? 'right' : 'left');
-  const backRadius = radiusOf(dir === 1 ? 'left' : 'right');
-
-  // The desktop leaf's front face darkens until edge-on (p = .5), then its back face
-  // brightens back to flat paper. The phone leaf has a single face.
-  const frontIn = phone ? [0, 1] : [0, 0.5];
-  const frontOut = phone ? (dir === 1 ? [0, 0.3] : [0.3, 0]) : [0, 0.4];
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      {...({ inert: true } as object)}
-      className="absolute top-0 bottom-0 z-30"
-      style={{
-        ...position,
-        rotateY: angle,
-        opacity,
-        boxShadow: lift,
-        borderRadius: frontRadius,
-        transformStyle: 'preserve-3d',
-        willChange: 'transform',
-      }}
-    >
-      <div className="absolute inset-0" style={{ backfaceVisibility: 'hidden' }}>
-        {front}
-        <Shade p={p} spine={frontSpine} input={frontIn} output={frontOut} />
-      </div>
-      {!phone && (
-        <div
-          className="absolute inset-0"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', borderRadius: backRadius }}
-        >
-          {back}
-          <Shade p={p} spine={backSpine} input={[0.5, 1]} output={[0.4, 0]} />
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-function EndCard({ side }: { side: Side | 'solo' }) {
-  return (
-    <div
-      className={
-        'arch-card silk-overlay page-card relative flex h-full min-w-0 items-center justify-center overflow-hidden ' +
-        (side === 'left' ? 'page-left' : side === 'right' ? 'page-right' : '')
-      }
-    >
-      <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
-        End of the archive
-      </p>
-    </div>
-  );
-}
+const noopSubscribe = () => () => {};
 
 export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
-  const { spread, go, setTotalSpreads, query, category } = useFlipbook();
+  const { query, category } = useFlipbook();
   const phone = useIsMobile();
   const reduced = useReducedMotion();
-  const [leaf, setLeaf] = useState<Leaf | null>(null);
-  const [settled, setSettled] = useState(false);
-  const busy = useRef(false);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const pan = useRef<{ active: boolean; dir: Dir; to: number }>({ active: false, dir: 1, to: 0 });
-  const p = useMotionValue(0);
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const bookRef = useRef<BookRef>(null);
+  const flipping = useRef(false);
+  const [page, setPage] = useState(0);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -219,232 +65,174 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     });
   }, [profiles, query, category]);
 
-  const pages = useMemo(() => chunkIntoPages(filtered, phone ? 1 : 2), [filtered, phone]);
-  // PRD responsive rule: desktop shows a two-page spread, mobile shows one page per turn.
-  const totalSpreads = Math.max(1, phone ? pages.length : Math.ceil(pages.length / 2));
+  const contentPages = useMemo(() => chunkIntoPages(filtered, phone ? 1 : 2), [filtered, phone]);
   const empty = filtered.length === 0;
+  const needsFiller = !phone && contentPages.length % 2 === 1;
+  const total = contentPages.length + (needsFiller ? 1 : 0) + 2; // + front and back cover
+  const last = total - 1;
 
-  useEffect(() => setTotalSpreads(totalSpreads), [totalSpreads, setTotalSpreads]);
+  // A new filter / breakpoint builds a new book, which opens on its cover.
+  const bookKey = `${phone ? 'p' : 'd'}|${category}|${query}|${filtered.length}`;
+  useEffect(() => {
+    setPage(0);
+  }, [bookKey]);
 
-  const pageAt = (idx: number, side: Side) =>
-    phone ? (side === 'left' ? pages[idx] : undefined) : pages[idx * 2 + (side === 'right' ? 1 : 0)];
-  const numberAt = (idx: number, side: Side) => (phone ? idx + 1 : idx * 2 + (side === 'right' ? 2 : 1));
-  const staggerOn = !settled && !leaf;
+  const children = useMemo(() => {
+    const out: ReactElement[] = [
+      <BookCover key="front" variant="front" count={profiles.length} phone={phone} />,
+    ];
+    contentPages.forEach((p, i) => {
+      out.push(<Page key={`p${i}-${p[0]?.id}`} profiles={p} number={i + 2} phone={phone} />);
+    });
+    if (needsFiller) {
+      out.push(<Page key="filler" profiles={[]} number={contentPages.length + 2} phone={false} />);
+    }
+    out.push(<BookCover key="back" variant="back" count={profiles.length} phone={phone} />);
+    return out;
+  }, [contentPages, needsFiller, phone, profiles.length]);
 
-  const nodeAt = (idx: number, side: Side) => {
-    const content = pageAt(idx, side);
-    const kind: Side | 'solo' = phone ? 'solo' : side;
-    return content ? (
-      <Page
-        key={`${side}-${idx}`}
-        profiles={content}
-        pageNumber={numberAt(idx, side)}
-        stagger={staggerOn}
-        solo={phone}
-        side={kind}
-      />
-    ) : (
-      <EndCard key={`${side}-${idx}-end`} side={kind} />
-    );
-  };
-
-  const finish = useCallback(() => {
-    setLeaf(null);
-    busy.current = false;
-  }, []);
-
-  const turnTo = useCallback(
+  const api = () => bookRef.current?.pageFlip();
+  const next = useCallback(() => api()?.flipNext(), []);
+  const prev = useCallback(() => api()?.flipPrev(), []);
+  const jump = useCallback(
     (to: number) => {
-      const target = Math.max(0, Math.min(to, totalSpreads - 1));
-      if (target === spread || busy.current || empty) return;
-      playFlip();
-      setSettled(true);
-      if (reduced) {
-        go(target);
-        return;
-      }
-      busy.current = true;
-      const dir: Dir = target > spread ? 1 : -1;
-      p.set(0);
-      setLeaf({ dir, from: spread, to: target });
-      go(target);
-      animate(p, 1, {
-        duration: Math.abs(target - spread) > 1 ? JUMP_S : TURN_S,
-        ease: PAPER_EASE,
-        onComplete: finish,
-      });
+      const target = Math.max(0, Math.min(to, last));
+      if (reduced) api()?.turnToPage(target);
+      else api()?.flip(target);
     },
-    [totalSpreads, spread, empty, reduced, go, p, finish],
+    [last, reduced],
   );
 
-  // Keyboard flip (WCAG requirement in the PRD)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') turnTo(spread + 1);
-      else if (e.key === 'ArrowLeft') turnTo(spread - 1);
-      else if (e.key === 'Home') turnTo(0);
-      else if (e.key === 'End') turnTo(totalSpreads - 1);
+      const el = e.target as HTMLElement | null;
+      if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === 'ArrowRight') next();
+      else if (e.key === 'ArrowLeft') prev();
+      else if (e.key === 'Home') {
+        e.preventDefault();
+        jump(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        jump(last);
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [spread, totalSpreads, turnTo]);
+  }, [next, prev, jump, last]);
 
-  // Drag-to-turn: the finger drives the leaf directly.
-  const onPanStart = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    pan.current.active = false;
-    if (busy.current || reduced || empty) return;
-    if (Math.abs(info.offset.x) < Math.abs(info.offset.y)) return; // vertical intent: let the bio scroll
-    const dir: Dir = info.offset.x < 0 ? 1 : -1;
-    const to = spread + dir;
-    if (to < 0 || to > totalSpreads - 1) return;
-    busy.current = true;
-    pan.current = { active: true, dir, to };
-    setSettled(true);
-    p.set(0);
-    setLeaf({ dir, from: spread, to });
-  };
-
-  const onPan = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!pan.current.active) return;
-    const width = stageRef.current?.offsetWidth || 1000;
-    const travel = pan.current.dir === 1 ? -info.offset.x : info.offset.x;
-    p.set(Math.min(1, Math.max(0, travel / (width * DRAG_SPAN))));
-  };
-
-  const onPanEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const st = pan.current;
-    if (!st.active) return;
-    st.active = false;
-    const current = p.get();
-    const speed = st.dir === 1 ? -info.velocity.x : info.velocity.x;
-    if (current > COMMIT_PROGRESS || speed > FLICK_VELOCITY) {
-      go(st.to);
-      playFlip();
-      animate(p, 1, { duration: 0.55 * (1 - current) + 0.2, ease: SETTLE_EASE, onComplete: finish });
-    } else {
-      animate(p, 0, { duration: 0.4, ease: SETTLE_EASE, onComplete: finish });
-    }
-  };
-
-  const atStart = spread === 0;
-  const atEnd = spread >= totalSpreads - 1;
-
-  // What lies under the leaf while it turns (the destination pages), and what it carries.
-  let leftIdx = spread;
-  let rightIdx = spread;
-  let front: ReactNode = null;
-  let back: ReactNode = null;
-  if (leaf) {
-    if (phone) {
-      // One page: the base is whichever page the leaf is not carrying.
-      leftIdx = leaf.dir === 1 ? leaf.to : leaf.from;
-      front = nodeAt(leaf.dir === 1 ? leaf.from : leaf.to, 'left');
-    } else if (leaf.dir === 1) {
-      leftIdx = leaf.from;
-      rightIdx = leaf.to;
-      front = nodeAt(leaf.from, 'right');
-      back = nodeAt(leaf.to, 'left');
-    } else {
-      leftIdx = leaf.to;
-      rightIdx = leaf.from;
-      front = nodeAt(leaf.from, 'left');
-      back = nodeAt(leaf.to, 'right');
-    }
-  }
-
-  const landSide: Side = leaf?.dir === 1 ? 'left' : 'right';
-  const castIn = (side: Side) => (landSide === side ? [0.4, 0.78, 1] : [0, 0.28, 0.7]);
-  const castOut = (side: Side) => (landSide === side ? [0, 0.3, 0] : [0, 0.34, 0]);
+  const size = phone ? PHONE : DESKTOP;
+  const atStart = page <= 0;
+  const atEnd = page >= last;
+  const pct = last > 0 ? Math.min(100, Math.max(0, (page / last) * 100)) : 0;
+  // The library sizes the book from its parent's WIDTH only (height = width x ratio), so cap
+  // that width from the stage height: the open book is two pages wide, a phone book one.
+  const ratio = size.height / size.width;
+  const frameWidth = `min(100%, calc(var(--stage-h) * ${((phone ? 1 : 2) / ratio).toFixed(4)}))`;
+  // A closed book (cover or back cover alone) sits in one half of the spread: slide it to centre.
+  const slide = phone || (page > 0 && page < last) ? 'translateX(0)' : `translateX(${page === 0 ? '-25%' : '25%'})`;
+  // A desktop spread shows two pages (odd index = left page of a spread); covers show alone.
+  const shown =
+    phone || page === 0 || page === last
+      ? [page + 1]
+      : page % 2 === 1
+        ? [page + 1, page + 2]
+        : [page, page + 1];
 
   return (
     <section
       className="mx-auto w-full max-w-[1180px] px-4"
       role="region"
       aria-roledescription="paginated book"
-      aria-label="IIW flipbook"
+      aria-label="Inspiring Indian Women flipbook"
     >
-      <motion.div
-        ref={stageRef}
-        className="relative h-[76vh] min-h-[560px] select-none"
-        style={{ perspective: '2200px', touchAction: 'pan-y' }}
-        onPanStart={onPanStart}
-        onPan={onPan}
-        onPanEnd={onPanEnd}
-        aria-busy={leaf ? true : undefined}
-      >
+      <div className="book-stage relative flex items-center justify-center select-none">
         {empty ? (
-          <div className="arch-card silk-overlay flex h-full min-w-0 items-center justify-center">
-            <p className="font-(family-name:--font-accent) text-[18px] italic text-[var(--text-muted)]">
-              No profiles match your search
-            </p>
+          <p className="font-(family-name:--font-accent) text-[20px] italic text-[var(--text-muted)]">
+            No profiles match your search
+          </p>
+        ) : mounted ? (
+          <div className="h-full" style={{ width: frameWidth }}>
+          <HTMLFlipBook
+            key={bookKey}
+            ref={bookRef as never}
+            className="iiw-book book-slide"
+            style={{ transform: slide }}
+            startPage={0}
+            size="stretch"
+            width={size.width}
+            height={size.height}
+            minWidth={size.minWidth}
+            maxWidth={size.maxWidth}
+            minHeight={size.minHeight}
+            maxHeight={size.maxHeight}
+            drawShadow={!reduced}
+            flippingTime={reduced ? 1 : 900}
+            usePortrait={true}
+            startZIndex={0}
+            autoSize={true}
+            maxShadowOpacity={0.55}
+            showCover={true}
+            mobileScrollSupport={true}
+            clickEventForward={true}
+            useMouseEvents={true}
+            swipeDistance={30}
+            showPageCorners={!reduced}
+            disableFlipByClick={true}
+            onFlip={(e: { data: number }) => setPage(e.data)}
+            onChangeState={(e: { data: string }) => {
+              const isFlipping = e.data === 'flipping';
+              if (isFlipping && !flipping.current) playFlip();
+              flipping.current = isFlipping;
+            }}
+          >
+            {children}
+          </HTMLFlipBook>
           </div>
-        ) : phone ? (
-          <div className="relative h-full min-w-0">
-            {nodeAt(leftIdx, 'left')}
-            {leaf && (
-              <Cast
-                p={p}
-                spine="left"
-                input={[0, 0.5, 1]}
-                output={leaf.dir === 1 ? [0.3, 0.18, 0] : [0, 0.18, 0.3]}
-                radius={radiusOf('solo')}
-              />
-            )}
-          </div>
-        ) : (
-          <>
-            {/* the gutter: a dark strip behind the pages so the open book has a spine */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-y-2 left-1/2 w-2 -translate-x-1/2 rounded bg-[var(--plum)]/30"
-            />
-            <div className="relative z-10 grid h-full grid-cols-2">
-              <div className="relative h-full min-w-0">
-                {nodeAt(leftIdx, 'left')}
-                {leaf && (
-                  <Cast p={p} spine="right" input={castIn('left')} output={castOut('left')} radius={radiusOf('left')} />
-                )}
-              </div>
-              <div className="relative h-full min-w-0">
-                {nodeAt(rightIdx, 'right')}
-                {leaf && (
-                  <Cast p={p} spine="left" input={castIn('right')} output={castOut('right')} radius={radiusOf('right')} />
-                )}
-              </div>
-            </div>
-          </>
-        )}
-
-        {leaf && !empty && <TurningLeaf p={p} dir={leaf.dir} phone={phone} front={front} back={back} />}
-      </motion.div>
+        ) : null}
+      </div>
 
       <div className="mt-6 flex flex-col items-center gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
-            onClick={() => turnTo(spread - 1)}
-            disabled={atStart}
-            className="press cursor-pointer rounded-full border-2 border-[var(--lagune)] bg-[var(--surface-2)] px-5 py-2 font-(family-name:--font-ui) text-[12px] font-medium text-[var(--text)] hover:bg-[var(--menthe)]/40 disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={prev}
+            disabled={atStart || empty}
+            className="press min-h-11 cursor-pointer whitespace-nowrap rounded-full border-2 border-[var(--gold)] bg-transparent px-4 py-2 sm:px-5 font-(family-name:--font-ui) text-[12px] font-medium text-[var(--text)] hover:bg-[var(--surface-2)] hover:text-[var(--on-accent)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             ← Previous
           </button>
           <span
             aria-live="polite"
-            className="font-(family-name:--font-ui) text-[12px] tabular-nums text-[var(--text-muted)]"
+            className="min-w-[5.5rem] text-center sm:min-w-[8.5rem] font-(family-name:--font-ui) text-[12px] tabular-nums text-[var(--text-muted)]"
           >
-            Spread {spread + 1} of {totalSpreads} · {filtered.length} profiles
+            {empty ? '0 profiles' : `Page ${shown.join('–')} of ${total}`}
           </span>
           <button
             type="button"
-            onClick={() => turnTo(spread + 1)}
-            disabled={atEnd}
-            className="press cursor-pointer rounded-full border-2 border-[var(--peche)] bg-[var(--peche)] px-5 py-2 font-(family-name:--font-ui) text-[12px] font-semibold text-[var(--plum)] shadow-[0_10px_24px_-12px_rgb(249_185_92/0.9)] hover:border-[var(--nectarine)] hover:bg-[var(--nectarine)] disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={next}
+            disabled={atEnd || empty}
+            className="press min-h-11 cursor-pointer whitespace-nowrap rounded-full border-2 border-[var(--marigold)] bg-[var(--marigold)] px-4 py-2 sm:px-5 font-(family-name:--font-ui) text-[12px] font-semibold text-[var(--on-accent)] hover:border-[var(--gold-hi)] hover:bg-[var(--gold-hi)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Next →
           </button>
           <SoundToggle />
         </div>
-        <ProgressDots total={totalSpreads} current={spread} onJump={(i) => turnTo(i)} />
+        <div
+          className="book-progress w-full max-w-[420px]"
+          role="progressbar"
+          aria-label="Position in the book"
+          aria-valuemin={1}
+          aria-valuemax={total}
+          aria-valuenow={Math.min(total, page + 1)}
+        >
+          <span style={{ width: `${pct}%` }} />
+        </div>
+        <p className="font-(family-name:--font-ui) text-[11px] tracking-[0.12em] text-[var(--text-faint)]">
+          {filtered.length} profiles · <span className="sm:hidden">swipe to turn a page</span>
+          <span className="hidden sm:inline">← → keys, drag a corner, or swipe</span>
+        </p>
       </div>
     </section>
   );
