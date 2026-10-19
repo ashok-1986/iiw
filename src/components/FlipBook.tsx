@@ -10,8 +10,10 @@ import {
   useState,
   useSyncExternalStore,
   type ReactElement,
+  type ReactNode,
 } from 'react';
 import { BookCover } from './BookCover';
+import { NumbersPage } from './NumbersPage';
 import { Page } from './Page';
 import { SoundToggle } from './SoundToggle';
 import { playFlip } from '@/lib/sound';
@@ -42,7 +44,7 @@ interface BookRef {
 
 const noopSubscribe = () => () => {};
 
-export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
+export function FlipBook({ profiles, chrome }: { profiles: FlipProfile[]; chrome?: ReactNode }) {
   const { query, category } = useFlipbook();
   const phone = useIsMobile();
   const reduced = useReducedMotion();
@@ -67,8 +69,12 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
 
   const contentPages = useMemo(() => chunkIntoPages(filtered, phone ? 1 : 2), [filtered, phone]);
   const empty = filtered.length === 0;
-  const needsFiller = !phone && contentPages.length % 2 === 1;
-  const total = contentPages.length + (needsFiller ? 1 : 0) + 2; // + front and back cover
+  // The animated "By the numbers" leaf sits right after the cover, but only in the full
+  // book: a filtered book is a set of search results, which should start with results.
+  const filtering = Boolean(category) || query.trim() !== '';
+  const lead = filtering || empty ? 0 : 1;
+  const needsFiller = !phone && (contentPages.length + lead) % 2 === 1;
+  const total = lead + contentPages.length + (needsFiller ? 1 : 0) + 2; // + front and back cover
   const last = total - 1;
 
   // A new filter / breakpoint builds a new book, which opens on its cover.
@@ -81,15 +87,18 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     const out: ReactElement[] = [
       <BookCover key="front" variant="front" count={profiles.length} phone={phone} />,
     ];
+    if (lead) {
+      out.push(<NumbersPage key="numbers" count={profiles.length} phone={phone} active={page === 1} />);
+    }
     contentPages.forEach((p, i) => {
-      out.push(<Page key={`p${i}-${p[0]?.id}`} profiles={p} number={i + 2} phone={phone} />);
+      out.push(<Page key={`p${i}-${p[0]?.id}`} profiles={p} number={i + 2 + lead} phone={phone} />);
     });
     if (needsFiller) {
-      out.push(<Page key="filler" profiles={[]} number={contentPages.length + 2} phone={false} />);
+      out.push(<Page key="filler" profiles={[]} number={contentPages.length + 2 + lead} phone={false} />);
     }
     out.push(<BookCover key="back" variant="back" count={profiles.length} phone={phone} />);
     return out;
-  }, [contentPages, needsFiller, phone, profiles.length]);
+  }, [contentPages, needsFiller, lead, page, phone, profiles.length]);
 
   const api = () => bookRef.current?.pageFlip();
   const next = useCallback(() => api()?.flipNext(), []);
@@ -122,6 +131,7 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [next, prev, jump, last]);
 
+  const showChrome = (page > 0 && page < last) || filtering;
   const size = phone ? PHONE : DESKTOP;
   const atStart = page <= 0;
   const atEnd = page >= last;
@@ -147,6 +157,22 @@ export function FlipBook({ profiles }: { profiles: FlipProfile[] }) {
       aria-roledescription="paginated book"
       aria-label="Inspiring Indian Women flipbook"
     >
+      {chrome && (
+        // Search + categories belong to the interior: hidden on both covers (space is kept so the
+        // book never jumps), but kept visible while a filter is active so it can always be cleared.
+        <div
+          className="mx-auto mb-6 flex justify-center transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none"
+          style={{
+            opacity: showChrome ? 1 : 0,
+            transform: showChrome ? 'none' : 'translateY(-6px)',
+            visibility: showChrome ? 'visible' : 'hidden',
+            transitionProperty: showChrome ? 'opacity, transform' : 'opacity, transform, visibility',
+          }}
+          inert={!showChrome}
+        >
+          {chrome}
+        </div>
+      )}
       <div className="book-stage relative flex items-center justify-center select-none">
         {empty ? (
           <p className="font-(family-name:--font-accent) text-[20px] italic text-[var(--text-muted)]">

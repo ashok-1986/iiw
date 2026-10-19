@@ -490,6 +490,45 @@ a[href] {
   margin-bottom: 2.4em;
 }
 
+/* the animated "By the numbers" leaf: a soft (non-hard) dark page */
+.fp-numbers .fp-in {
+  gap: 0;
+}
+.fp-bloom {
+  width: 7em;
+  height: 5em;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+  transform-origin: 50% 100%;
+  margin-bottom: 2em;
+}
+.fp-count {
+  font: 700 12em/1 var(--font-playfair), serif;
+  margin-top: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+.fp-phone .fp-count {
+  font-size: 8em;
+}
+.fp-numbers-tag {
+  margin-top: 0.2em;
+  max-width: none;
+}
+.fp-words {
+  list-style: none;
+  margin: 2.6em 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5em 1.2em;
+  font: 600 1.05em var(--font-inter), sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-hi);
+}
+
 /* the stage the book sits on */
 .book-stage {
   --stage-h: clamp(520px, calc(100svh - 270px), 860px);

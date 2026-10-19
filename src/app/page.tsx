@@ -21,11 +21,15 @@ export default async function Home() {
           <h1 className="max-w-2xl text-balance font-(family-name:--font-display) text-[26px] font-semibold tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
             Inspiring Indian Women
           </h1>
-          <Suspense>
-            <SearchPill categories={categories} />
-          </Suspense>
         </div>
-        <FlipBook profiles={profiles} />
+        <FlipBook
+          profiles={profiles}
+          chrome={
+            <Suspense>
+              <SearchPill categories={categories} />
+            </Suspense>
+          }
+        />
       </section>
     </main>
   );
