@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getNominees } from '@/lib/sheets';
 import { toFlipProfile } from '@/lib/flipbook-store';
+import { BioText } from '@/components/BioText';
 import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { ShareBar } from '@/components/ShareBar';
@@ -93,10 +94,8 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
         <RangoliDivider />
       </div>
 
-      <article className="arch-card silk-overlay mt-8 p-8">
-        <p className="font-(family-name:--font-body) text-[15px] leading-[1.8] whitespace-pre-line text-[var(--text-muted)]">
-          {p.fullText}
-        </p>
+      <article className="arch-card silk-overlay mt-8 px-6 py-8 sm:px-10 sm:py-10">
+        <BioText text={p.fullText} />
       </article>
 
       <ShareBar name={p.name} slug={p.slug} />
