@@ -46,4 +46,4 @@ export function subscribeIntro(cb: () => void) {
  * sees a frame of the trailer, because the server-rendered overlay is hidden before first paint.
  * Mirrors readIntroMode.
  */
-export const INTRO_BOOT_SCRIPT = `(function(){try{var m=location.search.match(/[?&]intro=([01])/);var seen=false;try{seen=sessionStorage.getItem('${INTRO_FLAG}')==='1'}catch(e){}var skip=m?m[1]==='0':seen;if(skip){var e=document.querySelector('[data-intro-root]');if(e)e.style.display='none'}}catch(e){}})();`;
+export const INTRO_BOOT_SCRIPT = `(function(){try{var m=location.search.match(/[?&]intro=([01])/);var seen=false;try{seen=sessionStorage.getItem('${INTRO_FLAG}')==='1'}catch(e){}var skip=m?m[1]==='0':seen;if(skip){var e=document.querySelector('[data-intro-root]');if(e)e.style.display='none';}else{setTimeout(function(){try{var e=document.querySelector('[data-intro-root]');if(e&&!e.hasAttribute('data-intro-live'))e.style.display='none';}catch(e){}},3000);}}catch(e){}})();`;

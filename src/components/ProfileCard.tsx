@@ -17,6 +17,7 @@ export function ProfileCard({ nominee }: { nominee: FlipProfile }) {
         imageId={nominee.imageId}
         image={nominee.image}
         org={nominee.org}
+        compiled={nominee.compiled}
         zoomable
         sizeClass="size-[10em] [.fp-phone_&]:size-[9.2em]"
         sizes="160px"

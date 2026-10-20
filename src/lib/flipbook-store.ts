@@ -15,6 +15,7 @@ export interface FlipProfile {
   image: string | null;
   category: string;
   slug: string;
+  compiled?: boolean;
 }
 
 /**
@@ -33,6 +34,7 @@ export function toFlipProfile(n: Nominee): FlipProfile {
     image: n.image,
     category: n.category,
     slug: slugify(n.name, n.id),
+    compiled: Boolean(n.compiled),
   };
 }
 

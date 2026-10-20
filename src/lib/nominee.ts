@@ -6,6 +6,79 @@
  * EMAIL ADDRESS, so a positional A-F allowlist would publish ~92 women's emails.
  * See DATA-RECONCILIATION.md §1.
  */
+
+/** Leading titles and honorifics ignored for A-to-Z sorting only. */
+export const SORT_TITLES = [
+  'dr',
+  'mrs',
+  'ms',
+  'mr',
+  'cllr',
+  'councillor',
+  'prof',
+  'professor',
+  'baroness',
+  'lady',
+  'sir',
+  'dame',
+  'rev',
+  'revd',
+  'paditayin',
+  'amb',
+] as const;
+
+/** Trailing honours ignored for A-to-Z sorting only. */
+export const SORT_HONOURS = [
+  'mbe',
+  'obe',
+  'cbe',
+  'bem',
+  'dl',
+  'jp',
+  'frsa',
+] as const;
+
+const SORT_TITLES_SET = new Set<string>(SORT_TITLES);
+const SORT_HONOURS_SET = new Set<string>(SORT_HONOURS);
+
+function cleanSortToken(t: string): string {
+  return t.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '');
+}
+
+/**
+ * Strips leading titles and trailing honours for A-to-Z sorting by first name.
+ * Example: "Dr Harsha Jani" -> "harsha jani"
+ * Example: "Cllr Anjana Patel" -> "anjana patel"
+ * Example: "Zamiha Desai MBE" -> "zamiha desai"
+ */
+export function sortKey(name: string): string {
+  const tokens = name.trim().split(/\s+/).filter(Boolean);
+  while (tokens.length > 1 && SORT_TITLES_SET.has(cleanSortToken(tokens[0]))) {
+    tokens.shift();
+  }
+  while (tokens.length > 1 && SORT_HONOURS_SET.has(cleanSortToken(tokens[tokens.length - 1]))) {
+    tokens.pop();
+  }
+  return tokens.join(' ').toLowerCase();
+}
+
+/**
+ * Comparator for sorting nominees A to Z by first name (ignoring titles and honours).
+ * Case-insensitive, accent-insensitive. Ties broken by full display name, then id.
+ */
+export function compareNominees(
+  a: { name: string; id: string },
+  b: { name: string; id: string }
+): number {
+  const ka = sortKey(a.name);
+  const kb = sortKey(b.name);
+  const cmp = ka.localeCompare(kb, 'en', { sensitivity: 'base' });
+  if (cmp !== 0) return cmp;
+  const cmpName = a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+  if (cmpName !== 0) return cmpName;
+  return a.id.localeCompare(b.id, 'en', { sensitivity: 'base' });
+}
+
 export type NomineeSource = 'final-directory' | 'form-responses';
 
 export interface Nominee {
@@ -22,6 +95,7 @@ export interface Nominee {
   fullText: string; // longer biography for the profile page; `summary` is the short card text
   category: string;
   consentGiven: boolean;
+  compiled?: boolean;
   source: NomineeSource;
 }
 
@@ -122,6 +196,7 @@ export function mapSheetRow(table: SheetTable, row: SheetRow, source: NomineeSou
     imageId: imageUrl ? extractDriveId(imageUrl) : null,
     category: cell(row, catIdx).toLowerCase(),
     consentGiven: parseConsent(cell(row, consentIdx)),
+    compiled: false,
     source,
   };
 }

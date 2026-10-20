@@ -8,7 +8,7 @@ import { BioText } from '@/components/BioText';
 import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { ShareBar } from '@/components/ShareBar';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL, COMPILED_PROFILE_NOTE } from '@/lib/site';
 
 /**
  * /profile/[slug] — the full-profile route the PRD's deep-link journey requires.
@@ -78,6 +78,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
           image={p.image}
           name={p.name}
           org={p.org}
+          compiled={p.compiled}
           zoomable
           sizeClass="size-[168px] sm:size-[212px]"
           sizes="(max-width: 639px) 168px, 212px"
@@ -96,6 +97,11 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
 
       <article className="arch-card silk-overlay mt-8 px-6 py-8 sm:px-10 sm:py-10">
         <BioText text={p.fullText} />
+        {p.compiled && (
+          <p className="mt-6 border-t border-[var(--border)] pt-4 font-(family-name:--font-ui) text-[12px] text-[var(--text-faint)]">
+            {COMPILED_PROFILE_NOTE}
+          </p>
+        )}
       </article>
 
       <ShareBar name={p.name} slug={p.slug} />

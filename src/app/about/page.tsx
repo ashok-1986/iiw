@@ -7,7 +7,7 @@ import { SITE_DESCRIPTION } from '@/lib/site';
 export const metadata: Metadata = {
   title: 'About the archive',
   description:
-    'How the Inspiring Indian Women flipbook is sourced, curated and consented — Google Sheet Final Directory, nomination form responses, and Drive portraits.',
+    'How the Inspiring Indian Women flipbook is sourced, curated, and consented — Google Sheet Final Directory, nomination form responses, community nominations, and Drive portraits.',
   alternates: { canonical: '/about' },
 };
 
@@ -56,9 +56,8 @@ export default async function AboutPage() {
               published verbatim.
             </li>
             <li>
-              <span className="font-(family-name:--font-display) font-semibold text-[var(--text)]">2 · Nominations.</span>{' '}
-              Women who appear only in the nomination form tab are published from their own submitted text — the
-              acknowledgement in that form is treated as consent to be listed.
+              <span className="font-(family-name:--font-display) font-semibold text-[var(--text)]">2 · Nominations &amp; Community.</span>{' '}
+              Women who appear in the nomination form are published from their own submitted text, treated as consent to be listed. A few honoured community leaders are compiled by IIW from public records and marked as such.
             </li>
             <li>
               <span className="font-(family-name:--font-display) font-semibold text-[var(--text)]">3 · Portraits.</span>{' '}
@@ -72,6 +71,9 @@ export default async function AboutPage() {
           <h2 className="font-(family-name:--font-display) text-[22px] font-semibold text-[var(--text)]">
             Consent and corrections
           </h2>
+          <p className="mt-4 font-(family-name:--font-body) text-[15px] leading-[1.8] text-[var(--text-muted)]">
+            Profiles are published in the nominee’s own words, with her consent. A few are compiled by IIW from public records and marked as such.
+          </p>
           <p className="mt-4 font-(family-name:--font-body) text-[15px] leading-[1.8] text-[var(--text-muted)]">
             Personal contact details captured in the nomination form are never read into this site — the data layer binds
             columns by header name and explicitly excludes email, phone and address fields. Any honoured woman (or her

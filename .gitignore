@@ -51,3 +51,4 @@ tools/lotus/artifact.glb
 # raw portrait downloads (pre-crop)
 /.cache/
 /tools/node_modules/
+design-src/portraits-raw/_check.jpg

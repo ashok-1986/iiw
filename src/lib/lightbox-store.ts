@@ -4,6 +4,7 @@ export interface LightboxItem {
   src: string;
   name: string;
   org?: string;
+  compiled?: boolean;
 }
 
 interface LightboxState {

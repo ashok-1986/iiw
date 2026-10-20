@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import smartcrop from 'smartcrop';
 import { detectFace } from './face.mjs';
+import { applyCommunityNominees } from './community-nominees.mjs';
+import { applyManualPortraits } from './manual-portraits.mjs';
 
 const SHEET_ID = '1loMFRoc6H5nDFZk5-tjXDjH0DCq0KUFHF-ggOIC1Geg';
 const GIDS = { finalDirectory: '0', form1: '688232594', old: '293174' };
@@ -29,6 +31,35 @@ const PORTRAIT_BLOCKLIST = new Set([
 
 const HON = new Set(['dr','prof','professor','mr','mrs','ms','mx','smt','shri','sri','capt','col','maj','cllr','councillor','rev','revd','amb','er','adv','sir','dame']);
 const POST = new Set(['obe','mbe','bem','cbe','frsa','mba','phd','jp','fca','aca','msc','bsc','ba','ma']);
+
+// Sort helpers matching src/lib/nominee.ts for A-to-Z sorting by first name
+const SORT_TITLES = new Set(['dr','mrs','ms','mr','cllr','councillor','prof','professor','baroness','lady','sir','dame','rev','revd','paditayin','amb']);
+const SORT_HONOURS = new Set(['mbe','obe','cbe','bem','dl','jp','frsa']);
+
+function cleanSortToken(t) {
+  return String(t).toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '');
+}
+
+export function sortKey(name) {
+  const tokens = String(name).trim().split(/\s+/).filter(Boolean);
+  while (tokens.length > 1 && SORT_TITLES.has(cleanSortToken(tokens[0]))) {
+    tokens.shift();
+  }
+  while (tokens.length > 1 && SORT_HONOURS.has(cleanSortToken(tokens[tokens.length - 1]))) {
+    tokens.pop();
+  }
+  return tokens.join(' ').toLowerCase();
+}
+
+export function compareNominees(a, b) {
+  const ka = sortKey(a.name);
+  const kb = sortKey(b.name);
+  const cmp = ka.localeCompare(kb, 'en', { sensitivity: 'base' });
+  if (cmp !== 0) return cmp;
+  const cmpName = a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+  if (cmpName !== 0) return cmpName;
+  return String(a.id).localeCompare(String(b.id), 'en', { sensitivity: 'base' });
+}
 
 function parseCsv(text) {
   const rows = []; let f = '', row = [], q = false;
@@ -276,9 +307,16 @@ async function main() {
     } catch (err) { console.log('  ! portrait failed', e.name, '-', err.message); e.image = null; miss++; }
   }
 
+  // Add community nominees (89-96) and manual portraits before final write
+  applyCommunityNominees(final);
+  await applyManualPortraits(final);
+
   // drop portraits no nominee references any more (e.g. blocklisted non-portraits)
   const used = new Set(final.filter((e) => e.image).map((e) => path.basename(e.image)));
   for (const f of fs.readdirSync(PORTRAITS)) if (!used.has(f)) fs.unlinkSync(path.join(PORTRAITS, f));
+
+  // Sort all nominees A to Z by first name (ignoring titles and honours)
+  final.sort(compareNominees);
 
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, JSON.stringify(final, null, 1));

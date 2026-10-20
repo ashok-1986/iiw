@@ -132,6 +132,11 @@ export function IntroTrailer() {
     if (!open || readIntroMode() === 'skip') return;
     const root = scope.current;
     if (!root) return;
+    if (root.style.display === 'none') {
+      finish();
+      return;
+    }
+    root.setAttribute('data-intro-live', '');
 
     const archive = document.getElementById('archive');
     const html = document.documentElement;
@@ -201,7 +206,7 @@ export function IntroTrailer() {
       archive?.removeAttribute('inert');
       archive?.focus({ preventScroll: true });
     };
-  }, [open, reduced, animate, scope, count, close]);
+  }, [open, reduced, animate, scope, count, close, finish]);
 
   if (!open) return null;
 

@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from 'next/cache';
 import type { Nominee, NomineeSource } from './nominee';
-import { extractDriveId } from './nominee';
+import { compareNominees, extractDriveId } from './nominee';
 import nomineesData from '@/data/nominees.json';
 
 /**
@@ -27,6 +27,7 @@ interface RawNominee {
   imageId?: string | null;
   image?: string | null;
   sources?: string[];
+  compiled?: boolean;
 }
 
 /**
@@ -59,6 +60,7 @@ export async function getNominees(): Promise<NomineesResult> {
   const nominees: Nominee[] = raw.map((r) => {
     const summary = (r.summary ?? '').trim();
     const full = (r.fullText ?? '').trim();
+    const isCompiled = Boolean(r.compiled);
     return {
       id: r.id,
       name: r.name,
@@ -71,10 +73,13 @@ export async function getNominees(): Promise<NomineesResult> {
       image: r.image ?? null,
       imageUrl: null,
       category: deriveCategory(`${summary} ${r.org ?? ''}`),
-      consentGiven: true,
+      consentGiven: !isCompiled,
+      compiled: isCompiled,
       source: (r.sources && r.sources.includes('final-directory') ? 'final-directory' : 'form-responses') as NomineeSource,
     };
   });
+
+  nominees.sort(compareNominees);
 
   return {
     nominees,
@@ -82,7 +87,7 @@ export async function getNominees(): Promise<NomineesResult> {
     counts: {
       total: nominees.length,
       withPortrait: nominees.filter((n) => n.image || n.imageId).length,
-      consented: nominees.length,
+      consented: nominees.filter((n) => n.consentGiven).length,
     },
     fetchedAt: new Date().toISOString(),
   };

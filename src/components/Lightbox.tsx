@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useLightbox } from '@/lib/lightbox-store';
+import { COMPILED_PROFILE_NOTE } from '@/lib/site';
 
 /**
  * Portrait lightbox — the click-to-zoom trigger. A single instance mounted in the
@@ -51,6 +52,11 @@ export function Lightbox() {
           {item.org && (
             <p className="mt-1.5 max-w-[42ch] font-(family-name:--font-ui) text-[12.5px] leading-snug text-[var(--peche)]">
               {item.org}
+            </p>
+          )}
+          {item.compiled && (
+            <p className="mt-2 font-(family-name:--font-ui) text-[11px] text-[var(--cream)]/60">
+              {COMPILED_PROFILE_NOTE}
             </p>
           )}
         </figcaption>

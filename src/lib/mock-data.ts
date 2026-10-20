@@ -2,7 +2,7 @@ import type { Nominee } from './nominee';
 
 /**
  * ⚠ MOCK DATA — NOT REAL PROFILES. Dev fallback only, used when the sheet is unreachable.
- * Real 88-woman data now loads via lib/sheets.ts; this file exists solely so local dev
+ * Real 96-woman data now loads via lib/sheets.ts; this file exists solely so local dev
  * never renders an empty book. Names are invented, image ids are fake ("MOCKID_…") so
  * /api/image exercises the fallback path. consentGiven:false everywhere by design.
  */

@@ -42,6 +42,12 @@ const MANUAL_SPECS = [
     rawFile: 'Kirti Soni.jpg',
     opts: {},
   },
+  {
+    name: 'Sonoo Malkani',
+    slug: 'sonoo-malkani',
+    rawFile: 'Sonoo Malkani.jpeg',
+    opts: {},
+  },
 ];
 
 const HON = new Set(['dr','prof','professor','mr','mrs','ms','mx','smt','shri','sri','capt','col','maj','cllr','councillor','rev','revd','amb','er','adv','sir','dame']);
@@ -93,5 +99,5 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
   const nominees = JSON.parse(fs.readFileSync(NOMINEES_FILE, 'utf8'));
   await applyManualPortraits(nominees);
   fs.writeFileSync(NOMINEES_FILE, JSON.stringify(nominees, null, 1));
-  console.log(`Successfully applied manual portraits for 5 nominees in ${NOMINEES_FILE}`);
+  console.log(`Successfully applied manual portraits for ${MANUAL_SPECS.length} nominees in ${NOMINEES_FILE}`);
 }

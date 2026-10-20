@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
  * 2:3, masters in design-src/covers). The image is contain-fitted, never stretched
  * or cropped, and takes no pointer events so page-flip drag and corner-pull keep working.
  */
-const BAKED_COUNT = 88; // the front image says "88 stories"; re-render it if the data changes
+const BAKED_COUNT = 96; // the front image says "96 stories"; re-render it if the data changes
 
 export const BookCover = forwardRef<
   HTMLDivElement,
@@ -27,7 +27,7 @@ export const BookCover = forwardRef<
         alt={
           front
             ? `Inspiring Indian Women, Volume I 2026. A digital heirloom. ${count} stories of courage, craft and community.`
-            : "Back cover of Inspiring Indian Women. Lift. Support. Rise. Every profile is published in the nominee's own words, with her consent."
+            : 'Back cover of Inspiring Indian Women. Lift. Support. Rise. Profiles are published in the nominee’s own words, with her consent. A few are compiled by IIW from public records and marked as such.'
         }
         width={1600}
         height={2400}

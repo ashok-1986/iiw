@@ -11,3 +11,8 @@ export const SITE_NAME = 'Inspiring Indian Women';
 // every surface that shows a number (OG card, /about) reads it live from getNominees().
 export const SITE_DESCRIPTION =
   'A digital heirloom celebrating extraordinary women leaders across community, enterprise, and social impact — curated editorial profiles, not a directory.';
+
+export const COMPILED_PROFILE_NOTE = 'Compiled by IIW from public records.';
+
+export const CONSENT_PROMISE =
+  'Profiles are published in the nominee’s own words, with her consent. A few are compiled by IIW from public records and marked as such.';

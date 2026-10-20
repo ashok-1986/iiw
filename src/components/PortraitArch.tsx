@@ -22,6 +22,7 @@ export function PortraitArch({
   imageId = null,
   image = null,
   org,
+  compiled = false,
   zoomable = false,
   sizeClass = 'size-[88px]',
   sizes = '88px',
@@ -31,6 +32,7 @@ export function PortraitArch({
   imageId?: string | null;
   image?: string | null;
   org?: string;
+  compiled?: boolean;
   zoomable?: boolean;
   sizeClass?: string;
   sizes?: string;
@@ -45,6 +47,29 @@ export function PortraitArch({
   const src = image ?? (imageId ? `/api/image/${imageId}` : null);
 
   if (!src) {
+    const fallback = (
+      <>
+        <LotusMark className="h-auto w-[34%]" />
+        <span className="font-(family-name:--font-display) text-[17px] font-semibold text-[var(--text-muted)]">
+          {getInitials(name)}
+        </span>
+      </>
+    );
+
+    if (zoomable) {
+      return (
+        <button
+          type="button"
+          aria-label={`View ${name}’s photo`}
+          onClick={() => open({ src: '', name, org, compiled })}
+          className={`portrait flex shrink-0 cursor-zoom-in flex-col items-center justify-center rounded-full bg-[var(--surface-3)] ${sizeClass}`}
+          style={ring}
+        >
+          {fallback}
+        </button>
+      );
+    }
+
     return (
       <div
         className={`portrait flex shrink-0 flex-col items-center justify-center rounded-full bg-[var(--surface-3)] ${sizeClass}`}
@@ -52,10 +77,7 @@ export function PortraitArch({
         role="img"
         aria-label={`${name} — lotus fallback`}
       >
-        <LotusMark className="h-auto w-[34%]" />
-        <span className="font-(family-name:--font-display) text-[17px] font-semibold text-[var(--text-muted)]">
-          {getInitials(name)}
-        </span>
+        {fallback}
       </div>
     );
   }
@@ -68,7 +90,7 @@ export function PortraitArch({
       <button
         type="button"
         aria-label={`View ${name}’s photo`}
-        onClick={() => open({ src, name, org })}
+        onClick={() => open({ src, name, org, compiled })}
         className={`${cls} cursor-zoom-in`}
         style={ring}
       >
