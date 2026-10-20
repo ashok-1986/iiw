@@ -25,6 +25,14 @@ export function SiteFooter() {
           >
             About &amp; methodology
           </Link>
+          {/* plain anchor on purpose: a full load replays the trailer and its boot script */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a
+            href="/?intro=1"
+            className="font-(family-name:--font-ui) text-[12px] text-[var(--text-faint)] hover:text-[var(--rose-deep)]"
+          >
+            Replay intro
+          </a>
         </nav>
       </div>
     </footer>

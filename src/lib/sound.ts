@@ -65,3 +65,36 @@ export function playFlip() {
   src.start(now);
   src.stop(now + dur);
 }
+
+/**
+ * One soft bell for the intro curtain: two sine partials (a fifth apart) with a quick
+ * attack and a long exponential tail. Same lazy context and low gain as playFlip;
+ * muted means silence.
+ */
+export function playChime() {
+  if (muted) return;
+  const ac = getCtx();
+  if (!ac) return;
+  const now = ac.currentTime;
+  const dur = 1.6;
+
+  const gain = ac.createGain();
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.1, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+  gain.connect(ac.destination);
+
+  for (const [freq, level] of [
+    [660, 1],
+    [990, 0.35],
+  ] as const) {
+    const osc = ac.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const g = ac.createGain();
+    g.gain.value = level;
+    osc.connect(g).connect(gain);
+    osc.start(now);
+    osc.stop(now + dur);
+  }
+}

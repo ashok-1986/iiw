@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { FlipBook } from '@/components/FlipBook';
+import { IntroTrailer } from '@/components/IntroTrailer';
 import { SearchPill } from '@/components/SearchPill';
 import { toFlipProfile } from '@/lib/flipbook-store';
 import { getNominees } from '@/lib/sheets';
@@ -15,7 +16,9 @@ export default async function Home() {
   const categories = [...new Set(profiles.map((p) => p.category).filter(Boolean))].sort();
 
   return (
-    <main id="archive" className="ground min-h-screen bg-[var(--surface)]">
+    <>
+    <IntroTrailer />
+    <main id="archive" tabIndex={-1} className="ground min-h-screen bg-[var(--surface)] outline-none">
       <section className="py-6 md:py-8">
         <div className="mx-auto mb-6 flex max-w-[1180px] flex-col items-center gap-3 px-4 text-center">
           <h1 className="max-w-2xl text-balance font-(family-name:--font-display) text-[26px] font-semibold tracking-[-0.02em] text-[var(--text)] sm:text-[32px]">
@@ -32,5 +35,6 @@ export default async function Home() {
         />
       </section>
     </main>
+    </>
   );
 }
