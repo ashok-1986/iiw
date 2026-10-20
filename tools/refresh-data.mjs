@@ -311,6 +311,16 @@ async function main() {
   applyCommunityNominees(final);
   await applyManualPortraits(final);
 
+  // Validate unique IDs across final list before writing output
+  const seenIds = new Set();
+  for (const nominee of final) {
+    const id = String(nominee.id);
+    if (seenIds.has(id)) {
+      throw new Error(`Duplicate nominee ID detected: ${id} (${nominee.name})`);
+    }
+    seenIds.add(id);
+  }
+
   // drop portraits no nominee references any more (e.g. blocklisted non-portraits)
   const used = new Set(final.filter((e) => e.image).map((e) => path.basename(e.image)));
   for (const f of fs.readdirSync(PORTRAITS)) if (!used.has(f)) fs.unlinkSync(path.join(PORTRAITS, f));
