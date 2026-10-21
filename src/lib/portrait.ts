@@ -1,14 +1,33 @@
+import fs from 'fs';
+import path from 'path';
+
 /**
  * Server-side portrait fetch for ImageResponse (satori) cards.
  *
- * Why not just point <img> at /api/image/<id>: satori applies SSRF protection and
- * refuses any source that resolves to a private/loopback address, which includes
- * the preview and localhost origins — the whole OG route dies with
- * "Image source resolves to a blocked address". Fetching the Drive thumbnail
- * ourselves and inlining a data URI keeps the card working on every origin,
- * at the cost of one server-side request per generated image.
+ * Supports both local files (for manual/community nominees) and Google Drive thumbnails.
+ * Inlining as a data URI avoids satori SSRF blocking on localhost/preview origins.
  */
-export async function portraitDataUri(imageId: string | null): Promise<string | null> {
+export async function portraitDataUri(
+  imageId: string | null = null,
+  imagePath: string | null = null,
+): Promise<string | null> {
+  // 1. Try local file in public/ if available (instant, zero network latency)
+  if (imagePath) {
+    try {
+      const clean = imagePath.replace(/^\//, '');
+      const localFile = path.join(process.cwd(), 'public', clean);
+      if (fs.existsSync(localFile)) {
+        const buf = fs.readFileSync(localFile);
+        const ext = path.extname(localFile).toLowerCase();
+        const mime = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
+        return `data:${mime};base64,${buf.toString('base64')}`;
+      }
+    } catch {
+      /* fallback to imageId or null */
+    }
+  }
+
+  // 2. Fetch Drive thumbnail if imageId is provided
   if (!imageId || !/^[a-zA-Z0-9_-]{20,}$/.test(imageId)) return null;
 
   try {

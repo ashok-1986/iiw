@@ -8,7 +8,24 @@ import { BioText } from '@/components/BioText';
 import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { ShareBar } from '@/components/ShareBar';
-import { SITE_URL, COMPILED_PROFILE_NOTE } from '@/lib/site';
+import { SITE_URL, SITE_NAME, COMPILED_PROFILE_NOTE } from '@/lib/site';
+
+/**
+ * Generate static params for all 97 published profiles at build time.
+ * Provides instant global TTFB, zero cold starts, and reliable crawler ingestion.
+ */
+export async function generateStaticParams() {
+  const { nominees } = await getNominees();
+  return nominees.map((n) => ({ slug: toFlipProfile(n).slug }));
+}
+
+function cleanSnippet(text: string, maxLen = 155): string {
+  if (!text) return '';
+  if (text.length <= maxLen) return text;
+  const cut = text.slice(0, maxLen);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim() + '…';
+}
 
 /**
  * /profile/[slug] — the full-profile route the PRD's deep-link journey requires.
@@ -33,18 +50,19 @@ export async function generateMetadata({
   const p = await findProfile(slug);
   if (!p) return { title: 'Profile not found' };
   const url = `/profile/${p.slug}`;
+  const description = cleanSnippet(p.summary, 155);
   return {
     // layout title.template appends "— Inspiring Indian Women"
     title: p.name,
-    description: p.summary.slice(0, 155),
+    description,
     alternates: { canonical: url },
     openGraph: {
       type: 'profile',
       url,
       title: `${p.name} — Inspiring Indian Women`,
-      description: p.summary.slice(0, 155),
+      description,
     },
-    twitter: { card: 'summary_large_image', title: p.name, description: p.summary.slice(0, 155) },
+    twitter: { card: 'summary_large_image', title: p.name, description },
   };
 }
 
@@ -112,12 +130,58 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'Person',
-            name: p.name,
-            description: p.summary,
-            image: p.image ? `${SITE_URL}${p.image}` : p.imageId ? `${SITE_URL}/api/image/${p.imageId}` : undefined,
-            url: `${SITE_URL}/profile/${p.slug}`,
-            knowsAbout: p.category ? [p.category] : undefined,
+            '@graph': [
+              {
+                '@type': 'Person',
+                '@id': `${SITE_URL}/profile/${p.slug}#person`,
+                name: p.name,
+                description: p.summary,
+                image: p.image
+                  ? `${SITE_URL}${p.image}`
+                  : p.imageId
+                    ? `${SITE_URL}/api/image/${p.imageId}`
+                    : undefined,
+                url: `${SITE_URL}/profile/${p.slug}`,
+                jobTitle: p.org || undefined,
+                worksFor: p.org
+                  ? {
+                      '@type': 'Organization',
+                      name: p.org,
+                    }
+                  : undefined,
+                knowsAbout: p.category ? [p.category] : undefined,
+                isPartOf: {
+                  '@type': 'CollectionPage',
+                  '@id': `${SITE_URL}/#collection`,
+                  name: `${SITE_NAME} — Top Impactful British Indian Women 2026`,
+                  url: `${SITE_URL}/`,
+                },
+              },
+              {
+                '@type': 'BreadcrumbList',
+                '@id': `${SITE_URL}/profile/${p.slug}#breadcrumbs`,
+                itemListElement: [
+                  {
+                    '@type': 'ListItem',
+                    position: 1,
+                    name: 'Home',
+                    item: `${SITE_URL}/`,
+                  },
+                  {
+                    '@type': 'ListItem',
+                    position: 2,
+                    name: 'Archive',
+                    item: `${SITE_URL}/#archive`,
+                  },
+                  {
+                    '@type': 'ListItem',
+                    position: 3,
+                    name: p.name,
+                    item: `${SITE_URL}/profile/${p.slug}`,
+                  },
+                ],
+              },
+            ],
           }),
         }}
       />

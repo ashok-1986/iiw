@@ -7,7 +7,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // internal QA surfaces and the JSON feed are not for crawlers
+        // internal QA surfaces and private feeds are not for crawlers
+        disallow: ['/dev/', '/api/'],
+      },
+      {
+        // Explicitly welcome AI and retrieval agents for discovery
+        userAgent: ['GPTBot', 'ChatGPT-User', 'ClaudeBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/about', '/profile/'],
         disallow: ['/dev/', '/api/'],
       },
     ],

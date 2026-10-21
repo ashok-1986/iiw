@@ -39,24 +39,49 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: {
     default: 'IIW — Inspiring Indian Women | Luxury Flipbook',
     template: '%s — Inspiring Indian Women',
   },
   description: SITE_DESCRIPTION,
+  keywords: [
+    'Inspiring Indian Women',
+    'IIW',
+    'British Indian Women',
+    'Indian Diaspora UK',
+    'Top Impactful Women 2026',
+    'Women Leaders UK',
+    'Community Leadership',
+    'Enterprise and Social Impact',
+  ],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   openGraph: {
     type: 'website',
     siteName: SITE_NAME,
     url: SITE_URL,
     title: 'IIW — Inspiring Indian Women',
     description: SITE_DESCRIPTION,
+    locale: 'en_GB',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'IIW — Inspiring Indian Women',
     description: SITE_DESCRIPTION,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   alternates: { canonical: '/' },
 };
 

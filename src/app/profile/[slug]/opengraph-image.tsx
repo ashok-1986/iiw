@@ -21,7 +21,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
 
   const [fonts, portrait] = await Promise.all([
     loadOgFonts(),
-    portraitDataUri(profile?.imageId ?? null),
+    portraitDataUri(profile?.imageId ?? null, profile?.image ?? null),
   ]);
 
   return new ImageResponse(

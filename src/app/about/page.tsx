@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getNominees } from '@/lib/sheets';
 import { RangoliDivider } from '@/components/RangoliDivider';
-import { SITE_DESCRIPTION } from '@/lib/site';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'About the archive',
@@ -120,6 +120,30 @@ export default async function AboutPage() {
           </p>
         </footer>
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'AboutPage',
+            url: `${SITE_URL}/about`,
+            name: `About the Archive — ${SITE_NAME}`,
+            description: metadata.description,
+            isPartOf: {
+              '@type': 'WebSite',
+              url: `${SITE_URL}/`,
+              name: SITE_NAME,
+            },
+            about: {
+              '@type': 'Organization',
+              name: SITE_NAME,
+              url: `${SITE_URL}/`,
+              description: SITE_DESCRIPTION,
+            },
+          }),
+        }}
+      />
     </main>
   );
 }

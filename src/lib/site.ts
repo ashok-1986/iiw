@@ -1,9 +1,25 @@
 /**
  * Single origin for absolute URLs (metadataBase, OG images, sitemap, share links).
- * Set NEXT_PUBLIC_SITE_URL in Vercel once the domain is decided (M5); the fallback
- * keeps local QA honest instead of emitting "undefined" into og:url.
+ * Resolves NEXT_PUBLIC_SITE_URL, Vercel system environment variables, or production domain,
+ * falling back to localhost only in local development.
  */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3210').replace(/\/$/, '');
+function resolveOrigin(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://iiw-eutsav.vercel.app';
+  }
+  return 'http://localhost:3210';
+}
+
+export const SITE_URL = resolveOrigin().replace(/\/$/, '');
 
 export const SITE_NAME = 'Inspiring Indian Women';
 
