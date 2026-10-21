@@ -92,14 +92,6 @@ const MANUAL_SPECS = [
     rawFile: 'Seema Anand.jpg',
     opts: {},
   },
-  {
-    name: 'Lakshmi Kaul',
-    slug: 'lakshmi-kaul',
-    rawFile: 'Lakshmi Kaul.jpg',
-    opts: {
-      window: { x: 247, y: 195, width: 610, height: 610 },
-    },
-  },
 ];
 
 const HON = new Set(['dr','prof','professor','mr','mrs','ms','mx','smt','shri','sri','capt','col','maj','cllr','councillor','rev','revd','amb','er','adv','sir','dame']);

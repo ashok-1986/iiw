@@ -46,7 +46,7 @@ Prepared 21 Oct 2026 from an extended web check. Each bio on the site uses only 
 
 ## Lakshmi Kaul
 - Text supplied by the client on 21 Oct 2026, now her own words (`compiled: false`). The client states she is an Indian British National, which closes the earlier citizenship flag.
-- Photo: supplied by the client on 21 Oct 2026 (`public/portraits/manual-lakshmi-kaul.jpg`), cropped to Lakshmi Kaul (left woman in grey saree).
+- Photo: pending, the supplied photo is a group photo of two women, not yet identified.
 - CEO, Grin Media from May 2026: exchange4media, 11 May 2026, and Pitchonnet.
 - Former SVP at Mott MacDonald, former Head of CII in the UK (two sources). Boards of CWEIC (two sources), Manchester-India Partnership and West Midlands-India Partnership (Pitchonnet only).
 
