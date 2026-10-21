@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import sharp from 'sharp';
 import { cropPortrait } from './crop.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -54,6 +55,43 @@ const MANUAL_SPECS = [
     rawFile: 'Dalia Banerjee.jpg',
     opts: {},
   },
+  {
+    name: 'Sunita Chaubey',
+    slug: 'sunita-chaubey',
+    rawFile: 'Sunita Chaubey.jpg',
+    opts: {},
+  },
+  {
+    name: 'Zamiha Desai MBE',
+    slug: 'zamiha-desai',
+    rawFile: 'Zamiha Desai.jpg',
+    opts: {},
+  },
+  {
+    name: 'Ranu Mehta-Radia MBE',
+    slug: 'ranu-mehta-radia',
+    rawFile: 'Ranu Mehta-Radia.jpg',
+    opts: {},
+  },
+  {
+    name: 'Renu Gidoomal',
+    slug: 'renu-gidoomal',
+    rawFile: 'Renu Gidoomal.jpg',
+    opts: { trim: 0.185 },
+    assertCornersNotWhite: true,
+  },
+  {
+    name: 'Ragasudha Vinjamuri',
+    slug: 'ragasudha-vinjamuri',
+    rawFile: 'Ragasudha Vinjamuri.jpg',
+    opts: {},
+  },
+  {
+    name: 'Seema Anand',
+    slug: 'seema-anand',
+    rawFile: 'Seema Anand.jpg',
+    opts: {},
+  },
 ];
 
 const HON = new Set(['dr','prof','professor','mr','mrs','ms','mx','smt','shri','sri','capt','col','maj','cllr','councillor','rev','revd','amb','er','adv','sir','dame']);
@@ -94,6 +132,22 @@ export async function applyManualPortraits(nominees) {
     }
 
     await cropPortrait(srcPath, outPath, spec.opts);
+    if (spec.assertCornersNotWhite) {
+      const { data, info } = await sharp(outPath).raw().toBuffer({ resolveWithObject: true });
+      const corners = [
+        [0, 0],
+        [info.width - 1, 0],
+        [0, info.height - 1],
+        [info.width - 1, info.height - 1],
+      ];
+      for (const [cx, cy] of corners) {
+        const idx = (cy * info.width + cx) * info.channels;
+        const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+        if (r > 245 && g > 245 && b > 245) {
+          throw new Error(`Corner pixel (${cx},${cy}) in ${outPath} is near-white: [${r},${g},${b}]`);
+        }
+      }
+    }
     nominee.image = `/portraits/manual-${spec.slug}.jpg`;
   }
 

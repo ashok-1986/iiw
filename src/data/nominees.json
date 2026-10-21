@@ -527,15 +527,15 @@
  {
   "id": "95",
   "name": "Lakshmi Kaul",
-  "org": "Grin Media / UK-India Trade & Policy",
-  "summary": "Lakshmi Kaul became Chief Executive Officer of Grin Media, a publisher, in May 2026. She was previously Senior Vice President at Mott MacDonald and Head of the Confederation of Indian Industry in the UK. She has served on the boards of CWEIC, the Manchester-India Partnership and the West Midlands-India Partnership.",
-  "fullText": "Lakshmi Kaul became Chief Executive Officer of Grin Media, a publisher, in May 2026. She was previously Senior Vice President at Mott MacDonald and Head of the Confederation of Indian Industry in the UK. She has served on the boards of CWEIC, the Manchester-India Partnership and the West Midlands-India Partnership.",
+  "org": "Grin Media / Authors of Bharat",
+  "summary": "Lakshmi Kaul is CEO of Grin Media and, until recently, was Senior Vice President at Mott MacDonald. She is an Indian British National who has spent her life bringing diasporic communities closer to their cultural roots and identity.",
+  "fullText": "Lakshmi Kaul is CEO of Grin Media. Until recently, she was Senior Vice President at Mott MacDonald. Kaul has had a long career across India and the United Kingdom, with several key roles including political aide to the British Member of Parliament Bob Blackman, Head of the Confederation of Indian Industry (CII) in the UK, board member of the Commonwealth Enterprise and Investment Council (CWEIC), the Manchester-India Partnership, and the West Midlands-India Partnership. Lakshmi Kaul is an Indian British National who has spent her life bringing diasporic communities closer to their cultural roots and identity. She spends her time encouraging the love for nature, books, reading, reconnecting as a community and family through simple storytelling and conversation. She also curates daily wisdom stories, Authors of Bharat, re-telling stories from ancient Bharat but relevant to Modern Living, promoting thus, Indian civilisational systems. Lakshmi has had a thriving career in public policy, non-profit and corporate world before transitioning into writing and publishing full time. She spends her time living in India and United Kingdom.",
   "imageId": null,
   "sources": [
    "community-nomination"
   ],
   "image": null,
-  "compiled": true,
+  "compiled": false,
   "published": true
  },
  {
@@ -771,7 +771,7 @@
   "sources": [
    "community-nomination"
   ],
-  "image": null,
+  "image": "/portraits/manual-ragasudha-vinjamuri.jpg",
   "compiled": true,
   "published": true
  },
@@ -785,7 +785,7 @@
   "sources": [
    "community-nomination"
   ],
-  "image": null,
+  "image": "/portraits/manual-ranu-mehta-radia.jpg",
   "compiled": true,
   "published": true
  },
@@ -812,7 +812,7 @@
   "sources": [
    "community-nomination"
   ],
-  "image": null,
+  "image": "/portraits/manual-renu-gidoomal.jpg",
   "compiled": true,
   "published": true
  },
@@ -917,7 +917,7 @@
   "sources": [
    "community-nomination"
   ],
-  "image": null,
+  "image": "/portraits/manual-seema-anand.jpg",
   "compiled": true,
   "published": true
  },
@@ -1095,15 +1095,15 @@
  {
   "id": "89",
   "name": "Sunita Chaubey",
-  "org": "Sidtech Limited / IIW Volunteer",
-  "summary": "Sunita Chaubey is a director of Sidtech Limited, a technology recruitment firm based in Harrow, and has held that role since 2014. She volunteers with Inspiring Indian Women, helping run its South Asian Heritage Month and She Inspires events, and won the IIW Best Entrepreneur award in 2024.",
-  "fullText": "Sunita Chaubey is a director of Sidtech Limited, a technology recruitment firm based in Harrow, and has held that role since 2014. She volunteers with Inspiring Indian Women, helping run its South Asian Heritage Month and She Inspires events, and won the IIW Best Entrepreneur award in 2024.",
+  "org": "Recruitment Professional / Purvanchal Culture",
+  "summary": "With over 25 years of professional experience in the UK, she has always believed in empowering women and giving back to her community. She has been working hard to promote the rich Purvanchal culture, language, and traditions.",
+  "fullText": "With over 25 years of professional experience in the UK, she has always believed in empowering women and giving back to her community.\n\nShe has been working hard to promote the rich Purvanchal culture, language, and traditions, creating platforms through cultural events where women can showcase their hidden talents and shine with confidence.\n\nAlongside this, she takes pride in coaching, mentoring, and motivating women returning to work after career breaks, helping them rebuild confidence and achieve financial independence. She is working hard as a Recruitment Professional to support ladies get back to work after motherhood and career break.",
   "imageId": null,
   "sources": [
    "community-nomination"
   ],
-  "image": null,
-  "compiled": true,
+  "image": "/portraits/manual-sunita-chaubey.jpg",
+  "compiled": false,
   "published": true
  },
  {
@@ -1274,7 +1274,7 @@
   "sources": [
    "community-nomination"
   ],
-  "image": null,
+  "image": "/portraits/manual-zamiha-desai.jpg",
   "compiled": true,
   "published": true
  }
