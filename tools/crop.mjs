@@ -39,24 +39,29 @@ export async function cropPortrait(rawFile, outFile, opts = {}) {
   }
   const meta = await sharp(oriented).metadata();
   let c, method;
-  const face = await detectFace(oriented);
-  if (face) {
-    // head-and-shoulders window: face ~40% of the square, a little headroom above it
-    const minSide = maxUpscale > 0 ? Math.ceil(PORTRAIT_SIZE / maxUpscale) : 0;
-    const want = Math.max(Math.round(Math.max(face.w, face.h) * 2.5), minSide);
-    const side = Math.min(want, meta.width, meta.height);
-    const cx = face.x + face.w / 2, cy = face.y + face.h / 2;
-    c = {
-      width: side, height: side,
-      x: Math.round(Math.min(Math.max(cx - side / 2, 0), meta.width - side)),
-      y: Math.round(Math.min(Math.max(cy - side * 0.45, 0), meta.height - side)),
-    };
-    stats.face++;
-    method = 'face';
+  if (opts.window) {
+    c = opts.window;
+    method = 'manual';
   } else {
-    ({ topCrop: c } = await smartcrop.crop(sharp(oriented), { width: 100, height: 100, ruleOfThirds: false, imageOperations: sharpOps }));
-    stats.fallback++;
-    method = 'smartcrop';
+    const face = await detectFace(oriented);
+    if (face) {
+      // head-and-shoulders window: face ~40% of the square, a little headroom above it
+      const minSide = maxUpscale > 0 ? Math.ceil(PORTRAIT_SIZE / maxUpscale) : 0;
+      const want = Math.max(Math.round(Math.max(face.w, face.h) * 2.5), minSide);
+      const side = Math.min(want, meta.width, meta.height);
+      const cx = face.x + face.w / 2, cy = face.y + face.h / 2;
+      c = {
+        width: side, height: side,
+        x: Math.round(Math.min(Math.max(cx - side / 2, 0), meta.width - side)),
+        y: Math.round(Math.min(Math.max(cy - side * 0.45, 0), meta.height - side)),
+      };
+      stats.face++;
+      method = 'face';
+    } else {
+      ({ topCrop: c } = await smartcrop.crop(sharp(oriented), { width: 100, height: 100, ruleOfThirds: false, imageOperations: sharpOps }));
+      stats.fallback++;
+      method = 'smartcrop';
+    }
   }
   const buf = await sharp(oriented)
     .extract({ left: c.x, top: c.y, width: c.width, height: c.height })
