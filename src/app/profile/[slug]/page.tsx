@@ -8,8 +8,9 @@ import { BioText } from '@/components/BioText';
 import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { ShareBar } from '@/components/ShareBar';
-import { SITE_URL, SITE_NAME, COMPILED_PROFILE_NOTE } from '@/lib/site';
+import { COMPILED_PROFILE_NOTE } from '@/lib/site';
 import { toJsonLd } from '@/lib/json-ld';
+import { buildProfileMetadata, getProfileJsonLd } from '@/lib/seo_metadata';
 
 /**
  * Generate static params for all 97 published profiles at build time.
@@ -18,14 +19,6 @@ import { toJsonLd } from '@/lib/json-ld';
 export async function generateStaticParams() {
   const { nominees } = await getNominees();
   return nominees.map((n) => ({ slug: toFlipProfile(n).slug }));
-}
-
-function cleanSnippet(text: string, maxLen = 155): string {
-  if (!text) return '';
-  if (text.length <= maxLen) return text;
-  const cut = text.slice(0, maxLen);
-  const lastSpace = cut.lastIndexOf(' ');
-  return (lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim() + '…';
 }
 
 /**
@@ -50,21 +43,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const p = await findProfile(slug);
   if (!p) return { title: 'Profile not found' };
-  const url = `/profile/${p.slug}`;
-  const description = cleanSnippet(p.summary, 155);
-  return {
-    // layout title.template appends "— Inspiring Indian Women"
-    title: p.name,
-    description,
-    alternates: { canonical: url },
-    openGraph: {
-      type: 'profile',
-      url,
-      title: `${p.name} — Inspiring Indian Women`,
-      description,
-    },
-    twitter: { card: 'summary_large_image', title: p.name, description },
-  };
+  return buildProfileMetadata(p);
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
@@ -129,61 +108,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: toJsonLd({
-            '@context': 'https://schema.org',
-            '@graph': [
-              {
-                '@type': 'Person',
-                '@id': `${SITE_URL}/profile/${p.slug}#person`,
-                name: p.name,
-                description: p.summary,
-                image: p.image
-                  ? `${SITE_URL}${p.image}`
-                  : p.imageId
-                    ? `${SITE_URL}/api/image/${p.imageId}`
-                    : undefined,
-                url: `${SITE_URL}/profile/${p.slug}`,
-                jobTitle: p.org || undefined,
-                worksFor: p.org
-                  ? {
-                      '@type': 'Organization',
-                      name: p.org,
-                    }
-                  : undefined,
-                knowsAbout: p.category ? [p.category] : undefined,
-                isPartOf: {
-                  '@type': 'CollectionPage',
-                  '@id': `${SITE_URL}/#collection`,
-                  name: `${SITE_NAME} — Top Impactful British Indian Women 2026`,
-                  url: `${SITE_URL}/`,
-                },
-              },
-              {
-                '@type': 'BreadcrumbList',
-                '@id': `${SITE_URL}/profile/${p.slug}#breadcrumbs`,
-                itemListElement: [
-                  {
-                    '@type': 'ListItem',
-                    position: 1,
-                    name: 'Home',
-                    item: `${SITE_URL}/`,
-                  },
-                  {
-                    '@type': 'ListItem',
-                    position: 2,
-                    name: 'Archive',
-                    item: `${SITE_URL}/#archive`,
-                  },
-                  {
-                    '@type': 'ListItem',
-                    position: 3,
-                    name: p.name,
-                    item: `${SITE_URL}/profile/${p.slug}`,
-                  },
-                ],
-              },
-            ],
-          }),
+          __html: toJsonLd(getProfileJsonLd(p)),
         }}
       />
     </>

@@ -1,16 +1,11 @@
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getNominees } from '@/lib/sheets';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { toJsonLd } from '@/lib/json-ld';
+import { aboutPageMetadata } from '@/lib/seo_metadata';
 
-export const metadata: Metadata = {
-  title: 'About the archive',
-  description:
-    'How the Inspiring Indian Women flipbook is sourced, curated, and consented — Google Sheet Final Directory, nomination form responses, community nominations, and Drive portraits.',
-  alternates: { canonical: '/about' },
-};
+export const metadata = aboutPageMetadata;
 
 export default async function AboutPage() {
   const { nominees } = await getNominees();
