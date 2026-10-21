@@ -1,6 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 
+const SUPPORTED_MIME: Record<string, string> = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+};
+
 /**
  * Server-side portrait fetch for ImageResponse (satori) cards.
  *
@@ -14,13 +21,27 @@ export async function portraitDataUri(
   // 1. Try local file in public/ if available (instant, zero network latency)
   if (imagePath) {
     try {
-      const clean = imagePath.replace(/^\//, '');
-      const localFile = path.join(process.cwd(), 'public', clean);
-      if (fs.existsSync(localFile)) {
-        const buf = fs.readFileSync(localFile);
-        const ext = path.extname(localFile).toLowerCase();
-        const mime = ext === '.png' ? 'image/png' : ext === '.webp' ? 'image/webp' : 'image/jpeg';
-        return `data:${mime};base64,${buf.toString('base64')}`;
+      const clean = imagePath.replace(/^\/+/, '');
+      const publicDir = path.resolve(process.cwd(), 'public');
+      const candidatePath = path.resolve(publicDir, clean);
+
+      // Prevent directory traversal attacks outside of public directory
+      if (candidatePath.startsWith(publicDir + path.sep) && fs.existsSync(candidatePath)) {
+        // Prevent symlink escapes by resolving real paths
+        const realFile = fs.realpathSync(candidatePath);
+        const realPublic = fs.realpathSync(publicDir);
+
+        if (realFile.startsWith(realPublic + path.sep)) {
+          const ext = path.extname(realFile).toLowerCase();
+          const mime = SUPPORTED_MIME[ext];
+
+          // Return data only for explicitly supported extensions; skip unsupported formats (e.g. GIF)
+          // so execution can fall through to Drive fallback rather than mislabeling as JPEG.
+          if (mime) {
+            const buf = fs.readFileSync(realFile);
+            return `data:${mime};base64,${buf.toString('base64')}`;
+          }
+        }
       }
     } catch {
       /* fallback to imageId or null */

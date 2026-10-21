@@ -6,6 +6,7 @@ import { SearchPill } from '@/components/SearchPill';
 import { toFlipProfile } from '@/lib/flipbook-store';
 import { getNominees } from '@/lib/sheets';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
+import { toJsonLd } from '@/lib/json-ld';
 
 /**
  * Home = the book. Its hard front cover is the masthead, so there is no separate
@@ -109,7 +110,7 @@ export default async function Home() {
 
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: toJsonLd(jsonLd) }}
     />
     </>
   );

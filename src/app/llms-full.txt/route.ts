@@ -27,8 +27,8 @@ export async function GET() {
     sections.push(
       `## ${p.name}`,
       `- Canonical URL: ${SITE_URL}/profile/${p.slug}`,
-      p.org ? `- Organisation / Affiliation: ${p.org}` : '',
-      p.category ? `- Category: ${p.category}` : '',
+      ...(p.org ? [`- Organisation / Affiliation: ${p.org}`] : []),
+      ...(p.category ? [`- Category: ${p.category}`] : []),
       `- Curation Status: ${p.compiled ? 'Compiled by IIW from public records' : 'Published in nominee’s own consented words'}`,
       '',
       `### Executive Summary`,
@@ -42,8 +42,7 @@ export async function GET() {
     );
   }
 
-  // Filter out empty lines caused by optional fields
-  const body = sections.filter((s) => s !== '').join('\n');
+  const body = sections.join('\n');
 
   return new NextResponse(body, {
     headers: {

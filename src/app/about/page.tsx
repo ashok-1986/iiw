@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getNominees } from '@/lib/sheets';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
+import { toJsonLd } from '@/lib/json-ld';
 
 export const metadata: Metadata = {
   title: 'About the archive',
@@ -124,7 +125,7 @@ export default async function AboutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: toJsonLd({
             '@context': 'https://schema.org',
             '@type': 'AboutPage',
             url: `${SITE_URL}/about`,

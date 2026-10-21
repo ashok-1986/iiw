@@ -9,6 +9,7 @@ import { PortraitArch } from '@/components/PortraitArch';
 import { RangoliDivider } from '@/components/RangoliDivider';
 import { ShareBar } from '@/components/ShareBar';
 import { SITE_URL, SITE_NAME, COMPILED_PROFILE_NOTE } from '@/lib/site';
+import { toJsonLd } from '@/lib/json-ld';
 
 /**
  * Generate static params for all 97 published profiles at build time.
@@ -128,7 +129,7 @@ async function ProfileBody({ params }: { params: Promise<{ slug: string }> }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: toJsonLd({
             '@context': 'https://schema.org',
             '@graph': [
               {
