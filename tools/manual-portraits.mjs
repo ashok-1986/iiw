@@ -48,6 +48,12 @@ const MANUAL_SPECS = [
     rawFile: 'Sonoo Malkani.jpeg',
     opts: {},
   },
+  {
+    name: 'Dalia Banerjee',
+    slug: 'dalia-banerjee',
+    rawFile: 'Dalia Banerjee.jpg',
+    opts: {},
+  },
 ];
 
 const HON = new Set(['dr','prof','professor','mr','mrs','ms','mx','smt','shri','sri','capt','col','maj','cllr','councillor','rev','revd','amb','er','adv','sir','dame']);

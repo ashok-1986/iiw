@@ -6,7 +6,7 @@ import { forwardRef } from 'react';
  * 2:3, masters in design-src/covers). The image is contain-fitted, never stretched
  * or cropped, and takes no pointer events so page-flip drag and corner-pull keep working.
  */
-const BAKED_COUNT = 96; // the front image says "96 stories"; re-render it if the data changes
+const BAKED_COUNT = 97; // the front image says "97 stories"; re-render it if the data changes
 
 export const BookCover = forwardRef<
   HTMLDivElement,
