@@ -13,7 +13,7 @@ import { toJsonLd } from '@/lib/json-ld';
 import { buildProfileMetadata, getProfileJsonLd } from '@/lib/seo_metadata';
 
 /**
- * Generate static params for all 97 published profiles at build time.
+ * Generate static params for every published profile at build time.
  * Provides instant global TTFB, zero cold starts, and reliable crawler ingestion.
  */
 export async function generateStaticParams() {

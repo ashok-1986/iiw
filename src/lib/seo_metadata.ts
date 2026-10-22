@@ -1,5 +1,9 @@
 import type { Metadata } from 'next';
 import { SITE_URL, SITE_NAME } from '@/lib/site';
+import nominees from '@/data/nominees.json';
+
+/** The one head-count for every title, description and JSON-LD block below: the baked roster. */
+const PROFILE_COUNT = nominees.length;
 
 /**
  * Primary SEO keywords targeting brand, diaspora, categories, and initiatives.
@@ -61,7 +65,7 @@ export const rootMetadata: Metadata = {
     template: '%s | IIW & E-Utsav Digital Heirloom',
   },
   description:
-    'Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: 97 stories of impactful British Indian women in health, education, arts & enterprise.',
+    `Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: ${PROFILE_COUNT} stories of impactful British Indian women in health, education, arts & enterprise.`,
   keywords: SEO_KEYWORDS,
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: 'IIW & E-Utsav',
@@ -70,7 +74,7 @@ export const rootMetadata: Metadata = {
     type: 'website',
     siteName: 'Inspiring Indian Women & E-Utsav',
     url: SITE_URL,
-    title: 'A Digital Heirloom: 97 Stories of Courage, Craft & Community | IIW & E-Utsav',
+    title: `A Digital Heirloom: ${PROFILE_COUNT} Stories of Courage, Craft & Community | IIW & E-Utsav`,
     description:
       'Where every page turn feels like unfolding a silk saree. Explore the interactive 2026 archive celebrating impactful British Indian women across health, education, enterprise, community, and arts.',
     locale: 'en_GB',
@@ -85,7 +89,7 @@ export const rootMetadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'A Digital Heirloom: 97 Stories of Courage, Craft & Community | IIW & E-Utsav',
+    title: `A Digital Heirloom: ${PROFILE_COUNT} Stories of Courage, Craft & Community | IIW & E-Utsav`,
     description:
       'Where every page turn feels like unfolding a silk saree. Explore the interactive 2026 archive celebrating impactful British Indian women across health, education, enterprise, community, and arts.',
     images: [`${SITE_URL}/opengraph-image`],
@@ -113,14 +117,14 @@ export const aboutPageMetadata: Metadata = {
     absolute: 'About the Archive & Methodology | Inspiring Indian Women',
   },
   description:
-    'Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating 97 profiles of British Indian women across 5 impact causes.',
+    `Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating ${PROFILE_COUNT} profiles of British Indian women across 5 impact causes.`,
   alternates: { canonical: '/about' },
   openGraph: {
     type: 'website',
     url: `${SITE_URL}/about`,
     title: 'About the Archive & Methodology | Inspiring Indian Women',
     description:
-      'Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating 97 profiles of British Indian women across 5 impact causes.',
+      `Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating ${PROFILE_COUNT} profiles of British Indian women across 5 impact causes.`,
     locale: 'en_GB',
     siteName: 'Inspiring Indian Women & E-Utsav',
     images: [
@@ -136,7 +140,7 @@ export const aboutPageMetadata: Metadata = {
     card: 'summary_large_image',
     title: 'About the Archive & Methodology | Inspiring Indian Women',
     description:
-      'Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating 97 profiles of British Indian women across 5 impact causes.',
+      `Learn how the IIW Curation Team and Alchemetryx Consulting built A Digital Heirloom—curating ${PROFILE_COUNT} profiles of British Indian women across 5 impact causes.`,
     images: [`${SITE_URL}/opengraph-image`],
   },
 };
@@ -247,7 +251,7 @@ export function getArchiveJsonLd(profiles: ProfileSeoInput[]) {
         name: 'Inspiring Indian Women & E-Utsav',
         alternateName: ['IIW', 'Inspiring Indian Women', 'E-Utsav', 'Eutsav.org'],
         description:
-          'Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: 97 stories of impactful British Indian women in health, education, arts & enterprise.',
+          `Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: ${PROFILE_COUNT} stories of impactful British Indian women in health, education, arts & enterprise.`,
         publisher: { '@id': `${SITE_URL}/#organization` },
       },
       {
@@ -270,9 +274,9 @@ export function getArchiveJsonLd(profiles: ProfileSeoInput[]) {
         '@id': `${SITE_URL}/#collection`,
         url: `${SITE_URL}/`,
         name: 'IIW Top 100 British Indian Women 2026 | A Digital Heirloom',
-        headline: 'A Digital Heirloom: 97 Stories of Courage, Craft & Community',
+        headline: `A Digital Heirloom: ${PROFILE_COUNT} Stories of Courage, Craft & Community`,
         description:
-          'Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: 97 stories of impactful British Indian women in health, education, arts & enterprise.',
+          `Explore A Digital Heirloom by Inspiring Indian Women (IIW) & E-Utsav: ${PROFILE_COUNT} stories of impactful British Indian women in health, education, arts & enterprise.`,
         isPartOf: { '@id': `${SITE_URL}/#website` },
         about: { '@id': `${SITE_URL}/#organization` },
         mainEntity: {

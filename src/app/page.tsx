@@ -39,7 +39,7 @@ export default async function Home() {
           }
         />
 
-        {/* Semantic, server-rendered directory: ensures crawlers and assistive technology discover all 97 profile links */}
+        {/* Semantic, server-rendered directory: ensures crawlers and assistive technology discover every profile link */}
         <nav aria-label="Directory of Honoured Profiles" className="sr-only">
           <h2>All {profiles.length} Honoured Profiles</h2>
           <ol>
