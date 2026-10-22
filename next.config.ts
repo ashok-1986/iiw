@@ -4,6 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  // The share card reads the IIW badge from disk at request time; keep it in the function bundle.
+  outputFileTracingIncludes: {
+    '/opengraph-image': ['./public/brand/iiw-logo.png'],
+  },
   images: {
     // Portrait proxy is path-based (/api/image/[id], same-origin) so no
     // images.localPatterns query-string opt-in is required (Next 16 rule).

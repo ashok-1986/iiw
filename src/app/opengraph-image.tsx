@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { ImageResponse } from 'next/og';
 import { getNominees } from '@/lib/sheets';
 import { loadOgFonts } from '@/lib/og-fonts';
@@ -12,13 +14,18 @@ const CREAM = '#fff8ec'; // --surface-2
 const BLUSH = '#5fc4a8'; // --menthe
 const LIFT = '#15382f'; // ground, one step lighter
 
-export const alt = 'Inspiring Indian Women — a digital heirloom flipbook';
+export const alt = 'Inspiring Indian Women, a digital heirloom flipbook';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+
+const LOGO_SIZE = 150; // square badge, drawn at its natural aspect
 
 export default async function Image() {
   const { nominees } = await getNominees();
   const fonts = await loadOgFonts();
+  // satori cannot fetch a file path, so the badge goes in as a base64 data URI.
+  const logo = await readFile(path.join(process.cwd(), 'public', 'brand', 'iiw-logo.png'));
+  const logoSrc = `data:image/png;base64,${logo.toString('base64')}`;
 
   return new ImageResponse(
     (
@@ -32,29 +39,19 @@ export default async function Image() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 26,
-          padding: 80,
+          gap: 22,
+          padding: '56px 80px',
           textAlign: 'center',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            fontFamily: 'UI',
-            fontSize: 24,
-            letterSpacing: 8,
-            color: GOLD,
-            textTransform: 'uppercase',
-          }}
-        >
-          Inspiring Indian Women
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element -- satori renders a plain <img>, not next/image */}
+        <img src={logoSrc} width={LOGO_SIZE} height={LOGO_SIZE} alt="" />
 
         <div
           style={{
             display: 'flex',
             fontFamily: 'Display',
-            fontSize: 92,
+            fontSize: 88,
             lineHeight: 1.05,
             color: CREAM,
           }}
@@ -82,7 +79,7 @@ export default async function Image() {
             fontFamily: 'UI',
             fontSize: 22,
             color: BLUSH,
-            maxWidth: 820,
+            maxWidth: 940,
             lineHeight: 1.5,
           }}
         >
