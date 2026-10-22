@@ -253,12 +253,20 @@ async function main() {
     const img = driveId(r[6]); if (img && !e.imageId) e.imageId = img;
   }
 
-  const final = order.map((k, i) => {
+  // Profile URLs end in the id (/profile/<name>-<id>), so a re-ordered Sheet must not renumber
+  // people already published: reuse each baked id by name, and give new people the next free ones.
+  const prevIds = new Map();
+  try {
+    for (const p of JSON.parse(fs.readFileSync(OUT, 'utf8'))) prevIds.set(normName(String(p.name).split(',')[0]), String(p.id));
+  } catch { /* first run: no baked data yet */ }
+  let nextId = Math.max(0, ...[...prevIds.values()].map(Number)) + 1;
+
+  const final = order.map((k) => {
     const e = recs.get(k);
     // fullText is the longest bio we hold; never shorter than the card summary.
     if (words(e.summary) > words(e.fullText)) e.fullText = e.summary;
     if (PORTRAIT_BLOCKLIST.has(k)) e.imageId = null; // non-portrait upload -> lotus
-    return { id: String(i + 1), name: e.name, org: e.org, summary: e.summary, fullText: e.fullText, imageId: e.imageId, sources: [...new Set(e.sources)], variants: [...e.variants] };
+    return { id: prevIds.get(k) ?? String(nextId++), name: e.name, org: e.org, summary: e.summary, fullText: e.fullText, imageId: e.imageId, sources: [...new Set(e.sources)], variants: [...e.variants] };
   });
 
   // report merges + possible remaining dupes (same first+last token)

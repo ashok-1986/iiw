@@ -92,6 +92,26 @@ const MANUAL_SPECS = [
     rawFile: 'Seema Anand.jpg',
     opts: {},
   },
+  // Name as the Sheet spells it; the raw file is "Kavita Gulati.jpeg". Photo of a screen: black band at the bottom and right edge.
+  {
+    name: 'Kaveeta Gulati',
+    slug: 'kaveeta-gulati',
+    rawFile: 'Kavita Gulati.jpeg',
+    opts: { trim: 0.06 },
+  },
+  {
+    name: 'Paromita Goswani',
+    slug: 'paromita-goswani',
+    rawFile: 'Paromita Goswani.jpeg',
+    opts: {},
+  },
+  // Selfie with a pale margin along the top-left and right edges.
+  {
+    name: 'Reena Bagga',
+    slug: 'reena-bagga',
+    rawFile: 'Reena Bagga.jpeg',
+    opts: { trim: 0.03 },
+  },
   {
     name: 'Lakshmi Kaul',
     slug: 'lakshmi-kaul',
