@@ -28,6 +28,8 @@ interface RawNominee {
   image?: string | null;
   sources?: string[];
   compiled?: boolean;
+  /** Explicit category (tools/data/category-overrides.json); wins over deriveCategory. */
+  category?: string;
 }
 
 /**
@@ -51,6 +53,16 @@ export function deriveCategory(text: string): string {
   return 'community';
 }
 
+const CATEGORY_KEYS = new Set(CATEGORY_RULES.map(([cat]) => cat));
+
+function resolveCategory(r: RawNominee, summary: string): string {
+  if (r.category === undefined) return deriveCategory(`${summary} ${r.org ?? ''}`);
+  if (!CATEGORY_KEYS.has(r.category)) {
+    throw new Error(`Unknown category "${r.category}" on "${r.name}". Valid: ${[...CATEGORY_KEYS].join(', ')}`);
+  }
+  return r.category;
+}
+
 export async function getNominees(): Promise<NomineesResult> {
   'use cache';
   cacheLife('hours');
@@ -72,7 +84,7 @@ export async function getNominees(): Promise<NomineesResult> {
       imageId: r.imageId ?? null,
       image: r.image ?? null,
       imageUrl: null,
-      category: deriveCategory(`${summary} ${r.org ?? ''}`),
+      category: resolveCategory(r, summary),
       consentGiven: !isCompiled,
       compiled: isCompiled,
       source: (r.sources && r.sources.includes('final-directory') ? 'final-directory' : 'form-responses') as NomineeSource,

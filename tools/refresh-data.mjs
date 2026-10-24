@@ -9,6 +9,7 @@ import smartcrop from 'smartcrop';
 import { detectFace } from './face.mjs';
 import { applyCommunityNominees } from './community-nominees.mjs';
 import { applyManualPortraits } from './manual-portraits.mjs';
+import { applyCategoryOverrides } from './category-overrides.mjs';
 
 const SHEET_ID = '1loMFRoc6H5nDFZk5-tjXDjH0DCq0KUFHF-ggOIC1Geg';
 const GIDS = { finalDirectory: '0', form1: '688232594', old: '293174' };
@@ -318,6 +319,7 @@ async function main() {
   // Add community nominees (89-96) and manual portraits before final write
   applyCommunityNominees(final);
   await applyManualPortraits(final);
+  applyCategoryOverrides(final);
 
   // Validate unique IDs across final list before writing output
   const seenIds = new Set();
