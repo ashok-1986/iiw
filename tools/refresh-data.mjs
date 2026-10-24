@@ -10,6 +10,7 @@ import { detectFace } from './face.mjs';
 import { applyCommunityNominees } from './community-nominees.mjs';
 import { applyManualPortraits } from './manual-portraits.mjs';
 import { applyCategoryOverrides } from './category-overrides.mjs';
+import { applyFullTextOverrides } from './full-text-overrides.mjs';
 
 const SHEET_ID = '1loMFRoc6H5nDFZk5-tjXDjH0DCq0KUFHF-ggOIC1Geg';
 const GIDS = { finalDirectory: '0', form1: '688232594', old: '293174' };
@@ -320,6 +321,7 @@ async function main() {
   applyCommunityNominees(final);
   await applyManualPortraits(final);
   applyCategoryOverrides(final);
+  applyFullTextOverrides(final);
 
   // Validate unique IDs across final list before writing output
   const seenIds = new Set();
