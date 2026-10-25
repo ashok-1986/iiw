@@ -37,26 +37,31 @@ interface RawNominee {
  * It powers the search chips only; the published subtitle is the real org line.
  */
 const CATEGORY_RULES: Array<[string, string[]]> = [
-  ['health', ['mental health', 'wellbeing', 'nurs', 'health', 'therapy', 'cancer', 'care ', 'psycholog', 'hospital']],
+  ['health', ['mental health', 'nurse', 'nhs', 'clinic', 'medicine', 'medical', 'health', 'therapy', 'cancer', 'psycholog', 'hospital']],
   ['education', ['school', 'teach', 'education', 'literacy', 'student', 'learning', 'university', 'training']],
   ['enterprise', ['founder', 'entrepreneur', 'ceo', 'business', 'company', 'director of', 'enterprise', 'startup']],
   ['arts-culture', ['artist', 'music', 'dance', 'writer', 'author', 'theatre', 'artistic', 'design', 'film', 'poet']],
   ['community', ['charity', 'community', 'volunteer', 'foundation', 'ngo', 'association', 'network', 'mentor']],
-  ['women-empowerment', ['women', 'girls', 'gender', 'empower']],
+  ['women-empowerment', ['domestic abuse', 'women', 'girls', 'gender', 'empower']],
 ];
 
-export function deriveCategory(text: string): string {
-  const t = ` ${text.toLowerCase()} `;
+/** Fallback for records without an explicit category: org hits count 3, summary hits 1; ties keep rule order. */
+export function deriveCategory(summary: string, org = ''): string {
+  const s = ` ${summary.toLowerCase()} `;
+  const o = ` ${org.toLowerCase()} `;
+  let best = 'community';
+  let bestScore = 0;
   for (const [cat, words] of CATEGORY_RULES) {
-    if (words.some((w) => t.includes(w))) return cat;
+    const score = words.reduce((n, w) => n + (o.includes(w) ? 3 : 0) + (s.includes(w) ? 1 : 0), 0);
+    if (score > bestScore) { best = cat; bestScore = score; }
   }
-  return 'community';
+  return best;
 }
 
 const CATEGORY_KEYS = new Set(CATEGORY_RULES.map(([cat]) => cat));
 
 function resolveCategory(r: RawNominee, summary: string): string {
-  if (r.category === undefined) return deriveCategory(`${summary} ${r.org ?? ''}`);
+  if (r.category === undefined) return deriveCategory(summary, r.org ?? '');
   if (!CATEGORY_KEYS.has(r.category)) {
     throw new Error(`Unknown category "${r.category}" on "${r.name}". Valid: ${[...CATEGORY_KEYS].join(', ')}`);
   }

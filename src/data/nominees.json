@@ -10,7 +10,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1uv-0ZQqNStB6_3AtJ6PlpgWfdO90ThX8.jpg"
+  "image": "/portraits/1uv-0ZQqNStB6_3AtJ6PlpgWfdO90ThX8.jpg",
+  "category": "health"
  },
  {
   "id": "44",
@@ -23,7 +24,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1OyhwNnAQuOr2E5Se6XsdAmpNyI6oXdZs.jpg"
+  "image": "/portraits/1OyhwNnAQuOr2E5Se6XsdAmpNyI6oXdZs.jpg",
+  "category": "community"
  },
  {
   "id": "23",
@@ -36,7 +38,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1ilbZQjvVZTsUhivxAi1jCa0henqwlfLH.jpg"
+  "image": "/portraits/1ilbZQjvVZTsUhivxAi1jCa0henqwlfLH.jpg",
+  "category": "community"
  },
  {
   "id": "22",
@@ -49,7 +52,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1DtNpi10VQFwHE6ZtCEgKGE_s7mSQ2BL8.jpg"
+  "image": "/portraits/1DtNpi10VQFwHE6ZtCEgKGE_s7mSQ2BL8.jpg",
+  "category": "community"
  },
  {
   "id": "41",
@@ -62,7 +66,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/14i3v3G011HxUt6ptVlTvZJpPPIqNLw0M.jpg"
+  "image": "/portraits/14i3v3G011HxUt6ptVlTvZJpPPIqNLw0M.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "35",
@@ -75,7 +80,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1FQkscxxZHPkpZJJYWGwhFoM_F7JBMF4B.jpg"
+  "image": "/portraits/1FQkscxxZHPkpZJJYWGwhFoM_F7JBMF4B.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "61",
@@ -88,7 +94,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1UD1qUrHcNNZSlzBnyFYZiYV1bza_5zPO.jpg"
+  "image": "/portraits/1UD1qUrHcNNZSlzBnyFYZiYV1bza_5zPO.jpg",
+  "category": "community"
  },
  {
   "id": "57",
@@ -101,7 +108,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1v4Q_BZNdM98mLlEn2PNCeOw11dpHtMcc.jpg"
+  "image": "/portraits/1v4Q_BZNdM98mLlEn2PNCeOw11dpHtMcc.jpg",
+  "category": "health"
  },
  {
   "id": "7",
@@ -115,7 +123,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1fJly_w3eH6NZ-wMgQ-x9dRyyKtYPqOqM.jpg"
+  "image": "/portraits/1fJly_w3eH6NZ-wMgQ-x9dRyyKtYPqOqM.jpg",
+  "category": "community"
  },
  {
   "id": "63",
@@ -128,7 +137,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/194SFYIOARwBNPPAO0J2SUk9NzTsyfOdK.jpg"
+  "image": "/portraits/194SFYIOARwBNPPAO0J2SUk9NzTsyfOdK.jpg",
+  "category": "health"
  },
  {
   "id": "30",
@@ -142,7 +152,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/19YCT4tY7lmPZSCSiDlQb6BVT9wgefMbd.jpg"
+  "image": "/portraits/19YCT4tY7lmPZSCSiDlQb6BVT9wgefMbd.jpg",
+  "category": "health"
  },
  {
   "id": "34",
@@ -155,7 +166,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1RyuOUzWUsm1NzNTKvUYdCxygq7N4e-Wk.jpg"
+  "image": "/portraits/1RyuOUzWUsm1NzNTKvUYdCxygq7N4e-Wk.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "47",
@@ -168,7 +180,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1i4in6YJtomptiGRa1XxkVpejWUAsQNMo.jpg"
+  "image": "/portraits/1i4in6YJtomptiGRa1XxkVpejWUAsQNMo.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "58",
@@ -181,7 +194,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1vEz1VFw5PEVqvetDEqMugAE2koiirhds.jpg"
+  "image": "/portraits/1vEz1VFw5PEVqvetDEqMugAE2koiirhds.jpg",
+  "category": "education"
  },
  {
   "id": "5",
@@ -194,7 +208,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1h3CgPWDqpzaKWjPUGSuR82iefAZv2JW0.jpg"
+  "image": "/portraits/1h3CgPWDqpzaKWjPUGSuR82iefAZv2JW0.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "19",
@@ -207,7 +222,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/12VF0S5DhhK2qPfovx_vZpHK5HmSuMM4s.jpg"
+  "image": "/portraits/12VF0S5DhhK2qPfovx_vZpHK5HmSuMM4s.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "97",
@@ -220,7 +236,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-dalia-banerjee.jpg"
+  "image": "/portraits/manual-dalia-banerjee.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "25",
@@ -233,7 +250,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1DudT17FkoF5xobqVgW_wUmISyaFlg62h.jpg"
+  "image": "/portraits/1DudT17FkoF5xobqVgW_wUmISyaFlg62h.jpg",
+  "category": "community"
  },
  {
   "id": "17",
@@ -246,7 +264,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1QWCJsxoaWd15MyUOGcNmPciVTHDwoYDG.jpg"
+  "image": "/portraits/1QWCJsxoaWd15MyUOGcNmPciVTHDwoYDG.jpg",
+  "category": "community"
  },
  {
   "id": "71",
@@ -259,7 +278,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/1r0fnOxLQxfXYoFcVKhkzLFHo2jCWKQAB.jpg"
+  "image": "/portraits/1r0fnOxLQxfXYoFcVKhkzLFHo2jCWKQAB.jpg",
+  "category": "community"
  },
  {
   "id": "1",
@@ -273,7 +293,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/10aEHGNbUerqLTcMD24uvjP9aJ035IJdz.jpg"
+  "image": "/portraits/10aEHGNbUerqLTcMD24uvjP9aJ035IJdz.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "2",
@@ -286,7 +307,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1UlwgFoah0qXmPP1Vp5vm6xNFKcB36Ojw.jpg"
+  "image": "/portraits/1UlwgFoah0qXmPP1Vp5vm6xNFKcB36Ojw.jpg",
+  "category": "enterprise"
  },
  {
   "id": "9",
@@ -299,7 +321,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1y_dVa8EN8N8-OMfkyRFmOEsOohcyHA_j.jpg"
+  "image": "/portraits/1y_dVa8EN8N8-OMfkyRFmOEsOohcyHA_j.jpg",
+  "category": "education"
  },
  {
   "id": "31",
@@ -312,7 +335,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1xdjTTpshpcvh13cN05EfjwHgk3qQiykB.jpg"
+  "image": "/portraits/1xdjTTpshpcvh13cN05EfjwHgk3qQiykB.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "68",
@@ -325,7 +349,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/13X2umTsJB9mSF1FVPPJf6ZEc8wV5VAqV.jpg"
+  "image": "/portraits/13X2umTsJB9mSF1FVPPJf6ZEc8wV5VAqV.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "38",
@@ -338,7 +363,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Xk2X_wY-ZkD6IS-BnrQ2PPH2KQmLDrnf.jpg"
+  "image": "/portraits/1Xk2X_wY-ZkD6IS-BnrQ2PPH2KQmLDrnf.jpg",
+  "category": "community"
  },
  {
   "id": "33",
@@ -351,7 +377,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1sOxRswaOHTSDKiwCxOHNbgcm-Ttd8DC6.jpg"
+  "image": "/portraits/1sOxRswaOHTSDKiwCxOHNbgcm-Ttd8DC6.jpg",
+  "category": "community"
  },
  {
   "id": "45",
@@ -364,7 +391,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1z7nFFTAzf1W2nnUSdCqjy5kPEmqI-XL8.jpg"
+  "image": "/portraits/1z7nFFTAzf1W2nnUSdCqjy5kPEmqI-XL8.jpg",
+  "category": "community"
  },
  {
   "id": "20",
@@ -377,7 +405,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1dJ7poxWyM4SkqQdWa4WHM8RV3lryPmXP.jpg"
+  "image": "/portraits/1dJ7poxWyM4SkqQdWa4WHM8RV3lryPmXP.jpg",
+  "category": "community"
  },
  {
   "id": "48",
@@ -390,7 +419,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1zcOI6l-jt8u1P8OOHA_dMFzb-GL2peuc.jpg"
+  "image": "/portraits/1zcOI6l-jt8u1P8OOHA_dMFzb-GL2peuc.jpg",
+  "category": "health"
  },
  {
   "id": "74",
@@ -403,7 +433,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/manual-hema-manjunath.jpg"
+  "image": "/portraits/manual-hema-manjunath.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "6",
@@ -416,7 +447,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-hema-yellapragada.jpg"
+  "image": "/portraits/manual-hema-yellapragada.jpg",
+  "category": "education"
  },
  {
   "id": "54",
@@ -429,7 +461,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1_w8ooAGKAsQ1Jqp-FxnFK7Alra-Tcs1F.jpg"
+  "image": "/portraits/1_w8ooAGKAsQ1Jqp-FxnFK7Alra-Tcs1F.jpg",
+  "category": "community"
  },
  {
   "id": "12",
@@ -443,7 +476,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1bZx3_701Vo0qRsF8DFLUxOGNW-GpOSvd.jpg"
+  "image": "/portraits/1bZx3_701Vo0qRsF8DFLUxOGNW-GpOSvd.jpg",
+  "category": "community"
  },
  {
   "id": "50",
@@ -456,7 +490,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1NFpL1KxJPM9PzHO33QAbjiJGq2G0pVcd.jpg"
+  "image": "/portraits/1NFpL1KxJPM9PzHO33QAbjiJGq2G0pVcd.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "21",
@@ -469,7 +504,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1-9qvvIHqPx_RMW4nKNxQvc0eVD7owd-Y.jpg"
+  "image": "/portraits/1-9qvvIHqPx_RMW4nKNxQvc0eVD7owd-Y.jpg",
+  "category": "health"
  },
  {
   "id": "10",
@@ -482,7 +518,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1t9DO6fdNw1gvaYN46OIg0MZqqOq3F69D.jpg"
+  "image": "/portraits/1t9DO6fdNw1gvaYN46OIg0MZqqOq3F69D.jpg",
+  "category": "health"
  },
  {
   "id": "83",
@@ -495,7 +532,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Dag3djhSlidmjXqveUeA5dv2kqHX2REd.jpg"
+  "image": "/portraits/1Dag3djhSlidmjXqveUeA5dv2kqHX2REd.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "99",
@@ -508,7 +546,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-kaveeta-gulati.jpg"
+  "image": "/portraits/manual-kaveeta-gulati.jpg",
+  "category": "community"
  },
  {
   "id": "79",
@@ -521,7 +560,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/manual-kirti-soni.jpg"
+  "image": "/portraits/manual-kirti-soni.jpg",
+  "category": "health"
  },
  {
   "id": "15",
@@ -534,7 +574,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1HYSWe1PXxZVRs6ic1VLEdd8NqYp3UVFG.jpg"
+  "image": "/portraits/1HYSWe1PXxZVRs6ic1VLEdd8NqYp3UVFG.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "95",
@@ -548,7 +589,8 @@
   ],
   "image": "/portraits/manual-lakshmi-kaul.jpg",
   "compiled": false,
-  "published": true
+  "published": true,
+  "category": "arts-culture"
  },
  {
   "id": "28",
@@ -561,7 +603,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1asV-IaahuOzyth8bDL4nISK5mvxL9Q7M.jpg"
+  "image": "/portraits/1asV-IaahuOzyth8bDL4nISK5mvxL9Q7M.jpg",
+  "category": "education"
  },
  {
   "id": "75",
@@ -574,7 +617,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/1vPngHM_8pJtNmQQDVLKf-CbVIengD0I4.jpg"
+  "image": "/portraits/1vPngHM_8pJtNmQQDVLKf-CbVIengD0I4.jpg",
+  "category": "community"
  },
  {
   "id": "88",
@@ -587,7 +631,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1eO8OOixmspXdh3CmsrtwLNV9_g0wv4cu.jpg"
+  "image": "/portraits/1eO8OOixmspXdh3CmsrtwLNV9_g0wv4cu.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "8",
@@ -601,7 +646,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/10vfz7duZVJng5Myzf8Ldk4Fc5DP0zFgZ.jpg"
+  "image": "/portraits/10vfz7duZVJng5Myzf8Ldk4Fc5DP0zFgZ.jpg",
+  "category": "community"
  },
  {
   "id": "86",
@@ -614,7 +660,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1e0MeYgWzLw4KcJwYdgViuiAltMOwF0NX.jpg"
+  "image": "/portraits/1e0MeYgWzLw4KcJwYdgViuiAltMOwF0NX.jpg",
+  "category": "community"
  },
  {
   "id": "62",
@@ -627,7 +674,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1MIb5-hVS4M6DOSx1XDnK7KHJTdPl-vM2.jpg"
+  "image": "/portraits/1MIb5-hVS4M6DOSx1XDnK7KHJTdPl-vM2.jpg",
+  "category": "health"
  },
  {
   "id": "4",
@@ -640,7 +688,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/16N-82k0psFbHatGzmxPtjr2CGPBedPk0.jpg"
+  "image": "/portraits/16N-82k0psFbHatGzmxPtjr2CGPBedPk0.jpg",
+  "category": "health"
  },
  {
   "id": "36",
@@ -653,7 +702,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1B8w7j0btB3D7XwXU3BQUh4lsYtMzUqdD.jpg"
+  "image": "/portraits/1B8w7j0btB3D7XwXU3BQUh4lsYtMzUqdD.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "72",
@@ -666,7 +716,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/1fMXZgZZ5RrOS53WUlmjY-iep4Gc9YiIF.jpg"
+  "image": "/portraits/1fMXZgZZ5RrOS53WUlmjY-iep4Gc9YiIF.jpg",
+  "category": "community"
  },
  {
   "id": "66",
@@ -679,7 +730,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1jnUERpkfWFrTKd-P8kXls_zFdtWNsWa8.jpg"
+  "image": "/portraits/1jnUERpkfWFrTKd-P8kXls_zFdtWNsWa8.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "39",
@@ -692,7 +744,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Y5UUaPtnx0VvXrAPsGTUdzK-Fi0iC-bR.jpg"
+  "image": "/portraits/1Y5UUaPtnx0VvXrAPsGTUdzK-Fi0iC-bR.jpg",
+  "category": "community"
  },
  {
   "id": "59",
@@ -705,7 +758,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1iIqvgwrtqWduCP2u6L_S_jbbzRFlf_3W.jpg"
+  "image": "/portraits/1iIqvgwrtqWduCP2u6L_S_jbbzRFlf_3W.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "100",
@@ -718,7 +772,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-paromita-goswani.jpg"
+  "image": "/portraits/manual-paromita-goswani.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "16",
@@ -732,7 +787,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1zfBvE7bj-OHr-VnHz7c2y3CB8u5EUPuT.jpg"
+  "image": "/portraits/1zfBvE7bj-OHr-VnHz7c2y3CB8u5EUPuT.jpg",
+  "category": "community"
  },
  {
   "id": "40",
@@ -745,7 +801,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Tp4UtHGmdPoiLmF9_h89dzvNvYcbRg_3.jpg"
+  "image": "/portraits/1Tp4UtHGmdPoiLmF9_h89dzvNvYcbRg_3.jpg",
+  "category": "education"
  },
  {
   "id": "87",
@@ -758,7 +815,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1ofpKydpb0f8J2dIT_rwmTU0Zb8-qTBo7.jpg"
+  "image": "/portraits/1ofpKydpb0f8J2dIT_rwmTU0Zb8-qTBo7.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "53",
@@ -771,7 +829,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1eqxILsdtqmjgw63lTIxtgGkgyeqV9IT9.jpg"
+  "image": "/portraits/1eqxILsdtqmjgw63lTIxtgGkgyeqV9IT9.jpg",
+  "category": "community"
  },
  {
   "id": "64",
@@ -784,7 +843,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1D5UM65TWbzDW9jroFDiD4CBl1iMAgAOD.jpg"
+  "image": "/portraits/1D5UM65TWbzDW9jroFDiD4CBl1iMAgAOD.jpg",
+  "category": "community"
  },
  {
   "id": "92",
@@ -798,7 +858,8 @@
   ],
   "image": "/portraits/manual-ragasudha-vinjamuri.jpg",
   "compiled": true,
-  "published": true
+  "published": true,
+  "category": "arts-culture"
  },
  {
   "id": "91",
@@ -812,7 +873,8 @@
   ],
   "image": "/portraits/manual-ranu-mehta-radia.jpg",
   "compiled": true,
-  "published": true
+  "published": true,
+  "category": "education"
  },
  {
   "id": "98",
@@ -825,7 +887,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-reena-bagga.jpg"
+  "image": "/portraits/manual-reena-bagga.jpg",
+  "category": "health"
  },
  {
   "id": "43",
@@ -838,7 +901,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/15qNZDK7kVnrtW9FjuvfK_r0SZN-XUpdG.jpg"
+  "image": "/portraits/15qNZDK7kVnrtW9FjuvfK_r0SZN-XUpdG.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "93",
@@ -852,7 +916,8 @@
   ],
   "image": "/portraits/manual-renu-gidoomal.jpg",
   "compiled": true,
-  "published": true
+  "published": true,
+  "category": "arts-culture"
  },
  {
   "id": "84",
@@ -865,7 +930,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1cExv_Szbzjh5WEpljIA2dDOD3PLgs87q.jpg"
+  "image": "/portraits/1cExv_Szbzjh5WEpljIA2dDOD3PLgs87q.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "80",
@@ -878,7 +944,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1oKtBhegH75eTihl6yZXhb29QazY09kxO.jpg"
+  "image": "/portraits/1oKtBhegH75eTihl6yZXhb29QazY09kxO.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "49",
@@ -891,7 +958,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1FYtrqC7ZOBVFiB0qixDp2OE47C1_JvcD.jpg"
+  "image": "/portraits/1FYtrqC7ZOBVFiB0qixDp2OE47C1_JvcD.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "77",
@@ -904,7 +972,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/1tv33maatBn2HBiHlq5cLM-0kmIXQ_BEa.jpg"
+  "image": "/portraits/1tv33maatBn2HBiHlq5cLM-0kmIXQ_BEa.jpg",
+  "category": "education"
  },
  {
   "id": "85",
@@ -917,7 +986,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/13BhkNs_SJH1tIhl5tR2YPQfKKLfqME5V.jpg"
+  "image": "/portraits/13BhkNs_SJH1tIhl5tR2YPQfKKLfqME5V.jpg",
+  "category": "health"
  },
  {
   "id": "29",
@@ -930,7 +1000,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1NYfaFGNxRZpBk_22Pq-Lp3DwVlCIoGSy.jpg"
+  "image": "/portraits/1NYfaFGNxRZpBk_22Pq-Lp3DwVlCIoGSy.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "27",
@@ -943,7 +1014,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1h7cPEQ2KUd_jXIHQhstEPpi_00_BoayT.jpg"
+  "image": "/portraits/1h7cPEQ2KUd_jXIHQhstEPpi_00_BoayT.jpg",
+  "category": "enterprise"
  },
  {
   "id": "94",
@@ -957,7 +1029,8 @@
   ],
   "image": "/portraits/manual-seema-anand.jpg",
   "compiled": true,
-  "published": true
+  "published": true,
+  "category": "arts-culture"
  },
  {
   "id": "65",
@@ -970,7 +1043,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1CIJ84bGwi3u-bqKh512uv2t9L4XsGDVW.jpg"
+  "image": "/portraits/1CIJ84bGwi3u-bqKh512uv2t9L4XsGDVW.jpg",
+  "category": "health"
  },
  {
   "id": "82",
@@ -983,7 +1057,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1FVK2Keb_K2KIXEFWc6hMzAkjyL8Dku_C.jpg"
+  "image": "/portraits/1FVK2Keb_K2KIXEFWc6hMzAkjyL8Dku_C.jpg",
+  "category": "community"
  },
  {
   "id": "51",
@@ -996,7 +1071,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1k7YOxvgk7ZReTyO_xB1p4qjN3qo8ls7c.jpg"
+  "image": "/portraits/1k7YOxvgk7ZReTyO_xB1p4qjN3qo8ls7c.jpg",
+  "category": "education"
  },
  {
   "id": "67",
@@ -1023,7 +1099,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1NoM9xWqRHR33fqZrAB3IyYP-ULl5S5Mj.jpg"
+  "image": "/portraits/1NoM9xWqRHR33fqZrAB3IyYP-ULl5S5Mj.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "42",
@@ -1036,7 +1113,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1UJNH_ynSY10w2S7t3xDLXN6b_-1qxhZ8.jpg"
+  "image": "/portraits/1UJNH_ynSY10w2S7t3xDLXN6b_-1qxhZ8.jpg",
+  "category": "community"
  },
  {
   "id": "76",
@@ -1049,7 +1127,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/16JP1jGZCaZ6GNsPZpgdsicV-GDA6orfF.jpg"
+  "image": "/portraits/16JP1jGZCaZ6GNsPZpgdsicV-GDA6orfF.jpg",
+  "category": "community"
  },
  {
   "id": "81",
@@ -1062,7 +1141,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1eNXckZUsXOywZN8jqArWfGbUkx8ZW6sr.jpg"
+  "image": "/portraits/1eNXckZUsXOywZN8jqArWfGbUkx8ZW6sr.jpg",
+  "category": "community"
  },
  {
   "id": "96",
@@ -1076,7 +1156,8 @@
   ],
   "image": "/portraits/manual-sonoo-malkani.jpg",
   "compiled": false,
-  "published": true
+  "published": true,
+  "category": "community"
  },
  {
   "id": "60",
@@ -1089,7 +1170,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/10kxDXWN08mCoEioLYk0q3wpzKKx6hr_y.jpg"
+  "image": "/portraits/10kxDXWN08mCoEioLYk0q3wpzKKx6hr_y.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "37",
@@ -1102,7 +1184,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1mPEQ9D8oB_Yn50Ddgvj2X5YrmVU2CluN.jpg"
+  "image": "/portraits/1mPEQ9D8oB_Yn50Ddgvj2X5YrmVU2CluN.jpg",
+  "category": "community"
  },
  {
   "id": "3",
@@ -1116,7 +1199,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1BsIvzygoDC2pgnYDjt016DecPYcDzh3A.jpg"
+  "image": "/portraits/1BsIvzygoDC2pgnYDjt016DecPYcDzh3A.jpg",
+  "category": "education"
  },
  {
   "id": "69",
@@ -1129,7 +1213,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Km5CskOplGt3I-TOrjKZXsCWveu3Y2zd.jpg"
+  "image": "/portraits/1Km5CskOplGt3I-TOrjKZXsCWveu3Y2zd.jpg",
+  "category": "community"
  },
  {
   "id": "89",
@@ -1143,7 +1228,8 @@
   ],
   "image": "/portraits/manual-sunita-chaubey.jpg",
   "compiled": false,
-  "published": true
+  "published": true,
+  "category": "women-empowerment"
  },
  {
   "id": "73",
@@ -1156,7 +1242,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/manual-suparna-rathi.jpg"
+  "image": "/portraits/manual-suparna-rathi.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "18",
@@ -1169,7 +1256,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/18pQpJWkkV7AU9qM1KLetxGAF4YMz_V-v.jpg"
+  "image": "/portraits/18pQpJWkkV7AU9qM1KLetxGAF4YMz_V-v.jpg",
+  "category": "women-empowerment"
  },
  {
   "id": "52",
@@ -1182,7 +1270,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1PxBYSD2rd396h1tqC-_TTxLhsFDbquCV.jpg"
+  "image": "/portraits/1PxBYSD2rd396h1tqC-_TTxLhsFDbquCV.jpg",
+  "category": "health"
  },
  {
   "id": "32",
@@ -1196,7 +1285,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1Yf03VFXcF2Lp4lXQOyzwN2sEHqiOT99E.jpg"
+  "image": "/portraits/1Yf03VFXcF2Lp4lXQOyzwN2sEHqiOT99E.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "78",
@@ -1209,7 +1299,8 @@
    "form1",
    "final-directory"
   ],
-  "image": "/portraits/1x8X_noYNmKO5NuAnwevI3ryc47Q1Ahb6.jpg"
+  "image": "/portraits/1x8X_noYNmKO5NuAnwevI3ryc47Q1Ahb6.jpg",
+  "category": "health"
  },
  {
   "id": "46",
@@ -1222,7 +1313,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1Q2Mjd_hIgsti1O4aqqn5e1TVGqVyRVpr.jpg"
+  "image": "/portraits/1Q2Mjd_hIgsti1O4aqqn5e1TVGqVyRVpr.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "24",
@@ -1235,7 +1327,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/17Kc0a8Uo--VlWal_x8Vcxk3794n1t5p8.jpg"
+  "image": "/portraits/17Kc0a8Uo--VlWal_x8Vcxk3794n1t5p8.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "11",
@@ -1248,7 +1341,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1EoNuveEek1e35BNvYy-fHRxjDNQGwQCh.jpg"
+  "image": "/portraits/1EoNuveEek1e35BNvYy-fHRxjDNQGwQCh.jpg",
+  "category": "community"
  },
  {
   "id": "70",
@@ -1261,7 +1355,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/manual-usha-raghavan.jpg"
+  "image": "/portraits/manual-usha-raghavan.jpg",
+  "category": "arts-culture"
  },
  {
   "id": "14",
@@ -1274,7 +1369,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1VsxSHeNUUiFwWG1KdI7uDWrAg50kAsMV.jpg"
+  "image": "/portraits/1VsxSHeNUUiFwWG1KdI7uDWrAg50kAsMV.jpg",
+  "category": "community"
  },
  {
   "id": "26",
@@ -1287,7 +1383,8 @@
    "form1",
    "old"
   ],
-  "image": "/portraits/1gO3pHrIotIgXBAIGb0_r1xalr1Kp09c3.jpg"
+  "image": "/portraits/1gO3pHrIotIgXBAIGb0_r1xalr1Kp09c3.jpg",
+  "category": "community"
  },
  {
   "id": "13",
@@ -1301,7 +1398,8 @@
    "final-directory",
    "old"
   ],
-  "image": "/portraits/1MLyaqpeKXWjyO9WiTwx_1BTN1zDcm3jn.jpg"
+  "image": "/portraits/1MLyaqpeKXWjyO9WiTwx_1BTN1zDcm3jn.jpg",
+  "category": "community"
  },
  {
   "id": "90",
@@ -1315,6 +1413,7 @@
   ],
   "image": "/portraits/manual-zamiha-desai.jpg",
   "compiled": true,
-  "published": true
+  "published": true,
+  "category": "enterprise"
  }
 ]

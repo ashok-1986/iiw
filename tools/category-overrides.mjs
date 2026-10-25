@@ -28,6 +28,10 @@ export function applyCategoryOverrides(nominees) {
     }
     matches[0].category = category;
   }
+  const missing = nominees.filter((n) => !n.category).map((n) => n.name);
+  if (missing.length) {
+    console.warn(`no category override for: ${missing.join(', ')} (falls back to deriveCategory; add a line to tools/data/category-overrides.json)`);
+  }
   return nominees;
 }
 
