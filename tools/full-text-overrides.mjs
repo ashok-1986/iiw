@@ -2,7 +2,9 @@
 // Client-supplied lightbox / profile text for people whose longest bio in the Sheet is not the one
 // they want shown. refresh-data.mjs picks fullText as the longest bio across tabs, so an edit in the
 // Sheet cannot always win. Keyed by normalised name in tools/data/full-text-overrides.json; sets
-// fullText only. Run offline: node tools/full-text-overrides.mjs (idempotent).
+// fullText only. A value of exactly "$summary" makes fullText follow that record's own Sheet summary,
+// so the card and the profile page cannot disagree. Run offline: node tools/full-text-overrides.mjs
+// (idempotent).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -21,7 +23,7 @@ export function applyFullTextOverrides(nominees) {
     if (matches.length !== 1) {
       throw new Error(`Full-text override "${name}" must match exactly one record, found ${matches.length}`);
     }
-    matches[0].fullText = text;
+    matches[0].fullText = text === '$summary' ? matches[0].summary.trim() : text;
   }
   return nominees;
 }
