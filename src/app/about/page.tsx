@@ -103,8 +103,9 @@ export default async function AboutPage() {
           </div>
 
           <p className="mt-6 font-(family-name:--font-body) text-[14px] leading-[1.7] text-[var(--text-faint)]">
-            Cause labels ({categories.map(([c, n]) => `${formatCategory(c)} · ${n}`).join(', ')}) are derived from the biography text
-            itself: the source sheet has no category column, so each profile is classified by the work it describes.
+            Cause labels ({categories.map(([c, n]) => `${formatCategory(c)} · ${n}`).join(', ')}) are assigned by the IIW
+            curation team: the source sheet has no category column, so each profile is placed by hand under the cause
+            that best fits the work it describes.
           </p>
         </section>
 
