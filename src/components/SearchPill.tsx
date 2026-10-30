@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useFlipbook } from '@/lib/flipbook-store';
+import { formatCategory } from '@/lib/categories';
 
 /**
  * Search overlay pill (PRD: client-side Zustand, debounce 200ms, URL-synced ?q=&cat=).
@@ -107,7 +108,7 @@ export function SearchPill({ categories }: { categories: string[] }) {
                     : 'border-[var(--menthe)] bg-[var(--surface-2)] text-[var(--text)] hover:bg-[var(--menthe)]/45')
                 }
               >
-                {c}
+                {formatCategory(c)}
               </button>
             );
           })}

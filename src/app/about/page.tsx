@@ -4,6 +4,7 @@ import { RangoliDivider } from '@/components/RangoliDivider';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { toJsonLd } from '@/lib/json-ld';
 import { aboutPageMetadata } from '@/lib/seo_metadata';
+import { formatCategory } from '@/lib/categories';
 
 export const metadata = aboutPageMetadata;
 
@@ -102,7 +103,7 @@ export default async function AboutPage() {
           </div>
 
           <p className="mt-6 font-(family-name:--font-body) text-[14px] leading-[1.7] text-[var(--text-faint)]">
-            Cause labels ({categories.map(([c, n]) => `${c} · ${n}`).join(', ')}) are derived from the biography text
+            Cause labels ({categories.map(([c, n]) => `${formatCategory(c)} · ${n}`).join(', ')}) are derived from the biography text
             itself: the source sheet has no category column, so each profile is classified by the work it describes.
           </p>
         </section>

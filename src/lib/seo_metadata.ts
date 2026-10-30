@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL, SITE_NAME } from '@/lib/site';
 import nominees from '@/data/nominees.json';
+import { CATEGORY_DISPLAY_MAP, formatCategory } from '@/lib/categories';
 
 /** The one head-count for every title, description and JSON-LD block below: the baked roster. */
 const PROFILE_COUNT = nominees.length;
@@ -31,19 +32,7 @@ export const SEO_KEYWORDS = [
   'British Indian role models archive',
 ];
 
-export const CATEGORY_DISPLAY_MAP: Record<string, string> = {
-  health: 'Health & Wellbeing',
-  education: 'Education & Mentorship',
-  enterprise: 'Enterprise & Leadership',
-  'arts-culture': 'Arts, Culture & Heritage',
-  community: 'Community & Civic Seva',
-  'women-empowerment': 'Women Empowerment & Advocacy',
-};
-
-export function formatCategory(cat?: string | null): string {
-  if (!cat) return 'Community & Civic Seva';
-  return CATEGORY_DISPLAY_MAP[cat.toLowerCase()] || cat;
-}
+export { CATEGORY_DISPLAY_MAP, formatCategory };
 
 export function cleanSnippet(text: string, maxLen = 155): string {
   if (!text) return '';
